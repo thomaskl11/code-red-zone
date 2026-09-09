@@ -22,6 +22,7 @@ STRATEGY_PATH = os.path.join(os.path.dirname(__file__), "..", "strategy.md")
 DRAFT_QUEUE_PATH = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "draft_queue.json")
 FANTASYPROS_PATH = os.path.join(os.path.dirname(__file__), "fantasypros_ecr.json")
 YAHOO_ADP_PATH = os.path.join(os.path.dirname(__file__), "yahoo_adp.json")
+PROTECTED_PLAYERS_PATH = os.path.join(os.path.dirname(__file__), "protected_players.json")
 
 FENCE_RE = re.compile(r"^```(?:json)?\s*\n(.*)\n```$", re.DOTALL)
 
@@ -53,6 +54,21 @@ def load_external_rankings():
     return fp_lookup, yahoo_lookup
 
 
+def load_protected_players():
+    """Players that never get dropped, full stop -- enforced in code below,
+    not just asked of the model. Combines ESPN's own Undroppables list (a
+    periodically-refreshed snapshot, see protected_players.json's fetched_at)
+    with any personal must-protects in that file's extra_names. Returns a
+    set of normalized names.
+    """
+    if not os.path.exists(PROTECTED_PLAYERS_PATH):
+        return set()
+    with open(PROTECTED_PLAYERS_PATH) as f:
+        data = json.load(f)
+    names = data.get("espn_undroppables", []) + data.get("extra_names", [])
+    return {_normalize_name(n) for n in names}
+
+
 def parse_json_response(text):
     """Claude reliably wraps JSON in a ```json fence despite being told not
     to -- strip it before parsing instead of fighting the model on it."""
@@ -69,6 +85,7 @@ def decide_waiver_move():
     roster = get_roster_snapshot(team)
     free_agents = get_free_agents(league, size=60)
     ranked_fas = rank_by_arbitrage(free_agents)[:15]
+    protected = load_protected_players()
 
     client = Anthropic()  # reads ANTHROPIC_API_KEY from the environment
 
@@ -77,15 +94,21 @@ def decide_waiver_move():
         "roster and the top available free agents (each with an arbitrage_gap "
         "score, where higher means more underpriced by the market), decide the "
         "single best waiver move this week, or explicitly decide to make no "
-        "move. Respond with ONLY valid JSON, no other text: "
+        "move. The roster below marks some players as \"protected\": true -- "
+        "these can never be the drop, full stop, no matter how compelling the "
+        "add looks. Respond with ONLY valid JSON, no other text: "
         '{"action": "add_drop" or "no_move", '
         '"add": "player name or null", "drop": "player name or null", '
         '"reasoning": "2-3 sentences, in team voice", '
         '"rule_applied": "arbitrage_gap" or "home_turf_tiebreak" or "none"}'
     )
 
+    roster_with_protection = [
+        {**p, "protected": _normalize_name(p["name"]) in protected} for p in roster
+    ]
+
     user_payload = json.dumps({
-        "current_roster": roster,
+        "current_roster": roster_with_protection,
         "top_free_agents_by_arbitrage": [
             {**p, "arbitrage_gap": round(gap, 1)} for p, gap in ranked_fas
         ],
@@ -100,8 +123,29 @@ def decide_waiver_move():
 
     decision = parse_json_response(response.content[0].text)
 
+    # Hard enforcement, independent of whatever the model decided -- a
+    # protected player is never dropped, no matter what the prompt said or
+    # how the model reasoned. This is the actual guarantee; the prompt above
+    # is just a courtesy so it doesn't waste a call proposing one.
+    overridden = False
+    if decision.get("action") == "add_drop" and _normalize_name(decision.get("drop", "")) in protected:
+        overridden = True
+        decision = {
+            "action": "no_move",
+            "add": None,
+            "drop": None,
+            "reasoning": (
+                f'Vetoed: the model proposed dropping {decision["drop"]}, who is on the '
+                "protected list. Overridden in code before anything could execute -- "
+                "no move made this week."
+            ),
+            "rule_applied": "protected_player_veto",
+        }
+
     if decision["action"] == "add_drop":
         headline = f'Added {decision["add"]}, dropped {decision["drop"]}'
+    elif overridden:
+        headline = "Waiver move blocked -- protected player"
     else:
         headline = "No waiver move this week"
 

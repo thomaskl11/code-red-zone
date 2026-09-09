@@ -1,0 +1,12 @@
+{
+  "source": "ESPN Fantasy Football Undroppables, https://fantasy.espn.com/football/players/undroppables",
+  "fetched_at": "2026-09-09",
+  "note": "ESPN's own anti-collusion/anti-tanking list, said to update regularly for injuries/trades/etc. Manually re-pulled periodically, not a live feed. Staleness is safe in one direction only: a player who's since fallen off ESPN's real list stays protected here a little longer than necessary, never the reverse. Add any personal must-protects to extra_names below -- those are never dropped regardless of what ESPN's list says.",
+  "espn_undroppables": [
+    "Drake Maye", "Jalen Hurts", "Josh Allen", "Jayden Daniels", "Lamar Jackson",
+    "Jahmyr Gibbs", "Christian McCaffrey", "James Cook III", "Bijan Robinson", "Jonathan Taylor", "De'Von Achane",
+    "Amon-Ra St. Brown", "CeeDee Lamb", "Ja'Marr Chase", "Puka Nacua", "Justin Jefferson", "Jaxon Smith-Njigba",
+    "Brock Bowers", "Trey McBride"
+  ],
+  "extra_names": []
+}
