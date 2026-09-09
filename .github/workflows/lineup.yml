@@ -53,7 +53,7 @@ jobs:
           ESPN_STORAGE_STATE: ${{ secrets.ESPN_STORAGE_STATE }}
           ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
           ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
-          DRY_RUN: "true"   # flip to "false" once you've watched a few dry runs
+          DRY_RUN: "false"  # verified live 2026-09-09 -- set_lineup() actually works
         run: |
           python - << 'PYEOF'
           import json, browser_actions
