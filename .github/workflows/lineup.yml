@@ -4,11 +4,22 @@ on:
   schedule:
     # Lineup Protection is off and locks happen per-player at kickoff, not
     # one Sunday cutoff -- so this needs to run before each wave of games,
-    # not just once. Times are UTC; adjust for daylight saving as needed.
-    - cron: "0 0 * * 5"    # ~8pm ET Thursday -- before Thursday Night Football
-    - cron: "30 15 * * 0"  # ~11:30am ET Sunday -- before early Sunday games
-    - cron: "0 20 * * 0"   # ~4pm ET Sunday -- before late Sunday games
-    - cron: "0 0 * * 2"    # ~8pm ET Monday -- before Monday Night Football
+    # not just once. Times are UTC, computed for EDT (UTC-4); shift by an
+    # hour once the season crosses into EST in November.
+    #
+    # Widened from 4 to 7 checks/week after finding two real gaps: London/
+    # international games kick off ~9:30am ET, well before the old first
+    # Sunday check (11:30am ET, timed for the standard 1pm slate) -- so an
+    # early-international lock would've already passed unnoticed. And there
+    # was no dedicated Sunday Night Football check at all between the late
+    # afternoon slate and Monday.
+    - cron: "0 22 * * 4"   # ~6pm ET Thursday -- before Thursday Night Football
+    - cron: "0 22 * * 5"   # ~6pm ET Friday -- rare Friday/international games
+    - cron: "0 11 * * 0"   # ~7am ET Sunday -- London/early-international kickoffs
+    - cron: "30 15 * * 0"  # ~11:30am ET Sunday -- before the standard early slate
+    - cron: "0 20 * * 0"   # ~4pm ET Sunday -- before the late afternoon slate
+    - cron: "30 23 * * 0"  # ~7:30pm ET Sunday -- before Sunday Night Football
+    - cron: "0 22 * * 1"   # ~6pm ET Monday -- before Monday Night Football
   workflow_dispatch:
 
 jobs:

@@ -1,13 +1,18 @@
-name: Daily Waiver Decision
+name: Waiver Decision
 
 on:
   schedule:
     # ESPN's waiver period is a rolling per-drop countdown, not a fixed
-    # weekly day -- it processes nightly, roughly 3-5am ET. The Wednesday
-    # AM pattern people notice is just the post-weekend leftover surge
-    # landing there, not a hardcoded rule. Running at 10am UTC (5-6am ET,
-    # covering both EDT and EST) stays safely clear of that window.
-    - cron: "0 10 * * *"
+    # weekly day -- it processes nightly, roughly 3-5am ET. Running at
+    # 10am UTC (5-6am ET, covering both EDT and EST) stays safely clear of
+    # that window.
+    #
+    # Cut from daily to 2x/week -- daily was rarely finding anything real
+    # (see the season log), and the two moments that actually matter are
+    # right after the Sunday/Monday injury fallout, and right before the
+    # weekend once Wed/Thu practice reports firm up.
+    - cron: "0 10 * * 2"   # Tuesday -- post-Sunday/MNF fallout
+    - cron: "0 10 * * 5"   # Friday -- pre-weekend, Wed/Thu injury reports
   workflow_dispatch:        # adds a manual "Run workflow" button as a fallback
 
 jobs:
