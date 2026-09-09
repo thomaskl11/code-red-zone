@@ -48,14 +48,29 @@
   .mantra-lines li:first-child { border-top: none; }
   .mantra-more { display: block; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--yard-line); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--floodlight); text-decoration: none; }
   .mantra-more:hover { color: var(--chalk); }
-  section.hero { margin: 28px 24px 0; padding: 22px; background: var(--turf-panel); border: 1px solid var(--yard-line); border-left: 4px solid var(--floodlight); }
-  .hero-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--floodlight); text-transform: uppercase; margin: 0 0 10px; }
-  .hero-headline { font-family: 'Anton', sans-serif; font-size: 26px; line-height: 1.15; margin: 0 0 14px; max-width: 34ch; }
-  .hero-note { font-size: 15px; color: var(--chalk); border-top: 1px dashed var(--yard-line); padding-top: 12px; margin: 0; }
-  .hero-note span.tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--grass-muted); display: block; margin-bottom: 6px; }
-  section.log { margin: 36px 24px 0; }
-  .log-title { font-family: 'Anton', sans-serif; font-size: 20px; margin: 0 0 4px; letter-spacing: 0.01em; }
-  .log-sub { font-size: 13px; color: var(--grass-muted); margin: 0 0 18px; }
+  section.totals { margin: 20px 24px 0; padding: 14px 22px; background: var(--turf-panel); border: 1px solid var(--yard-line); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--grass-muted); display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+  section.totals b { color: var(--floodlight); font-weight: 500; }
+  section.totals .kind-count.waiver { color: var(--floodlight); }
+  section.totals .kind-count.lineup { color: #7fb3ff; }
+  section.totals .kind-count.draft { color: #d7a8ff; }
+  section.latest { margin: 28px 24px 0; display: grid; gap: 14px; }
+  .latest-card { padding: 18px 20px; background: var(--turf-panel); border: 1px solid var(--yard-line); border-left: 4px solid var(--floodlight); }
+  .latest-card.lineup { border-left-color: #7fb3ff; }
+  .latest-card.draft { border-left-color: #d7a8ff; }
+  .latest-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--floodlight); text-transform: uppercase; margin: 0 0 8px; display: flex; justify-content: space-between; gap: 10px; }
+  .latest-card.lineup .latest-label { color: #7fb3ff; }
+  .latest-card.draft .latest-label { color: #d7a8ff; }
+  .latest-label span.ts { color: var(--grass-muted); text-transform: none; letter-spacing: 0; }
+  .latest-headline { font-family: 'Anton', sans-serif; font-size: 21px; line-height: 1.2; margin: 0 0 10px; }
+  .latest-why { font-size: 14px; color: var(--chalk); border-top: 1px dashed var(--yard-line); padding-top: 10px; margin: 0; }
+  details.full-log { margin: 28px 24px 0; }
+  details.full-log > summary { font-family: 'Anton', sans-serif; font-size: 18px; cursor: pointer; color: var(--chalk); padding: 4px 0; }
+  details.full-log > summary::marker { color: var(--floodlight); }
+  .log-sub { font-size: 13px; color: var(--grass-muted); margin: 10px 0 14px; }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+  .filter-btn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; padding: 6px 12px; background: transparent; border: 1px solid var(--yard-line); color: var(--grass-muted); cursor: pointer; }
+  .filter-btn:hover { color: var(--chalk); }
+  .filter-btn.active { border-color: var(--floodlight); color: var(--chalk); }
   .entry { display: grid; grid-template-columns: 78px 84px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--yard-line); align-items: baseline; }
   .entry:last-child { border-bottom: 1px solid var(--yard-line); }
   .entry .date { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--grass-muted); }
@@ -66,8 +81,6 @@
   .entry .detail p { margin: 0 0 4px; font-size: 14.5px; }
   .entry .detail .why { color: var(--grass-muted); font-size: 13.5px; }
   @media (max-width: 480px) { .entry { grid-template-columns: 1fr; gap: 4px; } .team-name { font-size: 32px; } }
-  section.stats { margin: 36px 24px 0; padding: 16px 22px; background: var(--turf-panel); border: 1px solid var(--yard-line); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--grass-muted); display: flex; flex-wrap: wrap; gap: 6px 10px; }
-  section.stats b { color: var(--floodlight); font-weight: 500; }
   footer.note { margin: 24px 24px 0; font-size: 12px; color: var(--grass-muted); }
 </style>
 </head>
@@ -98,19 +111,16 @@
       <a class="mantra-more" href="./strategy.html">Read the full strategy &rarr;</a>
     </section>
 
-    <section class="hero">
-      <p class="hero-label">Latest move</p>
-      <h2 class="hero-headline" id="hero-headline">Loading&hellip;</h2>
-      <p class="hero-note"><span class="tag">Why</span><span id="hero-why"></span></p>
-    </section>
+    <section class="totals" id="totals-strip"></section>
 
-    <section class="log">
-      <h3 class="log-title">Season log</h3>
+    <section class="latest" id="latest-grid"></section>
+
+    <details class="full-log">
+      <summary>Full season log</summary>
       <p class="log-sub">Every move, and the reasoning, in order.</p>
+      <div class="filter-bar" id="filter-bar"></div>
       <div id="log-entries"></div>
-    </section>
-
-    <section class="stats" id="stats-strip"></section>
+    </details>
 
     <footer class="note">
       Log auto-generated after each scheduled run. Every Sunday's Christmas around here.
@@ -118,6 +128,34 @@
   </div>
 
 <script>
+const KIND_ORDER = ['waiver', 'lineup', 'draft'];
+const KIND_LABEL = { waiver: 'Waiver', lineup: 'Lineup', draft: 'Draft' };
+
+function dateStr(ts) {
+  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+}
+
+function renderEntry(e) {
+  return `
+    <div class="entry" data-kind="${e.kind}">
+      <div class="date">${dateStr(e.timestamp)}</div>
+      <div class="kind ${e.kind}">${e.kind}</div>
+      <div class="detail">
+        <p>${e.headline}</p>
+        <p class="why">${e.reasoning}</p>
+      </div>
+    </div>`;
+}
+
+function setFilter(kind) {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.kind === kind);
+  });
+  document.querySelectorAll('#log-entries .entry').forEach(el => {
+    el.style.display = (kind === 'all' || el.dataset.kind === kind) ? '' : 'none';
+  });
+}
+
 async function loadLog() {
   let entries = [];
   try {
@@ -127,46 +165,61 @@ async function loadLog() {
     entries = [];
   }
 
-  const heroHeadline = document.getElementById('hero-headline');
-  const heroWhy = document.getElementById('hero-why');
+  const totalsStrip = document.getElementById('totals-strip');
+  const latestGrid = document.getElementById('latest-grid');
+  const filterBar = document.getElementById('filter-bar');
   const logEntries = document.getElementById('log-entries');
-  const statsStrip = document.getElementById('stats-strip');
   const tickerStats = document.getElementById('ticker-stats');
 
   if (entries.length === 0) {
-    heroHeadline.textContent = 'No moves logged yet';
-    heroWhy.textContent = "Check back after the first scheduled run.";
+    totalsStrip.innerHTML = '<span>0 moves logged</span>';
+    latestGrid.innerHTML = `
+      <div class="latest-card">
+        <p class="latest-label">Latest move</p>
+        <h2 class="latest-headline">No moves logged yet</h2>
+        <p class="latest-why">Check back after the first scheduled run.</p>
+      </div>`;
+    filterBar.innerHTML = '';
     logEntries.innerHTML = '<p style="color: var(--grass-muted); font-size: 14px;">Nothing here yet.</p>';
     tickerStats.textContent = 'AWAITING FIRST RUN';
-    statsStrip.innerHTML = '<span>0 moves logged</span>';
     return;
   }
 
-  const [latest, ...rest] = entries;
-  heroHeadline.textContent = latest.headline;
-  heroWhy.textContent = latest.reasoning;
-  tickerStats.textContent = `${entries.length} MOVES LOGGED  •  LAST UPDATED ${new Date(latest.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()}`;
+  // entries are newest-first, so the first occurrence of each kind is its latest
+  const counts = {};
+  const latestByKind = {};
+  for (const e of entries) {
+    counts[e.kind] = (counts[e.kind] || 0) + 1;
+    if (!latestByKind[e.kind]) latestByKind[e.kind] = e;
+  }
+  const kindsPresent = KIND_ORDER.filter(k => counts[k]);
 
-  logEntries.innerHTML = rest.map(e => {
-    const d = new Date(e.timestamp);
-    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+  tickerStats.textContent = `${entries.length} MOVES LOGGED  •  LAST UPDATED ${dateStr(entries[0].timestamp)}`;
+
+  totalsStrip.innerHTML = [
+    `<span><b>${entries.length}</b> moves this season</span>`,
+    ...kindsPresent.map(k => `<span class="kind-count ${k}">${counts[k]} ${KIND_LABEL[k].toLowerCase()}</span>`),
+  ].join('<span>&middot;</span>');
+
+  latestGrid.innerHTML = kindsPresent.map(k => {
+    const e = latestByKind[k];
     return `
-      <div class="entry">
-        <div class="date">${dateStr}</div>
-        <div class="kind ${e.kind}">${e.kind}</div>
-        <div class="detail">
-          <p>${e.headline}</p>
-          <p class="why">${e.reasoning}</p>
-        </div>
+      <div class="latest-card ${k}">
+        <p class="latest-label"><span>Latest ${KIND_LABEL[k].toLowerCase()} move</span><span class="ts">${dateStr(e.timestamp)}</span></p>
+        <h2 class="latest-headline">${e.headline}</h2>
+        <p class="latest-why">${e.reasoning}</p>
       </div>`;
   }).join('');
 
-  const homeTurfCount = entries.filter(e => e.meta && e.meta.rule_applied === 'home_turf_tiebreak').length;
-  statsStrip.innerHTML = `
-    <span><b>${entries.length}</b> moves this season</span>
-    <span>&middot;</span>
-    <span>home turf tiebreak used <b>${homeTurfCount}</b>&times;</span>
-  `;
+  filterBar.innerHTML = ['all', ...kindsPresent].map(k =>
+    `<button class="filter-btn" data-kind="${k}">${k === 'all' ? 'All' : KIND_LABEL[k]}</button>`
+  ).join('');
+  filterBar.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => setFilter(btn.dataset.kind));
+  });
+
+  logEntries.innerHTML = entries.map(renderEntry).join('');
+  setFilter('all');
 }
 loadLog();
 </script>
