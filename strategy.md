@@ -17,7 +17,6 @@ Code Red Zone isn't here to talk trash — it's here because two rankings sites 
 - **Waiver period: 1 day, kept deliberately.** The weekly batch (everyone freed up by that week's games) closes a shared window a few hours after the last game, then runs a 1-day countdown before processing — landing on the Tuesday-night-into-Wednesday cadence this league already expects. Extending it would push that same cadence later in the week (2 days → Wednesday into Thursday, 3 days → Thursday into Friday) in exchange for letting the market reveal more before a claim locks in. Matching league habit won out over that extra signal time.
 - **Lineup Protection is off, and locks happen per-player at kickoff** — not one Sunday cutoff for the whole roster. A Thursday starter locks Thursday night; late Sunday games lock separately from early ones; Monday locks last. This means checking the lineup once a week isn't enough.
 - **Draft:** Snake, Sep 8, 2026, 6:00 PM PDT. 14 rounds, 60 seconds a pick, order randomized an hour before. Fast enough that a queue set in advance beats reasoning live, pick to pick.
-- **Division: The Brady Division**, alongside Peyton on Sunday Mornings and Perfectly imperfect — worth noting Code Red Zone sits in Brady's group across the table from a Peyton-named team. Free rivalry, no extra work required. *(Inferred from the settings list as pasted — confirm if the grouping's off.)*
 - **Six teams make the playoffs**, single-week rounds, no reseeding. The math is simple: be one of six, not one of four.
 
 ## Core Strategy: Consensus Arbitrage
