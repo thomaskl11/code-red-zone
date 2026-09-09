@@ -1,0 +1,13 @@
+# Real secrets -- .env.example (no real values) is the only one that should ever be committed
+.env
+espn_state.json
+
+# Python
+__pycache__/
+*.pyc
+
+# OS/editor cruft
+.DS_Store
+
+# Local scratch output (screenshots, temp files from browser_actions.py)
+/tmp/

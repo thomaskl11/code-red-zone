@@ -1,0 +1,61 @@
+name: Daily Waiver Decision
+
+on:
+  schedule:
+    # ESPN's waiver period is a rolling per-drop countdown, not a fixed
+    # weekly day -- it processes nightly, roughly 3-5am ET. The Wednesday
+    # AM pattern people notice is just the post-weekend leftover surge
+    # landing there, not a hardcoded rule. Running at 10am UTC (5-6am ET,
+    # covering both EDT and EST) stays safely clear of that window.
+    - cron: "0 10 * * *"
+  workflow_dispatch:        # adds a manual "Run workflow" button as a fallback
+
+jobs:
+  run-waivers:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Decide waiver move
+        working-directory: scripts
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+          ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
+          ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python decide.py > /tmp/decision.json
+
+      - name: Execute waiver claim
+        working-directory: scripts
+        env:
+          ESPN_STORAGE_STATE: ${{ secrets.ESPN_STORAGE_STATE }}
+          ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
+          ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
+          DRY_RUN: "true"   # flip to "false" once you've watched a few weeks go well
+        run: |
+          python - << 'PYEOF'
+          import json, browser_actions
+          d = json.load(open("/tmp/decision.json"))
+          if d["action"] == "add_drop":
+              browser_actions.submit_waiver_claim(d["add"], d["drop"])
+          PYEOF
+
+      - name: Commit updated log
+        run: |
+          git config user.name "code-red-zone-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data/log.json
+          git commit -m "Weekly waiver decision" || echo "Nothing to commit"
+          git push

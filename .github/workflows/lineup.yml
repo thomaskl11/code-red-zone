@@ -1,0 +1,50 @@
+name: Pre-Kickoff Lineup Check
+
+on:
+  schedule:
+    # Lineup Protection is off and locks happen per-player at kickoff, not
+    # one Sunday cutoff -- so this needs to run before each wave of games,
+    # not just once. Times are UTC; adjust for daylight saving as needed.
+    - cron: "0 0 * * 5"    # ~8pm ET Thursday -- before Thursday Night Football
+    - cron: "30 15 * * 0"  # ~11:30am ET Sunday -- before early Sunday games
+    - cron: "0 20 * * 0"   # ~4pm ET Sunday -- before late Sunday games
+    - cron: "0 0 * * 2"    # ~8pm ET Monday -- before Monday Night Football
+  workflow_dispatch:
+
+jobs:
+  run-lineup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      # Same shape as waivers.yml: a decide_lineup() function (mirroring
+      # decide_waiver_move()) goes in decide.py once the roster-vs-injury
+      # logic is ready, then set_lineup() in browser_actions.py executes it.
+      - name: Decide and set lineup
+        working-directory: scripts
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+          ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
+          ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ESPN_STORAGE_STATE: ${{ secrets.ESPN_STORAGE_STATE }}
+          DRY_RUN: "true"
+        run: echo "Wire this up to decide_lineup() once that function exists."
+
+      - name: Commit updated log
+        run: |
+          git config user.name "code-red-zone-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data/log.json
+          git commit -m "Lineup check" || echo "Nothing to commit"
+          git push

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Red Zone — Draft Queue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --turf-dark: #0f2416;
+    --turf-panel: #17301f;
+    --chalk: #ece8dd;
+    --yard-line: #35513e;
+    --floodlight: #ffb627;
+    --grass-muted: #7fa088;
+    --holly-red: #b23a3a;
+    --pine-light: #3e8c5e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--turf-dark);
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 120px);
+    color: var(--chalk);
+    font-family: 'Work Sans', sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 0 60px; }
+  .lights-strip { height: 9px; background: repeating-linear-gradient(90deg, var(--holly-red) 0 6px, transparent 6px 24px, var(--pine-light) 24px 30px, transparent 30px 48px, var(--floodlight) 48px 54px, transparent 54px 72px); opacity: 0.85; }
+  header.identity { padding: 36px 24px 20px; border-bottom: 1px solid var(--yard-line); }
+  .league-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--holly-red); margin: 0 0 8px; }
+  .team-name { font-family: 'Anton', sans-serif; font-size: 42px; letter-spacing: 0.01em; margin: 0; line-height: 1; }
+  nav.tabs { display: flex; gap: 18px; margin-top: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+  nav.tabs a { color: var(--grass-muted); text-decoration: none; padding-bottom: 6px; border-bottom: 2px solid transparent; }
+  nav.tabs a.active { color: var(--floodlight); border-bottom-color: var(--floodlight); }
+  nav.tabs a:hover { color: var(--chalk); }
+  section.hero { margin: 28px 24px 0; padding: 22px; background: var(--turf-panel); border: 1px solid var(--yard-line); border-left: 4px solid var(--floodlight); }
+  .hero-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--floodlight); text-transform: uppercase; margin: 0 0 10px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .hero-label span.ts { color: var(--grass-muted); text-transform: none; letter-spacing: 0; }
+  .hero-note { font-size: 15px; color: var(--chalk); margin: 0; }
+  section.instructions { margin: 20px 24px 0; padding: 14px 22px; background: rgba(255,182,39,0.06); border: 1px dashed var(--floodlight); font-size: 13.5px; color: var(--grass-muted); }
+  section.instructions b { color: var(--chalk); }
+  section.autopick { margin: 32px 24px 0; }
+  .limits-table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; font-size: 13.5px; }
+  .limits-table th { text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--grass-muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--yard-line); }
+  .limits-table td { padding: 10px 10px 10px 0; border-top: 1px dashed var(--yard-line); vertical-align: top; }
+  .limits-table td.pos { color: var(--chalk); font-weight: 500; white-space: nowrap; }
+  .limits-table td.num { font-family: 'IBM Plex Mono', monospace; color: var(--floodlight); white-space: nowrap; }
+  .limits-table td.why { color: var(--grass-muted); }
+  .round-note { margin: 0; padding: 14px 18px; background: var(--turf-panel); border: 1px solid var(--yard-line); border-left: 4px solid var(--pine-light); font-size: 14px; }
+  .round-note b { color: var(--chalk); }
+  section.queue { margin: 32px 24px 0; }
+  .queue-title { font-family: 'Anton', sans-serif; font-size: 20px; margin: 0 0 4px; letter-spacing: 0.01em; }
+  .queue-sub { font-size: 13px; color: var(--grass-muted); margin: 0 0 18px; }
+  .sources-note { font-size: 12.5px; color: var(--grass-muted); margin: 0 0 16px; padding: 10px 14px; background: rgba(255,182,39,0.06); border: 1px dashed var(--floodlight); }
+  .sources-note b { color: var(--chalk); }
+  .compare-table { width: 100%; border-collapse: collapse; margin: 0 0 32px; font-size: 13px; }
+  .compare-table th { text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--grass-muted); font-weight: 500; padding: 0 8px 8px 0; border-bottom: 1px solid var(--yard-line); }
+  .compare-table td { padding: 6px 8px 6px 0; border-top: 1px dashed var(--yard-line); white-space: nowrap; }
+  .compare-table td.rank { font-family: 'IBM Plex Mono', monospace; color: var(--grass-muted); }
+  .compare-table td.player { white-space: normal; }
+  .compare-table td.player .pos { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--floodlight); margin-left: 6px; }
+  .compare-table td.src { font-family: 'IBM Plex Mono', monospace; }
+  .compare-table td.src .gap { color: var(--grass-muted); font-size: 11px; }
+  .compare-table td.src .better { color: var(--pine-light); }
+  .compare-table td.src .worse { color: var(--holly-red); }
+  .rest-title { font-family: 'Anton', sans-serif; font-size: 16px; margin: 0 0 4px; }
+  .queue-list { column-count: 3; column-gap: 20px; }
+  @media (max-width: 900px) { .queue-list { column-count: 2; } }
+  @media (max-width: 560px) { .queue-list { column-count: 1; } }
+  .queue-row { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; border-top: 1px dashed var(--yard-line); break-inside: avoid; font-size: 13.5px; }
+  .queue-row:nth-child(10n+1) { border-top-color: var(--floodlight); border-top-style: solid; }
+  .queue-row .rank { font-family: 'IBM Plex Mono', monospace; color: var(--grass-muted); font-size: 12px; min-width: 26px; text-align: right; }
+  .queue-row .name { flex: 1; }
+  .queue-row .pos { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--floodlight); }
+  .queue-row .team { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--grass-muted); }
+  footer.note { margin: 30px 24px 0; font-size: 12px; color: var(--grass-muted); }
+</style>
+</head>
+<body>
+  <div class="lights-strip"></div>
+
+  <div class="wrap">
+    <header class="identity">
+      <p class="league-name">CSFFL</p>
+      <h1 class="team-name">Code Red Zone</h1>
+      <nav class="tabs">
+        <a href="./index.html">Season Log</a>
+        <a href="./strategy.html">Strategy</a>
+        <a href="./draft-queue.html" class="active">Draft Queue</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="hero-label"><span>Why this order</span><span class="ts" id="hero-ts">loading&hellip;</span></p>
+      <p class="hero-note" id="hero-reasoning">Loading&hellip;</p>
+    </section>
+
+    <section class="instructions">
+      <b>How to use this:</b> this is the reference list for ESPN's "Edit Pre-Draft Strategy &rarr; Pre-Draft Rankings" page (drag-and-drop reorder). Enter it there by hand, deep as you have patience for &mdash; ESPN falls back to its own default order for anything you don't explicitly rank. Autopick/autodraft takes it from there.
+    </section>
+
+    <section class="autopick">
+      <h3 class="queue-title">Position limits &amp; round strategy</h3>
+      <p class="queue-sub">What's set on ESPN's "Autopick Strategy" tab, and why.</p>
+      <table class="limits-table">
+        <tr><th>Position</th><th>Min</th><th>Max</th><th>Why</th></tr>
+        <tr><td class="pos">Quarterback</td><td class="num">1</td><td class="num">1</td><td class="why">League allows up to 4, but this is a single-QB league &mdash; a backup QB is a wasted pick, never worth the capital.</td></tr>
+        <tr><td class="pos">Running Back</td><td class="num">2</td><td class="num">6</td><td class="why">League allows up to 8; 6 leaves room across the 5 bench spots for other positions, since no-PPR scoring rewards RB volume most.</td></tr>
+        <tr><td class="pos">Wide Receiver</td><td class="num">2</td><td class="num">6</td><td class="why">Same reasoning as RB &mdash; enough depth without crowding out everything else.</td></tr>
+        <tr><td class="pos">Tight End</td><td class="num">1</td><td class="num">3</td><td class="why">Matches the league's own max exactly &mdash; room for a streaming option beyond the starter.</td></tr>
+        <tr><td class="pos">Team D/ST</td><td class="num">1</td><td class="num">1</td><td class="why">League allows up to 3, but one is enough &mdash; a 10-team league has deep enough waivers to stream byes instead of spending a pick.</td></tr>
+        <tr><td class="pos">Place Kicker</td><td class="num">1</td><td class="num">1</td><td class="why">Same logic as D/ST &mdash; waivers cover bye weeks.</td></tr>
+      </table>
+      <p class="round-note"><b>Every round of Pick-By-Pick Strategy is left on "Best Available"</b> &mdash; no round is forced into a specific position. That's deliberate: the whole point of Consensus Arbitrage is following the rankings gap wherever it shows up, not deciding in advance that round 4 has to be a running back. The six caps above are the only guardrails; everything else follows the ranked queue below.</p>
+    </section>
+
+    <section class="queue">
+      <h3 class="queue-title">Ranked queue</h3>
+      <p class="queue-sub" id="queue-count">Loading&hellip;</p>
+      <p class="sources-note" id="sources-note"></p>
+
+      <table class="compare-table" id="compare-table">
+        <thead>
+          <tr><th>#</th><th>Player</th><th>FantasyPros</th><th>Yahoo ADP</th></tr>
+        </thead>
+        <tbody id="compare-body"></tbody>
+      </table>
+
+      <h4 class="rest-title">Rest of the queue</h4>
+      <p class="queue-sub">Ranks 51 and on &mdash; no source comparison shown below this depth, to keep the page readable.</p>
+      <div class="queue-list" id="queue-list"></div>
+    </section>
+
+    <footer class="note">
+      Generated once, by hand, ahead of the draft &mdash; not on a recurring schedule.
+    </footer>
+  </div>
+
+<script>
+async function loadQueue() {
+  let data = null;
+  try {
+    const res = await fetch('./data/draft_queue.json', { cache: 'no-store' });
+    data = await res.json();
+  } catch (e) {
+    data = null;
+  }
+
+  const heroTs = document.getElementById('hero-ts');
+  const heroReasoning = document.getElementById('hero-reasoning');
+  const queueCount = document.getElementById('queue-count');
+  const sourcesNote = document.getElementById('sources-note');
+  const compareTable = document.getElementById('compare-table');
+  const compareBody = document.getElementById('compare-body');
+  const queueList = document.getElementById('queue-list');
+
+  if (!data || !data.queue || data.queue.length === 0) {
+    heroTs.textContent = '';
+    heroReasoning.textContent = 'No draft queue set yet. Run build_draft_queue() to generate one.';
+    queueCount.textContent = '0 players ranked';
+    sourcesNote.textContent = '';
+    compareTable.style.display = 'none';
+    queueList.innerHTML = '';
+    return;
+  }
+
+  const ts = new Date(data.timestamp);
+  heroTs.textContent = `SET ${ts.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()} ${ts.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+  heroReasoning.textContent = data.reasoning;
+  queueCount.textContent = `${data.queue.length} players ranked, best pick first`;
+
+  const sources = data.sources || {};
+  if (sources.fantasypros || sources.yahoo) {
+    const bits = [];
+    if (sources.fantasypros) bits.push(`FantasyPros ECR (as of ${sources.fantasypros.fetched_at})`);
+    if (sources.yahoo) bits.push(`Yahoo ADP (as of ${sources.yahoo.fetched_at})`);
+    sourcesNote.innerHTML = `<b>Top 50, compared against real sources:</b> ${bits.join(' and ')}. Both are one-time manual pulls, not a live feed &mdash; these boards (and ESPN's own) will keep shifting between now and the actual draft.`;
+  } else {
+    sourcesNote.textContent = '';
+  }
+
+  function deltaSpan(sourceRank, ourRank) {
+    if (sourceRank == null) return '<span class="gap">&mdash;</span>';
+    const delta = sourceRank - ourRank;
+    if (delta === 0) return `#${sourceRank} <span class="gap">(even)</span>`;
+    const cls = delta > 0 ? 'better' : 'worse';
+    const sign = delta > 0 ? '+' : '';
+    return `#${sourceRank} <span class="gap ${cls}">(${sign}${delta})</span>`;
+  }
+
+  const top50 = data.queue.slice(0, 50);
+  const rest = data.queue.slice(50);
+
+  compareBody.innerHTML = top50.map(p => `
+    <tr>
+      <td class="rank">${p.rank}</td>
+      <td class="player">${p.name}<span class="pos">${p.position || ''} ${p.pro_team || ''}</span></td>
+      <td class="src">${deltaSpan(p.fantasypros_overall_rank, p.rank)}</td>
+      <td class="src">${deltaSpan(p.yahoo_overall_rank, p.rank)}</td>
+    </tr>`).join('');
+
+  queueList.innerHTML = rest.map(p => `
+    <div class="queue-row">
+      <span class="rank">${p.rank}</span>
+      <span class="name">${p.name}</span>
+      <span class="pos">${p.position || ''}</span>
+      <span class="team">${p.pro_team || ''}</span>
+    </div>`).join('');
+}
+loadQueue();
+</script>
+</body>
+</html>

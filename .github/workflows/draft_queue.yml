@@ -1,0 +1,57 @@
+name: Set Pre-Draft Queue
+
+on:
+  # Manual only -- the draft queue only needs to be set once before the
+  # Sep 8 draft, not refreshed on a recurring schedule. Click "Run workflow"
+  # in the Actions tab when you're ready to set it.
+  workflow_dispatch:
+
+jobs:
+  set-queue:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Build draft queue
+        working-directory: scripts
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+          ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
+          ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python decide.py --draft-queue > /tmp/decision.json
+
+      # No live clock here, which is exactly why this one's safe to automate
+      # first: build_draft_queue() ranks the pool, then set_draft_queue() from
+      # browser_actions.py pushes the order to ESPN's draft queue screen.
+      - name: Set draft queue
+        working-directory: scripts
+        env:
+          ESPN_STORAGE_STATE: ${{ secrets.ESPN_STORAGE_STATE }}
+          ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
+          ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
+          DRY_RUN: "true"   # flip to "false" once you've watched a few dry runs
+        run: |
+          python - << 'PYEOF'
+          import json, browser_actions
+          d = json.load(open("/tmp/decision.json"))
+          browser_actions.set_draft_queue(d["queue"])
+          PYEOF
+
+      - name: Commit updated log
+        run: |
+          git config user.name "code-red-zone-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data/log.json
+          git commit -m "Draft queue refresh" || echo "Nothing to commit"
+          git push
