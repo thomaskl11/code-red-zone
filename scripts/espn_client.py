@@ -32,6 +32,7 @@ def get_roster_snapshot(team):
             "name": p.name,
             "position": p.position,
             "pro_team": p.proTeam,
+            "lineup_slot": getattr(p, "lineupSlot", None),
             "injury_status": getattr(p, "injuryStatus", "ACTIVE"),
             "projected_points": getattr(p, "projected_points", None),
             "percent_owned": getattr(p, "percent_owned", None),

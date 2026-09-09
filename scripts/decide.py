@@ -115,6 +115,60 @@ def decide_waiver_move():
     return decision, entry
 
 
+def decide_lineup():
+    """Pre-kickoff lineup check. Lineup Protection is off in this league and
+    locks are per-player at kickoff, so this needs to actually catch injury
+    news and bench/starter value gaps before each wave of games, not just
+    once a week.
+    """
+    league = get_league()
+    team = get_my_team(league)
+    roster = get_roster_snapshot(team)
+
+    client = Anthropic()  # reads ANTHROPIC_API_KEY from the environment
+
+    system_prompt = load_strategy() + (
+        "\n\nYou are the decision engine described above, now checking the "
+        "starting lineup before kickoff. Given the full roster below (each "
+        "player's lineup_slot -- a starting slot name, or 'BE' for bench -- "
+        "position, injury_status, and projected_points), decide whether any "
+        "bench player should start over a current starter at an eligible "
+        "slot. Only recommend a swap when there's a real edge: the current "
+        "starter is questionable/doubtful/out, or a bench player at an "
+        "eligible position clearly out-projects them. Respond with ONLY "
+        "valid JSON, no other text: "
+        '{"swaps": [{"start": "player name", "sit": "player name", '
+        '"reason": "one line"}], '
+        '"reasoning": "2-3 sentences overall, in team voice"}'
+        ' If no changes are needed, "swaps" must be an empty list.'
+    )
+
+    user_payload = json.dumps({"roster": roster})
+
+    response = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=1000,
+        system=system_prompt,
+        messages=[{"role": "user", "content": user_payload}],
+    )
+
+    decision = parse_json_response(response.content[0].text)
+
+    if decision["swaps"]:
+        headline = "; ".join(f'Start {s["start"]} over {s["sit"]}' for s in decision["swaps"])
+    else:
+        headline = "No lineup changes needed"
+
+    entry = append_entry(
+        kind="lineup",
+        headline=headline,
+        reasoning=decision["reasoning"],
+        meta={"swap_count": len(decision["swaps"])},
+    )
+
+    return decision, entry
+
+
 def build_draft_queue(pool_size=250):
     """Pre-draft only. Snake draft, 10 teams, 14 rounds -- the queue needs
     enough depth to cover the whole draft, not just a top-15 shortlist like
@@ -238,6 +292,8 @@ if __name__ == "__main__":
 
     if "--draft-queue" in sys.argv:
         decision, entry = build_draft_queue()
+    elif "--lineup" in sys.argv:
+        decision, entry = decide_lineup()
     else:
         decision, entry = decide_waiver_move()
     print(json.dumps(decision, indent=2))

@@ -26,10 +26,7 @@ jobs:
           pip install -r requirements.txt
           playwright install --with-deps chromium
 
-      # Same shape as waivers.yml: a decide_lineup() function (mirroring
-      # decide_waiver_move()) goes in decide.py once the roster-vs-injury
-      # logic is ready, then set_lineup() in browser_actions.py executes it.
-      - name: Decide and set lineup
+      - name: Decide lineup
         working-directory: scripts
         env:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
@@ -37,9 +34,22 @@ jobs:
           ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
           ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python decide.py --lineup > /tmp/decision.json
+
+      - name: Set lineup
+        working-directory: scripts
+        env:
           ESPN_STORAGE_STATE: ${{ secrets.ESPN_STORAGE_STATE }}
-          DRY_RUN: "true"
-        run: echo "Wire this up to decide_lineup() once that function exists."
+          ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
+          ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
+          DRY_RUN: "true"   # flip to "false" once you've watched a few dry runs
+        run: |
+          python - << 'PYEOF'
+          import json, browser_actions
+          d = json.load(open("/tmp/decision.json"))
+          for swap in d["swaps"]:
+              browser_actions.set_lineup(swap["start"], swap["sit"])
+          PYEOF
 
       - name: Commit updated log
         run: |
