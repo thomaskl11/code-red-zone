@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "timestamp": "2026-09-09T21:51:53.329001+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The top arbitrage signals are all QBs (Willis 34.9, Stroud 34.4, Darnold 24.3), but single-QB leagues make a second quarterback a luxury we explicitly don't spend on \u2014 Lamar Jackson is already locked in, so those gaps aren't exploitable here. The remaining free agents either have negative arbitrage scores, project to low point totals at positions already covered (K, WR depth), or don't clearly upgrade any roster spot worth touching. No real edge available this week.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  }
+]
