@@ -22,6 +22,7 @@ runtime, so the Action never needs to see your actual password.
 """
 import base64
 import os
+import re
 
 from playwright.sync_api import sync_playwright
 
@@ -65,11 +66,36 @@ def submit_waiver_claim(add_name: str, drop_name: str):
 
 
 def set_lineup(swap_in: str, swap_out: str):
+    """Confirmed live against the real roster page (2026-09-09): each row has
+    a "MOVE" button (aria-label "Select {name} to move"); clicking it turns
+    every eligible destination row's button into "HERE" (aria-label "Confirm
+    move of {name} to {slot name}" -- the slot name varies, so match loosely
+    on the leading "Confirm move of {name}" instead of the full label). The
+    swap applies immediately on the HERE click -- no separate Save step.
+    """
     if DRY_RUN:
         print(f"[DRY RUN] Would start {swap_in} over {swap_out}")
         return
-    # TODO -- same pattern as submit_waiver_claim, different page + selectors.
-    raise NotImplementedError("Fill in once we've confirmed the lineup page selectors.")
+
+    league_id = os.environ["ESPN_LEAGUE_ID"]
+    team_id = os.environ["ESPN_TEAM_ID"]
+    storage_state = _load_storage_state()
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(storage_state=storage_state)
+        page = context.new_page()
+        page.goto(
+            f"https://fantasy.espn.com/football/team?leagueId={league_id}&teamId={team_id}"
+        )
+
+        page.get_by_role("button", name=f"Select {swap_out} to move").click()
+        page.get_by_role(
+            "button", name=re.compile(f"^Confirm move of {re.escape(swap_in)} to")
+        ).click()
+
+        page.screenshot(path="/tmp/lineup_confirmation.png")
+        browser.close()
 
 
 def set_draft_queue(ordered_player_names: list):
