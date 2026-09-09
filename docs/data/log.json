@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "timestamp": "2026-09-09T22:39:40.946051+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The top arbitrage signals are all QBs (Malik Willis at 35.0, C.J. Stroud at 34.4), but we're in a single-QB league with Lamar Jackson locked in \u2014 a backup QB is a bench luxury we explicitly don't spend priority on. Below that, the gaps drop fast and land on kickers, low-projected WRs, and TEs we already have covered. No non-QB free agent clears the bar of being a genuine upgrade over what's on the roster.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  }
+]
