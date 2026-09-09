@@ -16,9 +16,25 @@ the authenticated session, and reuse it every run:
 
     playwright codegen --save-storage=espn_state.json https://fantasy.espn.com
 
-Then base64-encode espn_state.json and store the result as the
-ESPN_STORAGE_STATE GitHub secret. This script decodes it back to a file at
-runtime, so the Action never needs to see your actual password.
+Then TRIM it before storing -- a real codegen session dumps ~500KB+ of
+every cookie from every ad-tech domain you brushed past, plus full
+localStorage, and GitHub Actions secrets cap out at 48KB. Only the
+espn.com-domain cookies actually matter for auth; localStorage isn't
+needed at all:
+
+    import json
+    d = json.load(open("espn_state.json", encoding="utf-8"))
+    filtered = {"cookies": [c for c in d["cookies"] if "espn.com" in c["domain"]], "origins": []}
+    json.dump(filtered, open("espn_state_trimmed.json", "w"))
+
+Base64-encode THAT (should land around 15-20KB) and store the result as
+the ESPN_STORAGE_STATE GitHub secret. This script decodes it back to a
+file at runtime, so the Action never needs to see your actual password.
+
+One real limitation: the Disney-side auth cookie (dtcAuth) is short-lived
+(~1 week from generation, confirmed 2026-09-09), unlike SWID/espn_s2
+(~1 year). Expect to redo this whole capture-and-trim dance roughly
+weekly -- there's no way around a real login session eventually expiring.
 """
 import base64
 import os
