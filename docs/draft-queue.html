@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Code Red Zone — Draft Queue</title>
+<link rel="icon" type="image/jpeg" href="./logo.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -29,6 +30,8 @@
   .wrap { max-width: 920px; margin: 0 auto; padding: 0 0 60px; }
   .lights-strip { height: 9px; background: repeating-linear-gradient(90deg, var(--holly-red) 0 6px, transparent 6px 24px, var(--pine-light) 24px 30px, transparent 30px 48px, var(--floodlight) 48px 54px, transparent 54px 72px); opacity: 0.85; }
   header.identity { padding: 36px 24px 20px; border-bottom: 1px solid var(--yard-line); }
+  .identity-row { display: flex; align-items: center; gap: 16px; }
+  .logo-badge { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--floodlight); flex-shrink: 0; }
   .league-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--holly-red); margin: 0 0 8px; }
   .team-name { font-family: 'Anton', sans-serif; font-size: 42px; letter-spacing: 0.01em; margin: 0; line-height: 1; }
   nav.tabs { display: flex; gap: 18px; margin-top: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -83,8 +86,13 @@
 
   <div class="wrap">
     <header class="identity">
-      <p class="league-name">CSFFL</p>
-      <h1 class="team-name">Code Red Zone</h1>
+      <div class="identity-row">
+        <img class="logo-badge" src="./logo.jpeg" alt="Code Red Zone logo">
+        <div>
+          <p class="league-name">CSFFL</p>
+          <h1 class="team-name">Code Red Zone</h1>
+        </div>
+      </div>
       <nav class="tabs">
         <a href="./index.html">Season Log</a>
         <a href="./strategy.html">Strategy</a>
