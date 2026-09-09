@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-09T22:41:02.536466+00:00",
+    "kind": "lineup",
+    "headline": "Start Colston Loveland over Brock Bowers",
+    "reasoning": "Projected points are null across the board, so this comes down to injury status and market consensus as proxies. Bowers at DOUBTFUL is too risky to leave in a starting slot when Loveland \u2014 healthy, nearly universally started \u2014 is sitting on the bench. The Home Turf Clause gets a little bonus activation here too: Loveland is a Bear, and Chicago's on the favored list, but honestly the injury signal alone makes this call without needing the tiebreaker. Jonathon Brooks at QUESTIONABLE for the RB slot is worth watching, but no healthy RB on the bench projects clearly ahead of him, so hold there unless he's ruled out closer to kickoff.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-09-09T22:39:40.946051+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
