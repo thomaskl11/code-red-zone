@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-11T23:42:13.510843+00:00",
+    "kind": "lineup",
+    "headline": "Start Colston Loveland over Travis Kelce",
+    "reasoning": "The only real decision here is the TE slot: Bowers is OUT, so it's Kelce (ranked TE5, started 56%) versus Loveland (ranked TE9, started 98%). That percent-started gap is enormous \u2014 nearly 42 points wide \u2014 which is exactly the kind of disagreement Consensus Arbitrage is built to catch. The market has clearly moved toward Loveland as the better current play, and when the positional ranks are this close (one tier apart), the Home Turf Clause fires for the Chicago Bears to seal the call. Every other starter is active and unambiguously the right play.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-09-11T14:16:14.990964+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
