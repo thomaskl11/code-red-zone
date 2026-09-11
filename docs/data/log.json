@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-11T14:16:14.990964+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The top arbitrage gaps all belong to backup QBs \u2014 Malik Willis (35.8), C.J. Stroud (34.4), Sam Darnold (doubtful, 25.2) \u2014 and this is a single-QB league where Lamar Jackson is already locked in and protected. Spending waiver priority on a second QB is explicitly off the table per the operating rules, and nothing else on the free agent board clears a threshold worth burning priority on right now. The roster has real needs (Brock Bowers is OUT, TreVeyon Henderson is OUT), but no available free agent meaningfully addresses those holes at an underpriced value.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  },
+  {
     "timestamp": "2026-09-10T23:33:18.010551+00:00",
     "kind": "lineup",
     "headline": "Start Travis Kelce over Colston Loveland; Start Jacory Croskey-Merritt over Jonathon Brooks",
