@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-12T01:03:46.350552+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes -- nothing new since last check",
+    "reasoning": "Every rostered player's injury status is unchanged since the last check. Per strategy, a call doesn't get reopened without a new data point -- rank or ownership drift alone doesn't count.",
+    "meta": {
+      "swap_count": 0
+    }
+  },
+  {
     "timestamp": "2026-09-12T01:02:52.892252+00:00",
     "kind": "lineup",
     "headline": "Start Travis Kelce over Colston Loveland",
