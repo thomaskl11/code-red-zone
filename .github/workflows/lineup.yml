@@ -66,6 +66,6 @@ jobs:
         run: |
           git config user.name "code-red-zone-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add docs/data/log.json
+          git add docs/data/log.json scripts/lineup_state.json
           git commit -m "Lineup check" || echo "Nothing to commit"
           git push

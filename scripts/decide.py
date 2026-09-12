@@ -23,6 +23,7 @@ DRAFT_QUEUE_PATH = os.path.join(os.path.dirname(__file__), "..", "docs", "data",
 FANTASYPROS_PATH = os.path.join(os.path.dirname(__file__), "fantasypros_ecr.json")
 YAHOO_ADP_PATH = os.path.join(os.path.dirname(__file__), "yahoo_adp.json")
 PROTECTED_PLAYERS_PATH = os.path.join(os.path.dirname(__file__), "protected_players.json")
+LINEUP_STATE_PATH = os.path.join(os.path.dirname(__file__), "lineup_state.json")
 
 FENCE_RE = re.compile(r"^```(?:json)?\s*\n(.*)\n```$", re.DOTALL)
 
@@ -159,15 +160,56 @@ def decide_waiver_move():
     return decision, entry
 
 
+def _load_last_lineup_state():
+    if not os.path.exists(LINEUP_STATE_PATH):
+        return {}
+    with open(LINEUP_STATE_PATH) as f:
+        return json.load(f)
+
+
+def _save_lineup_state(roster):
+    state = {p["name"]: p["injury_status"] for p in roster}
+    with open(LINEUP_STATE_PATH, "w") as f:
+        json.dump(state, f, indent=2)
+
+
 def decide_lineup():
     """Pre-kickoff lineup check. Lineup Protection is off in this league and
     locks are per-player at kickoff, so this needs to actually catch injury
     news and bench/starter value gaps before each wave of games, not just
     once a week.
+
+    strategy.md already has a rule for this -- "no decision gets reversed
+    mid-week without a new data point" -- but nothing enforced it. Every
+    check was re-reasoning the whole roster from scratch with no memory of
+    the last call, so day-to-day noise in rank/ownership (not real news)
+    was enough to flip a close call back and forth. Found in the wild:
+    Kelce vs. Loveland flipped between checks while both stayed ACTIVE the
+    entire time -- nothing real changed, just noise. Now it only reopens
+    the question for players whose injury_status actually changed.
     """
     league = get_league()
     team = get_my_team(league)
     roster = get_roster_snapshot(team)
+
+    last_state = _load_last_lineup_state()
+    current_state = {p["name"]: p["injury_status"] for p in roster}
+    changed = [name for name, status in current_state.items() if last_state.get(name) != status]
+
+    if last_state and not changed:
+        reasoning = (
+            "Every rostered player's injury status is unchanged since the last check. "
+            "Per strategy, a call doesn't get reopened without a new data point -- "
+            "rank or ownership drift alone doesn't count."
+        )
+        entry = append_entry(
+            kind="lineup",
+            headline="No lineup changes -- nothing new since last check",
+            reasoning=reasoning,
+            meta={"swap_count": 0},
+        )
+        _save_lineup_state(roster)
+        return {"swaps": [], "reasoning": reasoning}, entry
 
     client = Anthropic()  # reads ANTHROPIC_API_KEY from the environment
 
@@ -179,15 +221,22 @@ def decide_lineup():
         "bench player should start over a current starter at an eligible "
         "slot. Only recommend a swap when there's a real edge: the current "
         "starter is questionable/doubtful/out, or a bench player at an "
-        "eligible position clearly out-projects them. Respond with ONLY "
-        "valid JSON, no other text: "
+        "eligible position clearly out-projects them. Players whose "
+        "injury_status changed since the last check are listed separately "
+        "below -- focus there first. Don't reopen a call you already made "
+        "this week for a player whose status hasn't changed; small "
+        "rank/ownership movement alone is not a new data point. Respond "
+        "with ONLY valid JSON, no other text: "
         '{"swaps": [{"start": "player name", "sit": "player name", '
         '"reason": "one line"}], '
         '"reasoning": "2-3 sentences overall, in team voice"}'
         ' If no changes are needed, "swaps" must be an empty list.'
     )
 
-    user_payload = json.dumps({"roster": roster})
+    user_payload = json.dumps({
+        "roster": roster,
+        "changed_since_last_check": changed if last_state else "first check this week, no prior state",
+    })
 
     response = client.messages.create(
         model="claude-sonnet-4-6",
@@ -197,6 +246,7 @@ def decide_lineup():
     )
 
     decision = parse_json_response(response.content[0].text)
+    _save_lineup_state(roster)
 
     if decision["swaps"]:
         headline = "; ".join(f'Start {s["start"]} over {s["sit"]}' for s in decision["swaps"])
