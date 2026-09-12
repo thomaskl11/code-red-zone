@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-12T01:18:51.358621+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The top arbitrage signals are all QBs (Willis at 35.8, Stroud at 34.4), but this is a single-QB league with Lamar Jackson already locked in \u2014 adding a backup QB burns waiver priority for zero lineup value, and the strategy doc explicitly flags that as a mistake. Nothing else on the free agent list clears the bar: the kickers and D/STs have modest or negative gaps, and the non-QB positional needs (TreVeyon and Bowers both out) don't have a matching free agent with a meaningful signal. Spending priority on a handcuff-level move when better talent will surface later isn't the play.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  },
+  {
     "timestamp": "2026-09-12T01:03:46.350552+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",

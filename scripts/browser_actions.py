@@ -54,6 +54,18 @@ def _load_storage_state():
 
 
 def submit_waiver_claim(add_name: str, drop_name: str):
+    """Confirmed live against the real Players > Add page (2026-09-12). This
+    league uses waiver priority, not instant free-agent adds, so the button
+    reads "Add" for true free agents and "Claim" for players on waivers --
+    matched here with either verb since decide.py doesn't know in advance
+    which one it'll be. The flow: search -> click Add/Claim -> a panel opens
+    where you must pick a player to conditionally drop -> Continue -> a
+    final Confirm Transaction modal. The Confirm button's own aria-label
+    only ever says "add" (even for a Claim) and never names the add target,
+    just the drop -- matched on that basis. This submits a conditional
+    waiver claim, not an instant transaction; ESPN processes it later
+    according to this league's waiver priority.
+    """
     if DRY_RUN:
         print(f"[DRY RUN] Would submit waiver: add {add_name}, drop {drop_name}")
         return
@@ -67,15 +79,18 @@ def submit_waiver_claim(add_name: str, drop_name: str):
         context = browser.new_context(storage_state=storage_state)
         page = context.new_page()
         page.goto(
-            f"https://fantasy.espn.com/football/team?leagueId={league_id}&teamId={team_id}"
+            f"https://fantasy.espn.com/football/players/add?leagueId={league_id}&teamId={team_id}"
         )
 
-        # TODO -- replace every line below with real selectors from your league.
-        page.get_by_placeholder("Search Players").fill(add_name)
-        page.get_by_text(add_name).first.click()
-        page.get_by_role("button", name="Add").click()
-        page.get_by_text(drop_name).first.click()
-        page.get_by_role("button", name="Submit").click()
+        page.get_by_placeholder("Player Name").fill(add_name)
+        page.get_by_role(
+            "button", name=re.compile(f"^(Add|Claim) {re.escape(add_name)}")
+        ).click()
+        page.get_by_role("button", name=f"Drop Player {drop_name}").click()
+        page.get_by_role("button", name="Continue").click()
+        page.get_by_role(
+            "button", name=re.compile(f"Confirm add\\s+and drop {re.escape(drop_name)}")
+        ).click()
 
         page.screenshot(path="/tmp/waiver_confirmation.png")
         browser.close()

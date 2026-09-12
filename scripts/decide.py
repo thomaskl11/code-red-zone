@@ -80,10 +80,39 @@ def parse_json_response(text):
     return json.loads(text)
 
 
+def _has_pending_waiver_claim(league, team):
+    """True if this team has any WAIVER transaction that isn't the one
+    confirmed-terminal status. Deliberately conservative: an unrecognized
+    status (including a real pending one we haven't seen an example of yet)
+    blocks a new claim rather than risking two claims stacked at once,
+    which would force deciding a priority order between our own claims --
+    exactly the situation we're avoiding.
+    """
+    for t in league.transactions(types={"WAIVER"}):
+        if t.team.team_name == team.team_name and t.status != "EXECUTED":
+            return True
+    return False
+
+
 def decide_waiver_move():
     league = get_league()
     team = get_my_team(league)
     roster = get_roster_snapshot(team)
+
+    if _has_pending_waiver_claim(league, team):
+        entry = append_entry(
+            kind="waiver",
+            headline="Skipped -- a previous claim is still pending",
+            reasoning=(
+                "At least one of our WAIVER transactions isn't showing as EXECUTED yet. "
+                "Holding off on a new claim rather than risk stacking two at once, which "
+                "would mean deciding a priority order between our own pending claims -- "
+                "not something we want this making up on its own."
+            ),
+            meta={"rule_applied": "pending_claim_hold"},
+        )
+        return {"action": "no_move", "add": None, "drop": None}, entry
+
     free_agents = get_free_agents(league, size=60)
     ranked_fas = rank_by_arbitrage(free_agents)[:15]
     protected = load_protected_players()
