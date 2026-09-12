@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-12T01:02:52.892252+00:00",
+    "kind": "lineup",
+    "headline": "Start Travis Kelce over Colston Loveland",
+    "reasoning": "First check of the week, so everything's on the table. Brock Bowers and TreVeyon Henderson are both OUT \u2014 nothing to do there since neither was starting. The one real call is at TE: Kelce ranks TE5 and Loveland TE9, and with projected points unavailable for both, that rank gap is the signal we've got \u2014 Arbitrage fires on the disagreement between 'who's starting' and 'who's ranked higher.' Home Turf (Loveland/CHI, #4 on the grid) is noted but doesn't override a genuine edge. Everything else in the lineup \u2014 Nacua, Barkley, Jackson, Waddle \u2014 is active and starting-caliber; no moves needed there.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-09-11T23:42:13.510843+00:00",
     "kind": "lineup",
     "headline": "Start Colston Loveland over Travis Kelce",
