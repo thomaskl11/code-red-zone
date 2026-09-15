@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-15T14:44:09.244458+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The top arbitrage signals are all QBs \u2014 C.J. Stroud leads at 40.9, Malik Willis at 35.3, Daniel Jones at 26.3 \u2014 but this is a single-QB league where a second quarterback is a bench luxury we explicitly don't pay for, so none of those gaps translate to real roster value. Everything else on the board (D/ST, kickers, depth RBs) carries arbitrage scores too small to justify burning waiver priority on, and our roster has no obvious holes screaming for a fill this week.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  },
+  {
     "timestamp": "2026-09-14T01:20:12.139351+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
