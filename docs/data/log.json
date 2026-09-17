@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-17T23:48:02.773939+00:00",
+    "kind": "lineup",
+    "headline": "Start Colston Loveland over Jordan Mason",
+    "reasoning": "Three players flagged since last check: Jordan Mason is on IR \u2014 that's a hard stop, he can't play, and the flex slot needs a body. Brock Bowers is QUESTIONABLE, but he's currently benched and Colston Loveland (Bears TE, ACTIVE) slots cleanly into the RB/WR/TE flex as a like-for-like replacement \u2014 and hey, Home Turf Clause appreciates the Chicago connection even if it didn't need to fire here. Bowers' questionable tag and TreVeyon Henderson's low start rate (13.7%) don't move the needle enough to warrant further action; no new data point, no reopened call.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-09-15T14:44:09.244458+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
