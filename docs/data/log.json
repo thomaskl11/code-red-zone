@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-18T14:20:12.182845+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The top arbitrage gaps this week are all QBs \u2014 C.J. Stroud at 39.0, Bryce Young at 33.7, Daniel Jones at 26.4 \u2014 but we're running a single-QB league with Lamar Jackson locked in as a protected starter, so a second QB is dead roster weight we can't afford. Everything below the QB pile (D/ST, kickers, negative-gap RBs and WRs) shows no meaningful underpricing worth spending waiver priority on. Jordan Mason on IR is a real roster problem, but none of the available RBs show a positive arbitrage gap worth pulling the trigger \u2014 no signal, no move.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  },
+  {
     "timestamp": "2026-09-17T23:48:02.773939+00:00",
     "kind": "lineup",
     "headline": "Start Colston Loveland over Jordan Mason",
