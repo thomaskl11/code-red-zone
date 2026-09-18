@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-18T23:47:23.252656+00:00",
+    "kind": "lineup",
+    "headline": "Start Luther Burden III over Puka Nacua",
+    "reasoning": "Two status changes flagged: Nacua (QUESTIONABLE) and Bowers (DOUBTFUL). Bowers is already on the bench so no action needed there \u2014 a doubtful TE sitting is just staying put. Nacua's question mark with no projection available is the real call: Luther Burden III is ACTIVE, ranked WR50 to Nacua's WR33, and in a non-PPR league where target volume is discounted, that gap narrows further. Add the CHI Bears Home Turf Clause firing as tiebreaker on what's genuinely close, and Burden III gets the nod.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-09-18T14:20:12.182845+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
