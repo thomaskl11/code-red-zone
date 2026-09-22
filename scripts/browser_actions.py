@@ -98,9 +98,14 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
         )
 
         page.get_by_placeholder("Player Name").fill(add_name)
-        add_btn = page.get_by_role("button", name=f"Add {add_name}")
-        claim_btn = page.get_by_role("button", name=f"Claim {add_name}")
-        (add_btn if add_btn.count() else claim_btn).click()
+        # count() doesn't wait for the live-filtered list to actually
+        # render after fill() -- caught live 2026-09-22, it raced ahead and
+        # guessed wrong. click()'s real auto-wait (with a bounded timeout on
+        # the first attempt) is what actually needs to wait for the row.
+        try:
+            page.get_by_role("button", name=f"Add {add_name}").click(timeout=8000)
+        except Exception:
+            page.get_by_role("button", name=f"Claim {add_name}").click()
 
         if drop_name:
             page.get_by_role("button", name=f"Drop Player {drop_name}").click()
