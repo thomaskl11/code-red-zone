@@ -1,5 +1,23 @@
 [
   {
+    "timestamp": "2026-09-22T17:51:32.659880+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes -- nothing new since last check",
+    "reasoning": "Every rostered player's injury status is unchanged since the last check. Per strategy, a call doesn't get reopened without a new data point -- rank or ownership drift alone doesn't count.",
+    "meta": {
+      "swap_count": 0
+    }
+  },
+  {
+    "timestamp": "2026-09-22T17:50:47.683706+00:00",
+    "kind": "lineup",
+    "headline": "Start TreVeyon Henderson over Saquon Barkley",
+    "reasoning": "The four changed statuses are the focus: Nacua (OUT) and Bowers (OUT) are already bencheed so no action needed there, and Brooks (DOUBTFUL) stays on the bench where he belongs. The real call is Barkley \u2014 QUESTIONABLE with no projection is a red flag we can't ignore, and Henderson is active and ranked higher (RB26 vs. Barkley's current RB38 shell) with a clear path to carries in New England's backfield. No projected points on either side means we lean on the positional rank gap and the injury signal, which together make this a real edge, not a coin flip. If Barkley gets a pregame active designation before his game locks, swap him back in \u2014 that's a new data point.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-09-22T14:30:27.765204+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",

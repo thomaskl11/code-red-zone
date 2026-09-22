@@ -25,7 +25,7 @@ YAHOO_ADP_PATH = os.path.join(os.path.dirname(__file__), "yahoo_adp.json")
 PROTECTED_PLAYERS_PATH = os.path.join(os.path.dirname(__file__), "protected_players.json")
 LINEUP_STATE_PATH = os.path.join(os.path.dirname(__file__), "lineup_state.json")
 
-FENCE_RE = re.compile(r"^```(?:json)?\s*\n(.*)\n```$", re.DOTALL)
+FENCE_RE = re.compile(r"```(?:json)?\s*\n(.*?)\n```", re.DOTALL)
 
 
 def load_strategy():
@@ -71,13 +71,34 @@ def load_protected_players():
 
 
 def parse_json_response(text):
-    """Claude reliably wraps JSON in a ```json fence despite being told not
-    to -- strip it before parsing instead of fighting the model on it."""
+    """Claude doesn't reliably respect "ONLY valid JSON, no other text" --
+    sometimes a ```json fence with nothing else, sometimes plain JSON,
+    sometimes (caught live 2026-09-22, on a genuinely close call) a chunk
+    of prose reasoning *before* a properly fenced block. Try each in order
+    of how permissive it is, instead of assuming any one shape.
+    """
     text = text.strip()
-    match = FENCE_RE.match(text)
+
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    match = FENCE_RE.search(text)
     if match:
-        text = match.group(1)
-    return json.loads(text)
+        try:
+            return json.loads(match.group(1))
+        except json.JSONDecodeError:
+            pass
+
+    # Last resort: something got embedded in surrounding prose with no
+    # fence at all -- grab from the first { to the last } and hope it's
+    # balanced. Raises naturally if this still isn't valid JSON.
+    start, end = text.find("{"), text.rfind("}")
+    if start != -1 and end > start:
+        return json.loads(text[start:end + 1])
+
+    raise ValueError(f"Could not find JSON in model response: {text[:200]!r}")
 
 
 def _has_pending_waiver_claim(league, team):
