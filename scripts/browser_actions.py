@@ -38,7 +38,6 @@ weekly -- there's no way around a real login session eventually expiring.
 """
 import base64
 import os
-import re
 
 from playwright.sync_api import sync_playwright
 
@@ -73,6 +72,14 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
     the "and drop X" clause entirely when there's nothing to drop. Neither
     of those has actually been seen live. Confirm against the real page
     before trusting this branch with DRY_RUN off.
+
+    Uses plain-string substring matching throughout, not regex, on purpose:
+    caught live 2026-09-22 trying to add "Vikings D/ST" -- the "/" broke
+    Playwright's serialization of a Python regex into a JS regex literal on
+    the browser side (unescaped "/" prematurely closes the literal). D/ST
+    names all contain that character, so this isn't an edge case. Plain
+    strings sidestep the whole class of special-character bugs, not just
+    this one.
     """
     if DRY_RUN:
         print(f"[DRY RUN] Would submit waiver: add {add_name}, drop {drop_name}")
@@ -91,21 +98,15 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
         )
 
         page.get_by_placeholder("Player Name").fill(add_name)
-        page.get_by_role(
-            "button", name=re.compile(f"^(Add|Claim) {re.escape(add_name)}")
-        ).click()
+        add_btn = page.get_by_role("button", name=f"Add {add_name}")
+        claim_btn = page.get_by_role("button", name=f"Claim {add_name}")
+        (add_btn if add_btn.count() else claim_btn).click()
 
         if drop_name:
             page.get_by_role("button", name=f"Drop Player {drop_name}").click()
 
         page.get_by_role("button", name="Continue").click()
-
-        confirm_pattern = (
-            re.compile(f"Confirm add\\s+and drop {re.escape(drop_name)}")
-            if drop_name
-            else re.compile("^Confirm add")
-        )
-        page.get_by_role("button", name=confirm_pattern).click()
+        page.get_by_role("button", name="Confirm add").click()
 
         page.screenshot(path="/tmp/waiver_confirmation.png")
         browser.close()
@@ -174,9 +175,7 @@ def set_lineup(swap_in: str, swap_out: str):
         )
 
         page.get_by_role("button", name=f"Select {swap_out} to move").click()
-        page.get_by_role(
-            "button", name=re.compile(f"^Confirm move of {re.escape(swap_in)} to")
-        ).click()
+        page.get_by_role("button", name=f"Confirm move of {swap_in}").click()
 
         page.screenshot(path="/tmp/lineup_confirmation.png")
         browser.close()
