@@ -185,9 +185,15 @@ def decide_waiver_move():
         "and ir_slot_open is true, prefer moving them to IR (set ir_move to "
         "their name) over dropping a rosterable player outright -- it "
         "accomplishes the same roster-space goal without permanently "
-        "losing them. Only propose an actual drop when no such free option "
-        "exists, or when dropping is clearly correct regardless. Respond "
-        "with ONLY valid JSON, no other text: "
+        "losing them. Separately, open_roster_spots tells you how many "
+        "non-IR roster spots are already sitting empty right now, for any "
+        "reason (e.g. a past IR move that already happened) -- not just "
+        "one you're making this turn. If open_roster_spots is greater than "
+        "0, an add doesn't need a drop at all: leave \"drop\" null. Only "
+        "propose an actual drop when there's no open spot (via an existing "
+        "gap or a fresh ir_move) and no such free option exists, or when "
+        "dropping is clearly correct regardless. Respond with ONLY valid "
+        "JSON, no other text: "
         '{"action": "add_drop" or "no_move", '
         '"add": "player name or null", "drop": "player name or null", '
         '"ir_move": "player name or null -- set instead of drop when '
@@ -202,9 +208,19 @@ def decide_waiver_move():
 
     ir_slot_open = not any(p["lineup_slot"] == "IR" for p in roster)
 
+    # Non-IR roster size for this league is 14 (1 QB/2 RB/2 WR/1 TE/1 FLEX/
+    # 1 D-ST/1 K/5 BE); IR is a bonus 15th slot on top of that, not counted
+    # in the 14. A player moving to IR (this run or a past one) vacates
+    # their old non-IR spot, so the roster can be short of 14 non-IR
+    # players even though nobody was just dropped for it.
+    NON_IR_ROSTER_SIZE = 14
+    non_ir_count = sum(1 for p in roster if p["lineup_slot"] != "IR")
+    open_roster_spots = max(0, NON_IR_ROSTER_SIZE - non_ir_count)
+
     user_payload = json.dumps({
         "current_roster": roster_with_protection,
         "ir_slot_open": ir_slot_open,
+        "open_roster_spots": open_roster_spots,
         "top_free_agents_by_position": [
             {**p, "arbitrage_gap": round(gap, 1)} for p, gap in ranked_fas
         ],
