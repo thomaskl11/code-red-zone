@@ -5,21 +5,12 @@ strategy (Consensus Arbitrage + the Home Turf Clause) -- every decision
 script reads it before making a call, and the weekly retro is the only
 thing allowed to edit it.
 
-## What's actually working vs. what's a skeleton
-
-**Working, testable locally right now:**
-- `scripts/espn_client.py` -- reads your real roster and free agents
-- `scripts/rankings.py` -- computes the arbitrage signal
-- `scripts/decide.py` -- sends strategy + data to Claude, gets a decision back, logs it
-- `docs/index.html` -- reads `docs/data/log.json` and renders the dashboard
-
-**Skeleton, needs your input to finish:**
-- `scripts/browser_actions.py` -- the actual ESPN clicks. The selectors are
-  placeholders because I can't see your league's live page. Either fill
-  them in yourself (inspect element on the button you need) or bring the
-  page HTML to a follow-up session and we'll write them together.
-- `lineup.yml` / `draft_queue.yml` decision logic -- same pattern as
-  `decide_waiver_move()`, not yet written since it's the same shape of work.
+**This project is fully live now, not just set up.** This file is kept as
+historical setup instructions (useful if standing this up again from
+scratch on a new machine); it is no longer the current status. See
+`HANDOFF.md` for what's actually true today -- what's live, what's still
+unverified, and real bugs already found and fixed that are easy to
+reintroduce if `browser_actions.py` gets touched again.
 
 ## Setup, in order
 
@@ -62,7 +53,8 @@ thing allowed to edit it.
 8. **Leave `DRY_RUN: "true"` in the workflows** for the first couple of
    weeks. You'll see exactly what it would have done in the Actions logs
    without anything actually happening on ESPN. Flip to `"false"` once
-   you trust it.
+   you trust it. (Both workflows are already live with `DRY_RUN: "false"`
+   in this repo -- this step is historical, not something left to do.)
 
 ## Fallback
 
