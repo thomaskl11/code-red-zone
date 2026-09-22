@@ -97,33 +97,22 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
             f"https://fantasy.espn.com/football/players/add?leagueId={league_id}&teamId={team_id}"
         )
 
-        # Debug capture (2026-09-22) showed fill() not sticking -- the
-        # search box came back completely empty on screenshot, list still
-        # showing unfiltered defaults, meaning the target player's row (and
-        # therefore its Add/Claim button) never rendered at all. Almost
-        # certainly a live-results re-render remounting/resetting the input
-        # shortly after fill(). Verify the value actually stuck and retry
-        # instead of trusting a single fill() call.
+        # Two-round debug capture (2026-09-22) found the real issue: fill()
+        # does stick (verified via input_value()), but the results list
+        # doesn't filter from typing alone -- it's not a live-as-you-type
+        # search, it needs an actual submit. Pressing Enter is the normal
+        # way a real user would submit a text search box like this.
         search_box = page.get_by_placeholder("Player Name")
         search_box.click()
         search_box.fill(add_name)
-        stuck = False
         for _ in range(6):
             if search_box.input_value() == add_name:
-                stuck = True
                 break
             page.wait_for_timeout(500)
             search_box.fill(add_name)
-
-        # DEBUG round 2 -- fill()-sticks question answered, capturing the
-        # state right before the click attempt to see what's actually
-        # rendered once the search has (or hasn't) taken effect.
-        page.wait_for_timeout(1000)
-        page.screenshot(path="/tmp/debug_search.png", full_page=True)
-        with open("/tmp/debug_search.html", "w", encoding="utf-8") as f:
-            f.write(page.content())
-        with open("/tmp/debug_search.txt", "w", encoding="utf-8") as f:
-            f.write(f"stuck={stuck} input_value={search_box.input_value()!r}\n")
+        search_box.press("Enter")
+        page.wait_for_timeout(1500)  # DEBUG round 3 -- confirm Enter actually filters
+        page.screenshot(path="/tmp/debug_search.png")
 
         try:
             page.get_by_role("button", name=f"Add {add_name}").click(timeout=8000)
