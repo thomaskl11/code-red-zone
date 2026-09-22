@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-22T18:17:47.542806+00:00",
+    "kind": "waiver",
+    "headline": "Added Vikings D/ST, dropped Jonathon Brooks",
+    "reasoning": "The IR slot is full, so no free roster move is available. Ravens D/ST is the current starter but ranks 17th at the position while Vikings D/ST ranks 6th with a 19.2 arbitrage gap \u2014 a clear upgrade signal at a real position of need. Jonathon Brooks is DOUBTFUL, barely started (4.1%), and with Saquon Barkley plus Jacory Croskey-Merritt and TreVeyon Henderson on the roster, RB depth behind a healthy Barkley is adequate enough to absorb the loss.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-09-22T18:15:51.044017+00:00",
     "kind": "waiver",
     "headline": "MOVE COULD NOT BE MADE",
