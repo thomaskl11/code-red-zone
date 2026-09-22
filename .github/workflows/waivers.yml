@@ -102,6 +102,17 @@ jobs:
               sys.exit(1)
           PYEOF
 
+      # TEMPORARY debug capture -- remove once the search-box issue is found.
+      - name: Upload debug capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-search
+          path: |
+            /tmp/debug_search.png
+            /tmp/debug_search.html
+          if-no-files-found: ignore
+
       # if: always() so a failed execution above still gets its "MOVE COULD
       # NOT BE MADE" entry published to the public dashboard, not just left
       # sitting invisibly in a red Actions run nobody but Claude checks.

@@ -98,6 +98,10 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
         )
 
         page.get_by_placeholder("Player Name").fill(add_name)
+        page.wait_for_timeout(2000)  # DEBUG: let any live-filter settle before capturing
+        page.screenshot(path="/tmp/debug_search.png")
+        with open("/tmp/debug_search.html", "w", encoding="utf-8") as f:
+            f.write(page.content())
         # count() doesn't wait for the live-filtered list to actually
         # render after fill() -- caught live 2026-09-22, it raced ahead and
         # guessed wrong. click()'s real auto-wait (with a bounded timeout on
