@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-09-22T18:15:51.044017+00:00",
+    "kind": "waiver",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to add Vikings D/ST, dropping Jonathon Brooks, but the automation failed: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Claim Vikings D/ST\")\n. Nothing changed on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_add": "Vikings D/ST",
+      "attempted_drop": "Jonathon Brooks"
+    }
+  },
+  {
+    "timestamp": "2026-09-22T18:15:05.860452+00:00",
+    "kind": "waiver",
+    "headline": "Added Vikings D/ST, dropped Jonathon Brooks",
+    "reasoning": "The roster has a real need here: Ravens D/ST is ranked 17th at ESP while Vikings D/ST sits 6th with a healthy arbitrage gap of 19.2 \u2014 that's a meaningful signal that the market is sleeping on Minnesota's unit. Meanwhile, Jonathon Brooks is DOUBTFUL, ranks 50th at his position, and has virtually no start rate (4.1%), making him the cleanest drop on the bench. The RB depth behind him is covered by Jacory Croskey-Merritt and TreVeyon Henderson, so losing Brooks doesn't create a new hole.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-09-22T18:12:52.484393+00:00",
     "kind": "waiver",
     "headline": "MOVE COULD NOT BE MADE",
