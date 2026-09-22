@@ -111,8 +111,6 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
             page.wait_for_timeout(500)
             search_box.fill(add_name)
         search_box.press("Enter")
-        page.wait_for_timeout(1500)  # DEBUG round 3 -- confirm Enter actually filters
-        page.screenshot(path="/tmp/debug_search.png")
 
         try:
             page.get_by_role("button", name=f"Add {add_name}").click(timeout=8000)
