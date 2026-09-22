@@ -97,15 +97,22 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
             f"https://fantasy.espn.com/football/players/add?leagueId={league_id}&teamId={team_id}"
         )
 
-        page.get_by_placeholder("Player Name").fill(add_name)
-        page.wait_for_timeout(2000)  # DEBUG: let any live-filter settle before capturing
-        page.screenshot(path="/tmp/debug_search.png")
-        with open("/tmp/debug_search.html", "w", encoding="utf-8") as f:
-            f.write(page.content())
-        # count() doesn't wait for the live-filtered list to actually
-        # render after fill() -- caught live 2026-09-22, it raced ahead and
-        # guessed wrong. click()'s real auto-wait (with a bounded timeout on
-        # the first attempt) is what actually needs to wait for the row.
+        # Debug capture (2026-09-22) showed fill() not sticking -- the
+        # search box came back completely empty on screenshot, list still
+        # showing unfiltered defaults, meaning the target player's row (and
+        # therefore its Add/Claim button) never rendered at all. Almost
+        # certainly a live-results re-render remounting/resetting the input
+        # shortly after fill(). Verify the value actually stuck and retry
+        # instead of trusting a single fill() call.
+        search_box = page.get_by_placeholder("Player Name")
+        search_box.click()
+        search_box.fill(add_name)
+        for _ in range(6):
+            if search_box.input_value() == add_name:
+                break
+            page.wait_for_timeout(500)
+            search_box.fill(add_name)
+
         try:
             page.get_by_role("button", name=f"Add {add_name}").click(timeout=8000)
         except Exception:
