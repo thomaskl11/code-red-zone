@@ -112,17 +112,41 @@ def submit_waiver_claim(add_name: str, drop_name: str = None):
 
 
 def move_player_to_ir(player_name: str):
-    """*** STUB, NOT VERIFIED *** -- frees a roster spot by moving an
-    INJURY_RESERVE player into the IR slot instead of dropping them. Same
-    process as the others: open the roster page, find the real control
-    (likely a MOVE/HERE pair like set_lineup(), possibly gated to only
-    offer IR-eligible players as valid destinations), Inspect it, and wire
-    real selectors here.
+    """Confirmed live against the real roster page (2026-09-22). Separate
+    mechanism from set_lineup()'s MOVE/HERE -- there's a dedicated "IR"
+    toolbar button (next to Add/Drop, identified by the attribute
+    data-myteam-mode="manageir" rather than its visible text, since "IR" as
+    plain text also appears elsewhere on the page as the slot label) that
+    opens a "Manage IR" panel. In that panel, each IR-eligible bench player
+    has a "TO IR" button (aria-label "{name} to Injured Reserve"); clicking
+    it applies immediately, no separate confirm step, same as MOVE/HERE.
+
+    Note ESPN's own "IR Eligible" list is broader than we actually want --
+    it includes anyone merely OUT this week, not just true INJURY_RESERVE
+    players. That filtering already happens in decide.py before this
+    function is ever called; this function trusts whatever name it's given.
     """
     if DRY_RUN:
         print(f"[DRY RUN] Would move {player_name} to IR")
         return
-    raise NotImplementedError("Fill in once we've confirmed the IR-slot page selectors.")
+
+    league_id = os.environ["ESPN_LEAGUE_ID"]
+    team_id = os.environ["ESPN_TEAM_ID"]
+    storage_state = _load_storage_state()
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(storage_state=storage_state)
+        page = context.new_page()
+        page.goto(
+            f"https://fantasy.espn.com/football/team?leagueId={league_id}&teamId={team_id}"
+        )
+
+        page.locator('[data-myteam-mode="manageir"]').click()
+        page.get_by_role("button", name=f"{player_name} to Injured Reserve").click()
+
+        page.screenshot(path="/tmp/ir_confirmation.png")
+        browser.close()
 
 
 def set_lineup(swap_in: str, swap_out: str):
