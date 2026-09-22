@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-22T14:30:27.765204+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The top free agents by arbitrage gap are all QBs \u2014 and in a single-QB league, a second quarterback is a roster luxury we can't afford when Lamar Jackson is locked in as a protected starter. Every non-QB option on the waiver wire shows arbitrage gaps near zero or negative, meaning the market has already priced them fairly (or over-priced them). Spending waiver priority on a player with no real edge isn't a move, it's just noise.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  },
+  {
     "timestamp": "2026-09-20T14:37:36.459185+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
