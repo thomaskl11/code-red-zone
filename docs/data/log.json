@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-09-22T18:12:52.484393+00:00",
+    "kind": "waiver",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to add Vikings D/ST, dropping Jonathon Brooks, but the automation failed: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Claim Vikings D/ST\")\n. Nothing changed on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_add": "Vikings D/ST",
+      "attempted_drop": "Jonathon Brooks"
+    }
+  },
+  {
+    "timestamp": "2026-09-22T18:12:09.988193+00:00",
+    "kind": "waiver",
+    "headline": "Added Vikings D/ST, dropped Jonathon Brooks",
+    "reasoning": "Real position of need here is D/ST: Ravens D/ST is ranked 17th and the arbitrage gap on Vikings D/ST (ranked 6th, gap of 19.2) represents a meaningful upgrade at a genuinely thin spot. Brooks is DOUBTFUL, barely started (4.1%), and with a healthy RB corps behind Barkley and Croskey-Merritt he's the cleanest drop on the roster \u2014 no protected flag, no real upside this week. QB has the biggest raw gaps but Lamar is locked in and single-QB rules mean a backup is dead weight; D/ST is the real need and Vikings are the right answer.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-09-22T18:09:36.777558+00:00",
     "kind": "waiver",
     "headline": "MOVE COULD NOT BE MADE",
