@@ -111,6 +111,7 @@ jobs:
           path: |
             /tmp/debug_search.png
             /tmp/debug_search.html
+            /tmp/debug_search.txt
           if-no-files-found: ignore
 
       # if: always() so a failed execution above still gets its "MOVE COULD
