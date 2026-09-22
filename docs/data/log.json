@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-09-22T18:01:06.303469+00:00",
+    "kind": "waiver",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to add Vikings D/ST, dropping Jonathon Brooks, but the automation failed: Locator.click: InvalidSelectorError: Error while parsing selector `button[name=/^(Add|Claim) Vikings\\ D/ST/]` - unexpected symbol \"S\" at position 37 during parsing attribute value\n    at syntaxError (<anonymous>:2048:11)\n    at readAttribute (<anonymous>:2180:7)\n    at parseAttributeSelector (<anonymous>:2193:28)\n    at Object.queryAll (<anonymous>:5430:22)\n    at InjectedScript._queryEngineAll (<anonymous>:7059:49)\n    at InjectedScript.querySelectorAll (<anonymous>:7046:30)\n    at eval (eval at evaluate (:311:30), <anonymous>:2:42)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\nCall log:\n  - waiting for internal:role=button[name=/^(Add|Claim) Vikings\\ D/ST/]\n. Nothing changed on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_add": "Vikings D/ST",
+      "attempted_drop": "Jonathon Brooks"
+    }
+  },
+  {
+    "timestamp": "2026-09-22T18:01:03.121026+00:00",
+    "kind": "waiver",
+    "headline": "Added Vikings D/ST, dropped Jonathon Brooks",
+    "reasoning": "The roster has two real soft spots: Jonathon Brooks is DOUBTFUL and barely starting anywhere (4% start rate), making him a near-dead bench spot, and Ravens D/ST is ranked 17th at the position \u2014 serviceable but not locked in. Vikings D/ST is the top available D/ST by arbitrage gap (19.2), ranked 6th by ESPN while owned by only 11% of leagues \u2014 that's a genuine consensus disagreement worth acting on. Brooks is the cleanest drop: DOUBTFUL status, low ownership relevance, and no protected flag.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-09-22T17:58:26.205789+00:00",
     "kind": "waiver",
     "headline": "MOVE COULD NOT BE MADE",
