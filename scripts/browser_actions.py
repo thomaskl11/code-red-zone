@@ -53,7 +53,7 @@ def _load_storage_state():
     return path
 
 
-def submit_waiver_claim(add_name: str, drop_name: str):
+def submit_waiver_claim(add_name: str, drop_name: str = None):
     """Confirmed live against the real Players > Add page (2026-09-12). This
     league uses waiver priority, not instant free-agent adds, so the button
     reads "Add" for true free agents and "Claim" for players on waivers --
@@ -65,6 +65,14 @@ def submit_waiver_claim(add_name: str, drop_name: str):
     just the drop -- matched on that basis. This submits a conditional
     waiver claim, not an instant transaction; ESPN processes it later
     according to this league's waiver priority.
+
+    drop_name=None is for when a roster spot was already freed another way
+    (e.g. move_player_to_ir() ran first) -- *** UNVERIFIED ***: this skips
+    the Drop Player click on the assumption the panel lets you Continue with
+    an open spot and no drop selected, and that Confirm's aria-label drops
+    the "and drop X" clause entirely when there's nothing to drop. Neither
+    of those has actually been seen live. Confirm against the real page
+    before trusting this branch with DRY_RUN off.
     """
     if DRY_RUN:
         print(f"[DRY RUN] Would submit waiver: add {add_name}, drop {drop_name}")
@@ -86,14 +94,35 @@ def submit_waiver_claim(add_name: str, drop_name: str):
         page.get_by_role(
             "button", name=re.compile(f"^(Add|Claim) {re.escape(add_name)}")
         ).click()
-        page.get_by_role("button", name=f"Drop Player {drop_name}").click()
+
+        if drop_name:
+            page.get_by_role("button", name=f"Drop Player {drop_name}").click()
+
         page.get_by_role("button", name="Continue").click()
-        page.get_by_role(
-            "button", name=re.compile(f"Confirm add\\s+and drop {re.escape(drop_name)}")
-        ).click()
+
+        confirm_pattern = (
+            re.compile(f"Confirm add\\s+and drop {re.escape(drop_name)}")
+            if drop_name
+            else re.compile("^Confirm add")
+        )
+        page.get_by_role("button", name=confirm_pattern).click()
 
         page.screenshot(path="/tmp/waiver_confirmation.png")
         browser.close()
+
+
+def move_player_to_ir(player_name: str):
+    """*** STUB, NOT VERIFIED *** -- frees a roster spot by moving an
+    INJURY_RESERVE player into the IR slot instead of dropping them. Same
+    process as the others: open the roster page, find the real control
+    (likely a MOVE/HERE pair like set_lineup(), possibly gated to only
+    offer IR-eligible players as valid destinations), Inspect it, and wire
+    real selectors here.
+    """
+    if DRY_RUN:
+        print(f"[DRY RUN] Would move {player_name} to IR")
+        return
+    raise NotImplementedError("Fill in once we've confirmed the IR-slot page selectors.")
 
 
 def set_lineup(swap_in: str, swap_out: str):

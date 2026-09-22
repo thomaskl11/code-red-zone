@@ -53,8 +53,11 @@ jobs:
           python - << 'PYEOF'
           import json, browser_actions
           d = json.load(open("/tmp/decision.json"))
+          if d.get("ir_move"):
+              browser_actions.move_player_to_ir(d["ir_move"])
           if d["action"] == "add_drop":
-              browser_actions.submit_waiver_claim(d["add"], d["drop"])
+              drop_target = None if d.get("ir_move") else d.get("drop")
+              browser_actions.submit_waiver_claim(d["add"], drop_target)
           PYEOF
 
       - name: Commit updated log

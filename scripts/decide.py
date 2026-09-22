@@ -113,22 +113,64 @@ def decide_waiver_move():
         )
         return {"action": "no_move", "add": None, "drop": None}, entry
 
-    free_agents = get_free_agents(league, size=60)
-    ranked_fas = rank_by_arbitrage(free_agents)[:15]
+    # Widened pool (60 -> 100) and grouped by position before ranking. The
+    # raw arbitrage_gap formula naturally favors QBs -- they score the most
+    # points relative to ownership -- so a flat top-15-overall list was
+    # QB-dominated regardless of whether the roster actually needed one.
+    # Slicing per position first means every position gets a fair shot at
+    # being considered, and the model reasons about roster need on top of
+    # that instead of just chasing the single highest number.
+    free_agents = get_free_agents(league, size=100)
+    ranked_all = rank_by_arbitrage(free_agents)
+    by_position = {}
+    for player, gap in ranked_all:
+        by_position.setdefault(player["position"], []).append((player, gap))
+    ranked_fas = []
+    for players in by_position.values():
+        ranked_fas.extend(players[:4])
+    ranked_fas.sort(key=lambda pg: pg[1], reverse=True)
+
     protected = load_protected_players()
 
     client = Anthropic()  # reads ANTHROPIC_API_KEY from the environment
 
     system_prompt = load_strategy() + (
         "\n\nYou are the decision engine described above. Given the current "
-        "roster and the top available free agents (each with an arbitrage_gap "
-        "score, where higher means more underpriced by the market), decide the "
-        "single best waiver move this week, or explicitly decide to make no "
-        "move. The roster below marks some players as \"protected\": true -- "
-        "these can never be the drop, full stop, no matter how compelling the "
-        "add looks. Respond with ONLY valid JSON, no other text: "
+        "roster and the top available free agents per position (each with an "
+        "arbitrage_gap score, where higher means more underpriced by the "
+        "market), decide the single best waiver move this week, or "
+        "explicitly decide to make no move. Reason like a real manager: "
+        "first look at the roster for actual positions of need (an injured "
+        "or unreliable starter with no strong healthy bench option behind "
+        "them, or a position that's thin), then look at the top targets for "
+        "those specific needy positions -- not just whichever position has "
+        "the single highest arbitrage_gap overall. QBs will almost always "
+        "post the highest raw gap since they score the most points, but "
+        "that alone doesn't make QB a need in a single-QB league with a "
+        "locked-in starter -- don't let the biggest number override actual "
+        "roster need. That said, don't default to inertia either: a real, "
+        "solid upgrade at a genuine position of need is worth making even "
+        "when it's not an overwhelming slam-dunk -- lean slightly toward "
+        "action over sitting on your hands when the need is real. The "
+        "roster below marks some players as \"protected\": true -- these "
+        "can never be the drop, full stop, no matter how compelling the add "
+        "looks. This league has an IR roster slot: a player whose "
+        "injury_status is exactly \"INJURY_RESERVE\" can move there instead "
+        "of occupying a normal bench spot, which frees a roster spot for "
+        "free, without dropping anyone. The roster below marks each "
+        "player's lineup_slot, and ir_slot_open tells you whether the IR "
+        "slot is currently available. If a rostered player has "
+        "injury_status \"INJURY_RESERVE\" and isn't already in the IR slot, "
+        "and ir_slot_open is true, prefer moving them to IR (set ir_move to "
+        "their name) over dropping a rosterable player outright -- it "
+        "accomplishes the same roster-space goal without permanently "
+        "losing them. Only propose an actual drop when no such free option "
+        "exists, or when dropping is clearly correct regardless. Respond "
+        "with ONLY valid JSON, no other text: "
         '{"action": "add_drop" or "no_move", '
         '"add": "player name or null", "drop": "player name or null", '
+        '"ir_move": "player name or null -- set instead of drop when '
+        'freeing a roster spot via IR is the better option", '
         '"reasoning": "2-3 sentences, in team voice", '
         '"rule_applied": "arbitrage_gap" or "home_turf_tiebreak" or "none"}'
     )
@@ -137,9 +179,12 @@ def decide_waiver_move():
         {**p, "protected": _normalize_name(p["name"]) in protected} for p in roster
     ]
 
+    ir_slot_open = not any(p["lineup_slot"] == "IR" for p in roster)
+
     user_payload = json.dumps({
         "current_roster": roster_with_protection,
-        "top_free_agents_by_arbitrage": [
+        "ir_slot_open": ir_slot_open,
+        "top_free_agents_by_position": [
             {**p, "arbitrage_gap": round(gap, 1)} for p, gap in ranked_fas
         ],
     })
@@ -158,12 +203,13 @@ def decide_waiver_move():
     # how the model reasoned. This is the actual guarantee; the prompt above
     # is just a courtesy so it doesn't waste a call proposing one.
     overridden = False
-    if decision.get("action") == "add_drop" and _normalize_name(decision.get("drop", "")) in protected:
+    if decision.get("action") == "add_drop" and _normalize_name(decision.get("drop") or "") in protected:
         overridden = True
         decision = {
             "action": "no_move",
             "add": None,
             "drop": None,
+            "ir_move": None,
             "reasoning": (
                 f'Vetoed: the model proposed dropping {decision["drop"]}, who is on the '
                 "protected list. Overridden in code before anything could execute -- "
@@ -172,7 +218,9 @@ def decide_waiver_move():
             "rule_applied": "protected_player_veto",
         }
 
-    if decision["action"] == "add_drop":
+    if decision["action"] == "add_drop" and decision.get("ir_move"):
+        headline = f'Added {decision["add"]}, moved {decision["ir_move"]} to IR'
+    elif decision["action"] == "add_drop":
         headline = f'Added {decision["add"]}, dropped {decision["drop"]}'
     elif overridden:
         headline = "Waiver move blocked -- protected player"
