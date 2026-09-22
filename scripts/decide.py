@@ -239,10 +239,35 @@ def decide_waiver_move():
             "rule_applied": "protected_player_veto",
         }
 
+    # Same idea, different bug class: caught live 2026-09-22, the model
+    # proposed "add"-ing a player already on our own roster (Jordan Mason --
+    # looks like it confused the ir_move field with add while reasoning).
+    # ESPN naturally has no "Add"/"Claim" button for your own player, so
+    # this just times out in browser_actions with a confusing-looking
+    # error. Catch the nonsensical decision before it ever reaches
+    # execution, not after.
+    roster_names = {_normalize_name(p["name"]) for p in roster}
+    if decision.get("action") == "add_drop" and _normalize_name(decision.get("add") or "") in roster_names:
+        overridden = True
+        decision = {
+            "action": "no_move",
+            "add": None,
+            "drop": None,
+            "ir_move": None,
+            "reasoning": (
+                f'Vetoed: the model proposed adding {decision["add"]}, who is already on '
+                "the roster -- almost certainly confused with the ir_move field. "
+                "Overridden in code before anything could execute -- no move made this week."
+            ),
+            "rule_applied": "already_rostered_veto",
+        }
+
     if decision["action"] == "add_drop" and decision.get("ir_move"):
         headline = f'Added {decision["add"]}, moved {decision["ir_move"]} to IR'
     elif decision["action"] == "add_drop":
         headline = f'Added {decision["add"]}, dropped {decision["drop"]}'
+    elif overridden and decision.get("rule_applied") == "already_rostered_veto":
+        headline = "Waiver move blocked -- tried to add an already-rostered player"
     elif overridden:
         headline = "Waiver move blocked -- protected player"
     else:
