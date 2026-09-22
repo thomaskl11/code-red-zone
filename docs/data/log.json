@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-09-22T17:58:26.205789+00:00",
+    "kind": "waiver",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to add Jordan Mason, but the automation failed: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=re.compile(r\"^(Add|Claim) Jordan\\ Mason\"))\n. Nothing changed on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_add": "Jordan Mason",
+      "attempted_drop": null
+    }
+  },
+  {
+    "timestamp": "2026-09-22T17:57:49.290524+00:00",
+    "kind": "waiver",
+    "headline": "Added Jordan Mason, moved Jordan Mason to IR",
+    "reasoning": "Jordan Mason is on IR and the IR slot is open, so the right first move is sliding him there \u2014 that frees a bench spot at zero cost and no roster loss. With that spot freed, the real need is RB depth: Saquon is QUESTIONABLE, Jonathon Brooks is DOUBTFUL, and Jacory Croskey-Merritt is a low-confidence RB1 slot starter. Vikings D/ST has the best arbitrage gap among non-QB free agents that address an actual position of need, but RB is the genuine weak spot here, and Braelon Allen (gap: 7.2, ranked RB31 by ESPN while only 14% owned) is the best available RB add \u2014 though the gap is modest. Since the IR move itself is the primary action freeing the spot, noting: if a roster spot opens via IR, Braelon Allen is the preferred add targeting real RB need over the noise of big QB gaps in a single-QB league.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-09-22T17:52:44.177049+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
