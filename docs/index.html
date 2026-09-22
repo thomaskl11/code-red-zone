@@ -60,9 +60,11 @@
   .latest-card { padding: 18px 20px; background: var(--turf-panel); border: 1px solid var(--yard-line); border-left: 4px solid var(--floodlight); }
   .latest-card.lineup { border-left-color: #7fb3ff; }
   .latest-card.draft { border-left-color: #d7a8ff; }
+  .latest-card.failed { border-left-color: var(--holly-red); background: rgba(178,58,58,0.14); }
   .latest-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--floodlight); text-transform: uppercase; margin: 0 0 8px; display: flex; justify-content: space-between; gap: 10px; }
   .latest-card.lineup .latest-label { color: #7fb3ff; }
   .latest-card.draft .latest-label { color: #d7a8ff; }
+  .latest-card.failed .latest-label { color: var(--holly-red); }
   .latest-label span.ts { color: var(--grass-muted); text-transform: none; letter-spacing: 0; }
   .latest-headline { font-family: 'Anton', sans-serif; font-size: 21px; line-height: 1.2; margin: 0 0 10px; }
   .latest-why { font-size: 14px; color: var(--chalk); border-top: 1px dashed var(--yard-line); padding-top: 10px; margin: 0; }
@@ -81,6 +83,8 @@
   .entry .kind.waiver { color: var(--floodlight); }
   .entry .kind.lineup { color: #7fb3ff; }
   .entry .kind.draft { color: #d7a8ff; }
+  .entry.failed { background: rgba(178,58,58,0.1); }
+  .entry.failed .kind { color: var(--holly-red); }
   .entry .detail p { margin: 0 0 4px; font-size: 14.5px; }
   .entry .detail .why { color: var(--grass-muted); font-size: 13.5px; }
   @media (max-width: 480px) { .entry { grid-template-columns: 1fr; gap: 4px; } .team-name { font-size: 32px; } }
@@ -143,11 +147,16 @@ function dateStr(ts) {
   return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
 }
 
+function isFailed(e) {
+  return !!(e.meta && e.meta.execution_failed);
+}
+
 function renderEntry(e) {
+  const failed = isFailed(e);
   return `
-    <div class="entry" data-kind="${e.kind}">
+    <div class="entry ${failed ? 'failed' : ''}" data-kind="${e.kind}">
       <div class="date">${dateStr(e.timestamp)}</div>
-      <div class="kind ${e.kind}">${e.kind}</div>
+      <div class="kind ${e.kind}">${failed ? '⚠ ' : ''}${e.kind}</div>
       <div class="detail">
         <p>${e.headline}</p>
         <p class="why">${e.reasoning}</p>
@@ -211,9 +220,11 @@ async function loadLog() {
 
   latestGrid.innerHTML = kindsPresent.map(k => {
     const e = latestByKind[k];
+    const failed = isFailed(e);
+    const label = failed ? `⚠ ${KIND_LABEL[k]} alert` : `Latest ${KIND_LABEL[k].toLowerCase()} move`;
     return `
-      <div class="latest-card ${k}">
-        <p class="latest-label"><span>Latest ${KIND_LABEL[k].toLowerCase()} move</span><span class="ts">${dateStr(e.timestamp)}</span></p>
+      <div class="latest-card ${k} ${failed ? 'failed' : ''}">
+        <p class="latest-label"><span>${label}</span><span class="ts">${dateStr(e.timestamp)}</span></p>
         <h2 class="latest-headline">${e.headline}</h2>
         <p class="latest-why">${e.reasoning}</p>
       </div>`;

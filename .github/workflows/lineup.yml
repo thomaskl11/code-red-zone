@@ -56,13 +56,41 @@ jobs:
           DRY_RUN: "false"  # verified live 2026-09-09 -- set_lineup() actually works
         run: |
           python - << 'PYEOF'
-          import json, browser_actions
+          import json, sys, browser_actions, log_store
+
           d = json.load(open("/tmp/decision.json"))
+          had_failure = False
+
           for swap in d["swaps"]:
-              browser_actions.set_lineup(swap["start"], swap["sit"])
+              try:
+                  browser_actions.set_lineup(swap["start"], swap["sit"])
+              except Exception as e:
+                  had_failure = True
+                  log_store.append_entry(
+                      kind="lineup",
+                      headline="MOVE COULD NOT BE MADE",
+                      reasoning=(
+                          f'Tried to start {swap["start"]} over {swap["sit"]}, but the '
+                          f'automation failed: {e}. The decision was made but never '
+                          'applied on ESPN -- come make this manually if it matters, '
+                          'or check whether the ESPN session needs refreshing.'
+                      ),
+                      meta={
+                          "execution_failed": True,
+                          "attempted_start": swap["start"],
+                          "attempted_sit": swap["sit"],
+                      },
+                  )
+
+          if had_failure:
+              sys.exit(1)
           PYEOF
 
+      # if: always() so a failed execution above still gets its "MOVE COULD
+      # NOT BE MADE" entry published to the public dashboard, not just left
+      # sitting invisibly in a red Actions run nobody but Claude checks.
       - name: Commit updated log
+        if: always()
         run: |
           git config user.name "code-red-zone-bot"
           git config user.email "actions@users.noreply.github.com"
