@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-25T15:07:25.964876+00:00",
+    "kind": "waiver",
+    "headline": "Skipped -- a previous claim is still pending",
+    "reasoning": "At least one of our WAIVER transactions isn't showing as EXECUTED yet. Holding off on a new claim rather than risk stacking two at once, which would mean deciding a priority order between our own pending claims -- not something we want this making up on its own.",
+    "meta": {
+      "rule_applied": "pending_claim_hold"
+    }
+  },
+  {
     "timestamp": "2026-09-25T00:08:25.476376+00:00",
     "kind": "lineup",
     "headline": "Start Brock Bowers over Colston Loveland; Start Vikings D/ST over Ravens D/ST; Start TreVeyon Henderson over Saquon Barkley",
