@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-25T00:08:25.476376+00:00",
+    "kind": "lineup",
+    "headline": "Start Brock Bowers over Colston Loveland; Start Vikings D/ST over Ravens D/ST; Start TreVeyon Henderson over Saquon Barkley",
+    "reasoning": "Three status changes flagged, three real edges found. Bowers' elite TE rank makes the Loveland swap obvious if he suits up \u2014 watch for the active/inactive call before his game locks. Saquon's QUESTIONABLE tag with no projection is a genuine risk signal; Henderson is healthy, ranked higher, and ready. The D/ST flip is pure arbitrage: 11 spots of consensus gap between two units we already own, free switch. Home Turf Clause is lurking on the Loveland side (CHI Bears, our #4 market), but the Bowers edge is so large it never needed to fire \u2014 arbitrage ruled this one cleanly.",
+    "meta": {
+      "swap_count": 3
+    }
+  },
+  {
     "timestamp": "2026-09-22T18:17:47.542806+00:00",
     "kind": "waiver",
     "headline": "Added Vikings D/ST, dropped Jonathon Brooks",
