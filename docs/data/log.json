@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-26T00:16:32.970278+00:00",
+    "kind": "lineup",
+    "headline": "Start Saquon Barkley over Jacory Croskey-Merritt",
+    "reasoning": "Two status changes flagged this check: Puka Nacua is DOUBTFUL with no projection, so he stays on the bench \u2014 easy call. Saquon Barkley flipping to ACTIVE is the real signal; his 89.59% start rate screams that the consensus has him priced well above his current RB39 ESPN rank, and Croskey-Merritt's 6.85% start rate confirms the market agrees on that gap. Bowers stays in the flex despite the QUESTIONABLE tag \u2014 no TE replacement on the bench clears him, and Kelce is locked at TE \u2014 so we ride it and monitor closer to his kickoff.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-09-25T15:07:25.964876+00:00",
     "kind": "waiver",
     "headline": "Skipped -- a previous claim is still pending",
