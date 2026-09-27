@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-09-27T19:06:52.789933+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged is Brock Bowers, and he's ACTIVE with an ESPN TE rank of 0 (top of the position) already locked into the FLEX slot \u2014 no move needed there, he's exactly where he should be. Puka Nacua is DOUBTFUL on the bench, not a starter, so his status is noted but doesn't force any lineup action. Every other starter looks clean: Saquon, Lamar, Kelce, Waddle, Henderson, and Burden III are all ACTIVE with no projected-points data to surface a consensus arbitrage gap worth acting on. Sitting tight.",
+    "meta": {
+      "swap_count": 0
+    }
+  },
+  {
     "timestamp": "2026-09-27T15:34:11.201472+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
