@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-02T01:12:07.824680+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged is Puka Nacua flipping to Questionable, but with no projected points available and his WR slot already filled by Waddle and Burden III (both Active), there's no open starting spot to slot him into without bumping someone who projects comparably or better \u2014 and 'Questionable' alone isn't a data point that tells us which way to lean without a projection to anchor it. Brock Bowers is holding the FLEX, and displacing him for a Questionable Nacua would be moving backward. Everything else on the roster is unchanged since last check, so those calls stay closed. No swaps today.",
+    "meta": {
+      "swap_count": 0
+    }
+  },
+  {
     "timestamp": "2026-09-29T01:34:02.481520+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
