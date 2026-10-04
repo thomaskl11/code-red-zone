@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-04T22:39:07.303567+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Both Saquon Barkley (QUESTIONABLE) and Lamar Jackson (QUESTIONABLE) are the flagged status changes, but 'questionable' alone isn't a sit signal without projected points or a credible upgrade waiting. No bench RB clearly out-projects Barkley at RB27 \u2014 Jacory Croskey-Merritt (RB27 rank, WSH) is close on rank but this is a coin-flip, not a clear edge, and Barkley's upside in a live game far exceeds a backup committee back. On QB, there's no backup QB on the roster to swap in anyway, so that slot holds by default. No swaps fire today \u2014 watching both statuses closely through kickoff.",
+    "meta": {
+      "swap_count": 0
+    }
+  },
+  {
     "timestamp": "2026-10-04T18:42:26.769964+00:00",
     "kind": "lineup",
     "headline": "MOVE COULD NOT BE MADE",
