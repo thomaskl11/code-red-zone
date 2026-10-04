@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-10-04T18:42:26.769964+00:00",
+    "kind": "lineup",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to start Jacory Croskey-Merritt over Saquon Barkley, but the automation failed: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Select Saquon Barkley to move\")\n. The decision was made but never applied on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_start": "Jacory Croskey-Merritt",
+      "attempted_sit": "Saquon Barkley"
+    }
+  },
+  {
+    "timestamp": "2026-10-04T18:41:54.168231+00:00",
+    "kind": "lineup",
+    "headline": "Start Jacory Croskey-Merritt over Saquon Barkley",
+    "reasoning": "The only status change flagged is Barkley flipping to OUT, which is the only call that needs to be made today. Croskey-Merritt (WSH, RB27 per ESPN) is the lone bench RB available to fill the vacancy \u2014 and hey, he plays for the Commanders, which is about as home-turf as it gets, though this isn't even close enough to need the tiebreaker. Every other starter is ACTIVE with no new data points, so those slots stay untouched.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-10-04T15:42:31.723494+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
