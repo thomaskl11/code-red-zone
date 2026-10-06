@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-06T16:36:16.893870+00:00",
+    "kind": "waiver",
+    "headline": "Added Bengals D/ST, dropped Ravens D/ST",
+    "reasoning": "There's an open roster spot, so this is a costless swap: Bengals D/ST sits at ESPN pos rank 3 with an arbitrage gap of 13.4 \u2014 meaningfully underpriced relative to where the market has them \u2014 while Ravens D/ST is benched, ranked 20th, and carrying Lamar Jackson's QUESTIONABLE status as an extra reason to diversify the Baltimore dependency. The real positions of need (RB depth, WR) don't have compelling pickups clearing the bar this week, but a top-3 ranked D/ST sitting at 13.4 gap versus a benched D/ST ranked 20th is a real, concrete upgrade worth making.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-10-06T02:06:50.520131+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
