@@ -5,7 +5,10 @@ Sunday Fantasy Football League (CSFFL). This file exists so a fresh
 Claude Code session has full context without re-deriving it from scratch.
 Read this first, then `strategy.md`.
 
-**Status as of 2026-09-22: fully live.** Draft is done, the site is public
+**Status as of 2026-10-07: fully live and healthy.** (Last verified: a real
+lineup swap executed on ESPN via the Actions runner at 2026-10-08 03:22 UTC
+and was confirmed against the ESPN roster API, so the browser session works.)
+Draft is done, the site is public
 and being shared with the league, both automation pipelines execute real
 changes on ESPN, not just dry-run prints. This is not a "getting started"
 project anymore — it's a running system with real history. Read the
@@ -61,11 +64,19 @@ Strategy, Draft Queue pages). Repo: **github.com/thomaskl11/code-red-zone**.
    `injury_status` actually changed since the last check; rank/ownership
    noise alone doesn't reopen a settled decision. Proven in ~2 weeks of
    real production use: mostly clean skips, only reopening on genuine news.
-5. **Dashboard failure alerting** — a failed execution (expired session,
-   selector break, anything) gets caught, logged as a visible red
-   "MOVE COULD NOT BE MADE" entry with what it tried and why, and the
-   commit-to-dashboard step runs `if: always()` so it publishes even
-   though the job still exits non-zero for GitHub-side visibility too.
+5. **Dashboard failure alerting** — three kinds of red alert, all
+   rendered by `docs/index.html` off `meta.execution_failed`, all published
+   because the commit step runs `if: always()` (the job still exits non-zero
+   so Actions shows red too):
+   - `MOVE COULD NOT BE MADE` — execution failed (what it tried + why).
+     `set_lineup()` now says *why*: expired login vs. player locked vs. not
+     found, instead of always blaming the session.
+   - `CHECK COULD NOT RUN` (`stage: decision`) — the model/ESPN call crashed
+     before deciding (added 2026-10-07; this was a total blind spot before).
+   - `CHECK COULD NOT RUN` (`stage: setup`) — dependency install failed or
+     timed out. Install step has a 10 min timeout, the job 30 min.
+6. **`call_for_json()`** (decide.py) — every waiver/lineup model call goes
+   through it: 2000-token budget, "start with {" instruction, one retry.
 
 ## Lessons learned the hard way — read before editing browser_actions.py
 
@@ -107,6 +118,42 @@ Strategy, Draft Queue pages). Repo: **github.com/thomaskl11/code-red-zone**.
   only against a *missing* key. The model reliably includes
   `"drop": null` explicitly, which crashed a `.get("drop", "")` check
   once. Use `decision.get("drop") or ""` instead.
+- **Output-token caps silently cause failures; a smarter parser can't
+  fix them.** `decide_waiver_move()` had `max_tokens=500`; the model
+  often reasons in prose first, and in a 5-run test 2 runs hit
+  `stop_reason=max_tokens` at exactly 500 *before writing any JSON* — a
+  ~40% failure rate that quietly killed real waiver checks (Sept 29). Fixed
+  via `call_for_json()` (6/6 after). When a "couldn't parse" error shows
+  up, check `stop_reason` and `usage.output_tokens` first, not the parser.
+- **A locked player has no MOVE button at all.** ESPN locks a player at
+  kickoff and removes the button, so a lineup swap proposed after a
+  player's game has started times out waiting for it. The Oct 4 alert
+  ("Select Saquon Barkley to move") looked like an expired session but
+  was exactly this: Barkley flipped to OUT at 2:41pm ET, after his 1pm
+  kickoff, and the runs before and after succeeded. A single isolated
+  failure between successes = locked player; an expired session fails
+  *every* swap attempt consistently.
+- **A hung install can burn 6 hours with no trace.** The Oct 2 waiver run
+  sat in "Install dependencies" until GitHub's 6h limit killed it —
+  skipping that week's check, no alert. Hence the step/job timeouts.
+- **A cookie's `expires` is not a reliable cliff.** `dtcAuth` said
+  2026-10-06 but a real swap still succeeded on 2026-10-08. Treat the
+  alert text ("ESPN showed a login page...") as the signal, not the date.
+
+## How to investigate an alert (the playbook that worked)
+
+1. `git fetch origin` and pull first — the Actions bot commits constantly.
+2. `gh run list --repo thomaskl11/code-red-zone --workflow "<name>"` — is it
+   one failure among successes, or every run failing?
+3. `gh api repos/thomaskl11/code-red-zone/actions/runs/<id>/jobs --jq
+   '.jobs[0].steps[] | "\(.name) -> \(.conclusion)"'` — *which step* failed.
+4. `gh run view <id> --log-failed` for the traceback.
+5. Reproduce the model call locally with a spy on `stop_reason` /
+   `usage.output_tokens` (see the Oct 7 5-run test) before theorizing.
+6. For selector problems: temporary `page.screenshot()` + `upload-artifact`
+   step, then look at the picture. Remove the scaffolding afterward.
+7. Local test runs append to `docs/data/log.json` and
+   `scripts/lineup_state.json` — `git restore` both before committing.
 
 ## Known unverified / open items
 
@@ -120,11 +167,30 @@ Strategy, Draft Queue pages). Repo: **github.com/thomaskl11/code-red-zone**.
   observed picking the dropless path yet** — a pending claim was blocking
   further decisions at the time it was built. Worth checking the next
   real waiver run for a `"drop": null` decision when a spot is open.
-- **ESPN session (`ESPN_STORAGE_STATE`) expires roughly every 1-2 weeks**
-  (the Disney-side `dtcAuth` cookie is the binding constraint; two real
-  data points: 7 days and 13 days). No proactive alert exists for this
-  specifically beyond the general "MOVE COULD NOT BE MADE" dashboard
-  entry a failed run produces. To regenerate: `playwright codegen
+  Oct 6 data point: that run's reasoning said "there's an open roster
+  spot, so this is a costless swap" yet still named a drop (benched
+  duplicate Ravens D/ST) — plausibly a legitimate cut, but it means the
+  dropless path still hasn't actually been exercised.
+- **DEADLINE 2026-10-19: `ubuntu-latest` migrates to Ubuntu 26** (GitHub
+  annotation on the Oct 2 run). Both workflows install deps with
+  `playwright install --with-deps chromium`, which may not support a brand
+  new Ubuntu release. Likely fix: pin `runs-on: ubuntu-24.04` in
+  `lineup.yml` and `waivers.yml`. Not done yet — logged only. Also a
+  non-urgent warning: `actions/checkout@v4` / `setup-python@v5` run on a
+  deprecated Node 20.
+- **`decide_lineup()` can still propose a swap involving a locked player**
+  (its data has no kickoff times), which then fails — now with a clear
+  alert, but it's noise. Fix would need game-start data per player.
+- **No proactive ESPN-session health check.** Considered a small scheduled
+  check that loads the team page and alerts on a login wall; not built
+  because it can't be verified without a live session. It *can* be tested
+  now (session is currently valid, and a logged-in page shows "Team
+  Settings" which the login wall lacks). Failures do still surface via the
+  alerts above, with an explicit "session has expired" message.
+- **ESPN session (`ESPN_STORAGE_STATE`) lifetime is unpredictable** (seen:
+  ~7 days, ~13 days, and at least 15 days for the Sept 22 one, still
+  working Oct 8). Redo it when an alert says ESPN showed a login page.
+  To regenerate: `playwright codegen
   --save-storage=espn_state.json https://fantasy.espn.com`, log in, close
   the window, then trim to just espn.com-domain cookies (GitHub secrets
   cap at 48KB, a raw dump is ~500KB) before setting `ESPN_STORAGE_STATE`.
