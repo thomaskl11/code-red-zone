@@ -52,6 +52,36 @@ def _load_storage_state():
     return path
 
 
+def _explain_missing_button(page, player_name, original_error):
+    """Turn a bare 30s Playwright timeout into a reason a human can act on.
+
+    Only ever called *after* the real click already failed, so it can't
+    break the working path. Found 2026-10-07: a single failed lineup swap
+    (Oct 4) got the generic "check whether the ESPN session needs
+    refreshing" advice, but the session was fine -- Barkley's game had
+    already kicked off, and ESPN removes the MOVE button entirely for a
+    locked player. The alert should say which of these it actually was.
+    """
+    try:
+        text = page.inner_text("body")
+    except Exception:
+        text = ""
+    if "Enter your email to continue" in text or "Log in required" in text:
+        return RuntimeError(
+            "ESPN showed a login page instead of the roster -- the stored "
+            "session has expired and needs regenerating (see HANDOFF.md)."
+        )
+    if player_name in text:
+        return RuntimeError(
+            f"{player_name} is on the roster page but has no button for this "
+            "move -- ESPN locks a player once their game kicks off, so this "
+            "can't be changed anymore. The session is fine."
+        )
+    return RuntimeError(
+        f"{player_name} wasn't found on the roster page at all ({original_error})."
+    )
+
+
 def submit_waiver_claim(add_name: str, drop_name: str = None):
     """Confirmed live against the real Players > Add page (2026-09-12). This
     league uses waiver priority, not instant free-agent adds, so the button
@@ -189,8 +219,18 @@ def set_lineup(swap_in: str, swap_out: str):
             f"https://fantasy.espn.com/football/team?leagueId={league_id}&teamId={team_id}"
         )
 
-        page.get_by_role("button", name=f"Select {swap_out} to move").click()
-        page.get_by_role("button", name=f"Confirm move of {swap_in}").click()
+        try:
+            page.get_by_role("button", name=f"Select {swap_out} to move").click()
+        except Exception as e:
+            raise _explain_missing_button(page, swap_out, e) from e
+        try:
+            page.get_by_role("button", name=f"Confirm move of {swap_in}").click()
+        except Exception as e:
+            raise RuntimeError(
+                f"Selected {swap_out} to move, but ESPN offered no HERE button "
+                f"for {swap_in} -- they're likely locked (their game already "
+                "started) or not eligible for that slot."
+            ) from e
 
         page.screenshot(path="/tmp/lineup_confirmation.png")
         browser.close()

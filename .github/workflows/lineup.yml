@@ -25,6 +25,7 @@ on:
 jobs:
   run-lineup:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: write
     steps:
@@ -33,6 +34,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
+        id: install
+        timeout-minutes: 10
         run: |
           pip install -r requirements.txt
           playwright install --with-deps chromium
@@ -71,9 +74,10 @@ jobs:
                       headline="MOVE COULD NOT BE MADE",
                       reasoning=(
                           f'Tried to start {swap["start"]} over {swap["sit"]}, but the '
-                          f'automation failed: {e}. The decision was made but never '
-                          'applied on ESPN -- come make this manually if it matters, '
-                          'or check whether the ESPN session needs refreshing.'
+                          f'automation failed: {e} The decision was made but never '
+                          'applied on ESPN. If the reason says the player is locked, '
+                          "it can't be changed anymore; otherwise come make it "
+                          'manually if it matters.'
                       ),
                       meta={
                           "execution_failed": True,
@@ -85,6 +89,24 @@ jobs:
           if had_failure:
               sys.exit(1)
           PYEOF
+
+      - name: Log setup failure
+        if: failure() && steps.install.outcome != 'success'
+        working-directory: scripts
+        run: |
+          python - << 'PYEOF2'
+          import log_store
+          log_store.append_entry(
+              kind="lineup",
+              headline="CHECK COULD NOT RUN",
+              reasoning=(
+                  "Setup (installing dependencies) failed or timed out on "
+                  "GitHub's side before this check could start. Nothing was "
+                  "changed on ESPN. The next scheduled check will try again."
+              ),
+              meta={"execution_failed": True, "stage": "setup"},
+          )
+          PYEOF2
 
       # if: always() so a failed execution above still gets its "MOVE COULD
       # NOT BE MADE" entry published to the public dashboard, not just left

@@ -101,6 +101,40 @@ def parse_json_response(text):
     raise ValueError(f"Could not find JSON in model response: {text[:200]!r}")
 
 
+JSON_ONLY_SUFFIX = (
+    "\n\nBegin your response with the opening { of the JSON object. Do all "
+    "of your reasoning inside the JSON's \"reasoning\" field -- do not write "
+    "any analysis, headings, or bullet points before it."
+)
+
+
+def call_for_json(client, system_prompt, user_payload, max_tokens=2000, attempts=2):
+    """One model call that has to come back as parseable JSON.
+
+    Found 2026-10-07: decide_waiver_move() capped output at 500 tokens, and
+    the model likes to think out loud in prose first on a close call -- in a
+    5-run local test it hit stop_reason=max_tokens twice, both before it ever
+    wrote any JSON, so there was nothing for parse_json_response() to find
+    (a smarter parser can't recover JSON that was never written). That was
+    a ~40% failure rate on waiver checks, and it's what killed the Sept 29
+    run. Gives real headroom (cost is only for tokens actually used), asks
+    for JSON-first, and retries once since the output is nondeterministic.
+    """
+    last_err = None
+    for _ in range(attempts):
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=max_tokens,
+            system=system_prompt + JSON_ONLY_SUFFIX,
+            messages=[{"role": "user", "content": user_payload}],
+        )
+        try:
+            return parse_json_response(response.content[0].text)
+        except ValueError as e:  # JSONDecodeError is a ValueError subclass
+            last_err = e
+    raise last_err
+
+
 def _has_pending_waiver_claim(league, team):
     """True if this team has any WAIVER transaction that isn't the one
     confirmed-terminal status. Deliberately conservative: an unrecognized
@@ -226,14 +260,7 @@ def decide_waiver_move():
         ],
     })
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=500,
-        system=system_prompt,
-        messages=[{"role": "user", "content": user_payload}],
-    )
-
-    decision = parse_json_response(response.content[0].text)
+    decision = call_for_json(client, system_prompt, user_payload, max_tokens=2000)
 
     # Hard enforcement, independent of whatever the model decided -- a
     # protected player is never dropped, no matter what the prompt said or
@@ -377,14 +404,7 @@ def decide_lineup():
         "changed_since_last_check": changed if last_state else "first check this week, no prior state",
     })
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1000,
-        system=system_prompt,
-        messages=[{"role": "user", "content": user_payload}],
-    )
-
-    decision = parse_json_response(response.content[0].text)
+    decision = call_for_json(client, system_prompt, user_payload, max_tokens=2000)
     _save_lineup_state(roster)
 
     if decision["swaps"]:
@@ -525,8 +545,26 @@ if __name__ == "__main__":
 
     if "--draft-queue" in sys.argv:
         decision, entry = build_draft_queue()
-    elif "--lineup" in sys.argv:
-        decision, entry = decide_lineup()
     else:
-        decision, entry = decide_waiver_move()
+        kind = "lineup" if "--lineup" in sys.argv else "waiver"
+        try:
+            decision, entry = decide_lineup() if kind == "lineup" else decide_waiver_move()
+        except Exception as e:
+            # The execution-step alerting never covered this: a crash while
+            # *deciding* (Sept 29's waiver run) left nothing on the dashboard
+            # at all, indistinguishable from "no check ran". Log it as a red
+            # alert (the workflow's if: always() commit step publishes it),
+            # then re-raise so the job still shows red in Actions too.
+            append_entry(
+                kind=kind,
+                headline="CHECK COULD NOT RUN",
+                reasoning=(
+                    f"This check crashed before it could decide anything "
+                    f"({type(e).__name__}: {str(e)[:200]}). Nothing was changed "
+                    "on ESPN. The next scheduled check will try again -- worth "
+                    "a manual look if a game is close."
+                ),
+                meta={"execution_failed": True, "stage": "decision"},
+            )
+            raise
     print(json.dumps(decision, indent=2))
