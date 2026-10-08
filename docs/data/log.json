@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-08T03:22:34.922268+00:00",
+    "kind": "lineup",
+    "headline": "Start Colston Loveland over Brock Bowers",
+    "reasoning": "Two status changes flagged since last check: Brock Bowers and Jacory Croskey-Merritt. Bowers' QUESTIONABLE tag in the FLEX slot is the real decision here \u2014 with projected points null across the board, there's no projection gap to measure, so Consensus Arbitrage can't find a number to lean on; but a QUESTIONABLE starter with a healthy eligible replacement is exactly the situation where sitting tight is the mistake. Colston Loveland is ACTIVE, TE-eligible for the RB/WR/TE FLEX, and \u2014 hello, Home Turf Clause \u2014 he's a Bear, which fires the tiebreaker in his favor when the signal is otherwise flat. Croskey-Merritt is also QUESTIONABLE but is benchside already, so no swap needed there; keep an eye on his game-time status if he becomes the only healthy RB depth option.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-10-06T16:36:16.893870+00:00",
     "kind": "waiver",
     "headline": "Added Bengals D/ST, dropped Ravens D/ST",
