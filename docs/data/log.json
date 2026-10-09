@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-09T01:33:04.182519+00:00",
+    "kind": "lineup",
+    "headline": "Start Brock Bowers over Colston Loveland",
+    "reasoning": "The only status change flagged since last check is Brock Bowers, and that one's easy \u2014 he's ACTIVE, ranks TE8 by ESPN, and Colston Loveland (TE41, Home Turf Bear notwithstanding) is holding the FLEX spot with far less upside. Bowers slides straight into that RB/WR/TE slot and Loveland hits the bench. Lamar and Saquon are both QUESTIONABLE but their statuses haven't changed since last check, so those calls stay put unless something new comes in before their respective kickoffs \u2014 keep an eye on the injury report wire.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-10-08T03:22:34.922268+00:00",
     "kind": "lineup",
     "headline": "Start Colston Loveland over Brock Bowers",
