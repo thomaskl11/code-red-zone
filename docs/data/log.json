@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-10-09T16:56:58.697083+00:00",
+    "kind": "waiver",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to add Commanders D/ST, dropping Ravens D/ST, but the automation failed: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Drop Player Ravens D/ST\")\n. Nothing changed on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_add": "Commanders D/ST",
+      "attempted_drop": "Ravens D/ST"
+    }
+  },
+  {
+    "timestamp": "2026-10-09T16:56:22.954066+00:00",
+    "kind": "waiver",
+    "headline": "Added Commanders D/ST, dropped Ravens D/ST",
+    "reasoning": "There's an open roster spot, so this is a straight swap with no drop needed \u2014 wait, Ravens D/ST is on the bench and Commanders D/ST is the add, so we're using the open spot to add Commanders D/ST and then dropping Ravens D/ST to stay at roster limit. Actual need check: the roster is reasonably solid, but D/ST is a real swing position worth optimizing \u2014 Vikings D/ST is the locked starter (ranked 1st), Ravens D/ST on the bench is ranked 20th with an arbitrage gap of basically zero, while Commanders D/ST is also ranked 20th but carries a gap of 12.3, meaning the market is underpricing them relative to their consensus value. That's a real signal, and swapping one 20th-ranked D/ST for another that's underpriced by the market is exactly the kind of low-cost arbitrage edge this engine is built to find. Home Turf Clause doesn't need to fire here \u2014 the gap does the work \u2014 but it's worth noting the Commanders are literally the top of the home turf list, which makes this feel very right.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-10-09T01:33:04.182519+00:00",
     "kind": "lineup",
     "headline": "Start Brock Bowers over Colston Loveland",
