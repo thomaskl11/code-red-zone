@@ -1,16 +1,17 @@
 {
   "Puka Nacua": "ACTIVE",
-  "Saquon Barkley": "QUESTIONABLE",
+  "Saquon Barkley": "OUT",
   "Brock Bowers": "ACTIVE",
-  "Lamar Jackson": "QUESTIONABLE",
+  "Lamar Jackson": "OUT",
   "Colston Loveland": "ACTIVE",
   "Jaylen Waddle": "ACTIVE",
   "Luther Burden III": "ACTIVE",
   "TreVeyon Henderson": "ACTIVE",
   "Travis Kelce": "ACTIVE",
   "Jordan Mason": "INJURY_RESERVE",
-  "Jacory Croskey-Merritt": "QUESTIONABLE",
+  "Jacory Croskey-Merritt": "ACTIVE",
   "Ravens D/ST": "NORMAL",
   "Cam Little": "ACTIVE",
-  "Vikings D/ST": "NORMAL"
+  "Vikings D/ST": "NORMAL",
+  "Commanders D/ST": "NORMAL"
 }

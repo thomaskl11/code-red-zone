@@ -1,5 +1,36 @@
 [
   {
+    "timestamp": "2026-10-10T01:25:54.913083+00:00",
+    "kind": "lineup",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to start Jaylen Waddle over Lamar Jackson, but the automation failed: Selected Lamar Jackson to move, but ESPN offered no HERE button for Jaylen Waddle -- they're likely locked (their game already started) or not eligible for that slot. The decision was made but never applied on ESPN. If the reason says the player is locked, it can't be changed anymore; otherwise come make it manually if it matters.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_start": "Jaylen Waddle",
+      "attempted_sit": "Lamar Jackson"
+    }
+  },
+  {
+    "timestamp": "2026-10-10T01:25:21.454548+00:00",
+    "kind": "lineup",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to start Commanders D/ST over Ravens D/ST, but the automation failed: Selected Ravens D/ST to move, but ESPN offered no HERE button for Commanders D/ST -- they're likely locked (their game already started) or not eligible for that slot. The decision was made but never applied on ESPN. If the reason says the player is locked, it can't be changed anymore; otherwise come make it manually if it matters.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_start": "Commanders D/ST",
+      "attempted_sit": "Ravens D/ST"
+    }
+  },
+  {
+    "timestamp": "2026-10-10T01:24:41.546364+00:00",
+    "kind": "lineup",
+    "headline": "Start Jacory Croskey-Merritt over Saquon Barkley; Start Commanders D/ST over Ravens D/ST; Start Jaylen Waddle over Lamar Jackson",
+    "reasoning": "Two status changes drive everything here: Barkley is OUT, so Croskey-Merritt (our only active bench RB, ranked RB30 and carrying that Washington Home Turf bonus as a cherry on top) slides into the RB slot without debate \u2014 Consensus Arbitrage and Home Turf both point the same direction. Lamar being OUT is the uglier problem: there's no backup QB on the roster, so that slot goes empty, but we can at least activate Waddle at WR to get production out of his ACTIVE status. Ravens D/ST loses its biggest upside lever with Jackson out, and Commanders D/ST matches it at rank 20 while being fully ACTIVE \u2014 Home Turf Clause fires cleanly on that tie.",
+    "meta": {
+      "swap_count": 3
+    }
+  },
+  {
     "timestamp": "2026-10-09T16:56:58.697083+00:00",
     "kind": "waiver",
     "headline": "MOVE COULD NOT BE MADE",
