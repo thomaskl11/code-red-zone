@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-10-11T23:21:37.240041+00:00",
+    "kind": "lineup",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to start Travis Kelce over TreVeyon Henderson, but the automation failed: TreVeyon Henderson is on the roster page but has no button for this move -- ESPN locks a player once their game kicks off, so this can't be changed anymore. The session is fine. The decision was made but never applied on ESPN. If the reason says the player is locked, it can't be changed anymore; otherwise come make it manually if it matters.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_start": "Travis Kelce",
+      "attempted_sit": "TreVeyon Henderson"
+    }
+  },
+  {
+    "timestamp": "2026-10-11T23:21:03.187913+00:00",
+    "kind": "lineup",
+    "headline": "Start Travis Kelce over TreVeyon Henderson",
+    "reasoning": "The only status change flagged this check is TreVeyon Henderson flipping to QUESTIONABLE at RB \u2014 that's the one signal worth acting on. Henderson is ranked RB36 and now carries injury uncertainty, while Travis Kelce is sitting on the bench fully active at TE3 overall. Brock Bowers currently occupies the RB/WR/TE flex slot; the cleanest move is to slide Kelce into that flex spot and bench Henderson until his status clears, or if he's ruled out, he stays benched. Home Turf Clause also nods approvingly at Kelce \u2014 not that it's needed here, the arbitrage gap does the work just fine.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-10-11T19:37:58.774699+00:00",
     "kind": "lineup",
     "headline": "MOVE COULD NOT BE MADE",
