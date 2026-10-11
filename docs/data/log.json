@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-11T16:35:56.335041+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged since last check is Jayden Daniels, but he's still ACTIVE and starting at QB \u2014 no action needed there. Lamar Jackson is OUT on the bench, which is noted but he wasn't starting anyway, so that's a non-event for the lineup. The one genuine eyebrow-raiser is Travis Kelce sitting on the bench ranked TE3 while Colston Loveland (TE41) starts at the TE slot and Brock Bowers (TE8) fills the FLEX \u2014 but Kelce's status hasn't changed since last check, so reopening that call without new data would violate operating rules. No swap recommended.",
+    "meta": {
+      "swap_count": 0
+    }
+  },
+  {
     "timestamp": "2026-10-10T01:25:54.913083+00:00",
     "kind": "lineup",
     "headline": "MOVE COULD NOT BE MADE",
