@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-10-11T19:37:58.774699+00:00",
+    "kind": "lineup",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to start Saquon Barkley over TreVeyon Henderson, but the automation failed: TreVeyon Henderson is on the roster page but has no button for this move -- ESPN locks a player once their game kicks off, so this can't be changed anymore. The session is fine. The decision was made but never applied on ESPN. If the reason says the player is locked, it can't be changed anymore; otherwise come make it manually if it matters.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_start": "Saquon Barkley",
+      "attempted_sit": "TreVeyon Henderson"
+    }
+  },
+  {
+    "timestamp": "2026-10-11T19:37:23.684808+00:00",
+    "kind": "lineup",
+    "headline": "Start Saquon Barkley over TreVeyon Henderson",
+    "reasoning": "TreVeyon Henderson is the only status change flagged since last check, and he's now OUT \u2014 that RB slot needs a replacement immediately. Scanning the bench for RB-eligible options: Saquon Barkley is also OUT, so he can't fill in either, which is painful. There's no healthy bench RB to slot in, meaning that starting RB spot is going to zero regardless \u2014 but Henderson must come out of the active lineup so the system doesn't lock in a zero when there's at least a chance to find a waiver add before kickoff. Flagging this as a priority: with both Henderson and Barkley out, grabbing any available RB off waivers before their game kicks is the real play here \u2014 check the wire now.",
+    "meta": {
+      "swap_count": 1
+    }
+  },
+  {
     "timestamp": "2026-10-11T16:35:56.335041+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
