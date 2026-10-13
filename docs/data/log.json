@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-13T17:26:45.013294+00:00",
+    "kind": "waiver",
+    "headline": "Added Kendre Miller, dropped Jacory Croskey-Merritt",
+    "reasoning": "TreVeyon Henderson is DOUBTFUL, making RB a genuine position of need with no reliable healthy backup behind Croskey-Merritt \u2014 and Croskey-Merritt himself is a low-ownership, low-upside handcuff at RB26, barely started in a third of leagues. Among available RBs, Kendre Miller leads with a 19.4 arbitrage gap, projected at 7.78 points as the lead back in New Orleans with real rushing volume upside in standard (no-PPR) scoring \u2014 exactly the profile this league rewards. Croskey-Merritt is the clear drop: unprotected, lower-ranked than Miller, and with Henderson likely out we still keep the healthy RB for the spot rather than a Washington handcuff with thin upside.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-10-13T02:53:52.793783+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
