@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-15T23:58:35.850719+00:00",
+    "kind": "lineup",
+    "headline": "Start Saquon Barkley over Kendre Miller; Start Travis Kelce over Brock Bowers",
+    "reasoning": "The changed players this check are Barkley, Bowers, Lamar Jackson, and Kendre Miller. Lamar Jackson is QUESTIONABLE and on the bench \u2014 Jayden Daniels is the active starter at QB, so no action needed there (single-QB league, no reason to chase a second). Barkley is QUESTIONABLE but the RB gap over Miller is significant enough to start him regardless \u2014 Miller at RB44 offers very little floor or ceiling. The trickier call is the TE situation: Bowers (FLEX, QUESTIONABLE, TE5) vs. Kelce (bench, ACTIVE, TE10) \u2014 with Bowers' status changed to questionable, swapping Kelce into TE and holding Bowers in FLEX until game-time clarity is the right move; Colston Loveland stays at TE (CHI homer nod, but he's locked as the designated starter and Kelce slides to TE slot cleanly). Home Turf fires for Colston Loveland as a Chicago Bear \u2014 but he's already starting, so no action needed beyond appreciating the symmetry.",
+    "meta": {
+      "swap_count": 2
+    }
+  },
+  {
     "timestamp": "2026-10-13T17:26:45.013294+00:00",
     "kind": "waiver",
     "headline": "Added Kendre Miller, dropped Jacory Croskey-Merritt",
