@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-16T14:43:34.391204+00:00",
+    "kind": "waiver",
+    "headline": "Skipped -- a previous claim is still pending",
+    "reasoning": "At least one of our WAIVER transactions isn't showing as EXECUTED yet. Holding off on a new claim rather than risk stacking two at once, which would mean deciding a priority order between our own pending claims -- not something we want this making up on its own.",
+    "meta": {
+      "rule_applied": "pending_claim_hold"
+    }
+  },
+  {
     "timestamp": "2026-10-15T23:58:35.850719+00:00",
     "kind": "lineup",
     "headline": "Start Saquon Barkley over Kendre Miller; Start Travis Kelce over Brock Bowers",
