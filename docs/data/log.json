@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-17T00:04:20.414970+00:00",
+    "kind": "lineup",
+    "headline": "Start Brock Bowers over Colston Loveland; Start Kendre Miller over TreVeyon Henderson",
+    "reasoning": "Three status changes flagged: Barkley (OUT) is already sitting in the RB slot with no viable RB replacement available on the active roster \u2014 that's a painful one, but there's no internal fix. Bowers flipping to ACTIVE is the clearest win here; swapping him in over Loveland is a massive rank gap (TE5 vs TE43) with zero ambiguity, pure consensus arbitrage. Henderson's QUESTIONABLE tag is enough to prefer the healthy Miller in a non-PPR format where touches-on-the-field beats projected-but-maybe-not \u2014 small edge, but it's a real one. Home Turf Clause nearly fires for Loveland (CHI, our #4 market) but Bowers is so clearly superior there's no tie to break \u2014 the clause stays on the bench where it belongs.",
+    "meta": {
+      "swap_count": 2
+    }
+  },
+  {
     "timestamp": "2026-10-16T14:43:34.391204+00:00",
     "kind": "waiver",
     "headline": "Skipped -- a previous claim is still pending",
