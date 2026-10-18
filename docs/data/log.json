@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-18T18:13:10.905837+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged is TreVeyon Henderson, who is ACTIVE and slotted at RB \u2014 no action needed there, he's already starting. The two big injuries on the roster (Lamar Jackson, Saquon Barkley) are both OUT and already benched, so no change required. Vikings D/ST is the one bench player with a genuinely compelling case over a starter \u2014 ranked 1st vs. Ravens D/ST at 22nd \u2014 but Ravens D/ST is already locked into the D/ST slot and Vikings D/ST has no eligible open slot to slide into, so there's no valid swap to make. Everything else on the bench is either position-ineligible for an open slot or doesn't clear the bar for a real edge.",
+    "meta": {
+      "swap_count": 0
+    }
+  },
+  {
     "timestamp": "2026-10-18T14:22:27.848680+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
