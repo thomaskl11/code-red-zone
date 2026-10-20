@@ -1,5 +1,15 @@
 [
   {
+    "timestamp": "2026-10-20T14:50:22.752813+00:00",
+    "kind": "waiver",
+    "headline": "CHECK COULD NOT RUN",
+    "reasoning": "This check crashed before it could decide anything (Exception: No transactions found). Nothing was changed on ESPN. The next scheduled check will try again -- worth a manual look if a game is close.",
+    "meta": {
+      "execution_failed": true,
+      "stage": "decision"
+    }
+  },
+  {
     "timestamp": "2026-10-20T00:57:12.623979+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
