@@ -143,7 +143,17 @@ def _has_pending_waiver_claim(league, team):
     which would force deciding a priority order between our own claims --
     exactly the situation we're avoiding.
     """
-    for t in league.transactions(types={"WAIVER"}):
+    try:
+        transactions = league.transactions(types={"WAIVER"})
+    except Exception as e:
+        # espn_api raises this when ESPN omits the 'transactions' key, which
+        # happens right after the scoring period rolls over (Tuesday, after
+        # MNF) before anything has been processed in the new week. That means
+        # "no transactions", not a failure -- anything else still propagates.
+        if "No transactions found" not in str(e):
+            raise
+        return False
+    for t in transactions:
         if t.team.team_name == team.team_name and t.status != "EXECUTED":
             return True
     return False
@@ -339,6 +349,77 @@ def _save_lineup_state(roster):
         json.dump(state, f, indent=2)
 
 
+def _is_starter(p):
+    return p["lineup_slot"] not in ("BE", "IR")
+
+
+def _bye_fixes(roster, skip_sit=(), skip_start=()):
+    """Deterministic swaps that take starters on a bye out of the lineup.
+
+    A bye player scores zero, so this never needs a judgment call about
+    value -- only which bench player is eligible and best. The model's own
+    picks are validated against the same facts and this is the backstop when
+    it misses one. Players who are out/on IR, locked, or on a bye themselves
+    can't fill in. Starters with no eligible replacement are simply left
+    alone (the caller reports them).
+    """
+    fixes, used = [], set(skip_start)
+    for sit in roster:
+        if not (_is_starter(sit) and sit["on_bye"]) or sit["name"] in skip_sit:
+            continue
+        candidates = [
+            b for b in roster
+            if b["lineup_slot"] == "BE"
+            and b["name"] not in used
+            and not b["on_bye"]
+            and not b["locked"]
+            and b["injury_status"] not in ("OUT", "INJURY_RESERVE")
+            and sit["lineup_slot"] in b["eligible_slots"]
+        ]
+        if not candidates:
+            continue
+        best = max(candidates, key=lambda b: b["week_projected_points"] or 0)
+        used.add(best["name"])
+        fixes.append({
+            "start": best["name"],
+            "sit": sit["name"],
+            "reason": f'{sit["name"]} is on a bye this week and scores nothing.',
+        })
+    return fixes
+
+
+def _validate_swaps(roster, swaps):
+    """Hard checks on the model's swaps, same spirit as the waiver vetoes:
+    never start a bye player, never move a player whose game already started
+    (ESPN removes the MOVE button, so the swap would just fail), and only
+    use a bench player in a slot he's actually eligible for. Returns
+    (valid_swaps, rejected_descriptions).
+    """
+    by_name = {p["name"]: p for p in roster}
+    valid, rejected, used = [], [], set()
+    for s in swaps:
+        start, sit = by_name.get(s.get("start")), by_name.get(s.get("sit"))
+        label = f'{s.get("start")} over {s.get("sit")}'
+        if not start or not sit:
+            why = "player not on roster"
+        elif start["lineup_slot"] != "BE" or not _is_starter(sit):
+            why = "must move a bench player into a starting slot"
+        elif start["on_bye"]:
+            why = f'{start["name"]} is on a bye'
+        elif start["locked"] or sit["locked"]:
+            why = "a player involved is locked (game already started)"
+        elif sit["lineup_slot"] not in start["eligible_slots"]:
+            why = f'{start["name"]} is not eligible for the {sit["lineup_slot"]} slot'
+        elif start["name"] in used or sit["name"] in used:
+            why = "player already used in another swap"
+        else:
+            used.update((start["name"], sit["name"]))
+            valid.append(s)
+            continue
+        rejected.append(f"{label} ({why})")
+    return valid, rejected
+
+
 def decide_lineup():
     """Pre-kickoff lineup check. Lineup Protection is off in this league and
     locks are per-player at kickoff, so this needs to actually catch injury
@@ -356,13 +437,18 @@ def decide_lineup():
     """
     league = get_league()
     team = get_my_team(league)
-    roster = get_roster_snapshot(team)
+    roster = get_roster_snapshot(team, league.current_week)
 
     last_state = _load_last_lineup_state()
     current_state = {p["name"]: p["injury_status"] for p in roster}
     changed = [name for name, status in current_state.items() if last_state.get(name) != status]
 
-    if last_state and not changed:
+    # A starter on a bye is a new data point on its own -- it never shows up
+    # as an injury_status change -- so it reopens the call until it's fixed.
+    bye_starters = [p["name"] for p in roster if _is_starter(p) and p["on_bye"]]
+    bye_fixable = _bye_fixes(roster)
+
+    if last_state and not changed and not bye_fixable:
         reasoning = (
             "Every rostered player's injury status is unchanged since the last check. "
             "Per strategy, a call doesn't get reopened without a new data point -- "
@@ -385,7 +471,15 @@ def decide_lineup():
         "player's lineup_slot -- a starting slot name, or 'BE' for bench -- "
         "position, injury_status, and projected_points), decide whether any "
         "bench player should start over a current starter at an eligible "
-        "slot. Only recommend a swap when there's a real edge: the current "
+        "slot. A starter with on_bye true plays no game this week and scores "
+        "zero, so he must be replaced by an eligible bench player who is "
+        "not on a bye, not locked and not out -- this is required, not a "
+        "close call. Never start a player with on_bye true. A player with "
+        "locked true already had his game start and cannot be moved at all, "
+        "in either direction. Use week_projected_points (ESPN's projection "
+        "for this week) to compare players, and eligible_slots to check a "
+        "bench player can fill a slot. Otherwise only recommend a swap when "
+        "there's a real edge: the current "
         "starter is questionable/doubtful/out, or a bench player at an "
         "eligible position clearly out-projects them. Players whose "
         "injury_status changed since the last check are listed separately "
@@ -402,10 +496,27 @@ def decide_lineup():
     user_payload = json.dumps({
         "roster": roster,
         "changed_since_last_check": changed if last_state else "first check this week, no prior state",
+        "starters_on_bye": bye_starters,
     })
 
     decision = call_for_json(client, system_prompt, user_payload, max_tokens=2000)
     _save_lineup_state(roster)
+
+    decision["swaps"], rejected = _validate_swaps(roster, decision.get("swaps") or [])
+    # Backstop: if the model missed a bye starter that can be replaced, do it.
+    backstop = _bye_fixes(
+        roster,
+        skip_sit={s["sit"] for s in decision["swaps"]},
+        skip_start={s["start"] for s in decision["swaps"]},
+    )
+    decision["swaps"] += backstop
+    covered = {s["sit"] for s in decision["swaps"]}
+    uncovered = [n for n in bye_starters if n not in covered]
+    if uncovered:
+        decision["reasoning"] += (
+            f' {", ".join(uncovered)} on a bye with no eligible bench player to '
+            "cover -- needs a waiver add."
+        )
 
     if decision["swaps"]:
         headline = "; ".join(f'Start {s["start"]} over {s["sit"]}' for s in decision["swaps"])
@@ -416,7 +527,12 @@ def decide_lineup():
         kind="lineup",
         headline=headline,
         reasoning=decision["reasoning"],
-        meta={"swap_count": len(decision["swaps"])},
+        meta={
+            "swap_count": len(decision["swaps"]),
+            "bye_starters": bye_starters,
+            "bye_backstop_swaps": len(backstop),
+            "rejected_swaps": rejected,
+        },
     )
 
     return decision, entry
