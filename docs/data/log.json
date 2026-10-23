@@ -1,5 +1,22 @@
 [
   {
+    "timestamp": "2026-10-23T00:23:46.525475+00:00",
+    "kind": "lineup",
+    "headline": "Start Lamar Jackson over Jayden Daniels; Start Saquon Barkley over Travis Kelce; Start Vikings D/ST over Ravens D/ST",
+    "reasoning": "Two mandatory bye replacements dominate this check: Jayden Daniels (QB, bye) must come out for Lamar Jackson \u2014 QUESTIONABLE flag noted but he's the only viable QB on the bench and projects 19.95, so that's the move. Cam Little (K, bye) has no eligible bench kicker to replace him, which stings but there's nothing to do there. On the flex side, Saquon Barkley's status change (now flagged QUESTIONABLE but projecting 12.48) makes him a clear upgrade over Travis Kelce's 5.85 in the RB/WR/TE slot \u2014 consensus arbitrage fires on that gap. Vikings D/ST at 8.54 (ranked #1) over Ravens D/ST at 6.42 (ranked #20) is a straightforward swap with a real edge; Home Turf Clause would have backed Ravens D/ST in a tie, but this isn't close enough to call a tie. Cam Little on a bye with no eligible bench player to cover -- needs a waiver add.",
+    "meta": {
+      "swap_count": 3,
+      "bye_starters": [
+        "Cam Little",
+        "Jayden Daniels"
+      ],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Vikings D/ST over Cam Little (Vikings D/ST is not eligible for the K slot)"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-10-20T14:50:22.752813+00:00",
     "kind": "waiver",
     "headline": "CHECK COULD NOT RUN",
