@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-10-23T14:53:00.110535+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "Scanning for actual positions of need: RB is the thinnest spot \u2014 Saquon and Kendre Miller are both QUESTIONABLE/low-ranked, Henderson is the RB2 starter at RB40, and Jordan Mason is already in IR. But the best available RBs (Roschon Johnson at RB48, arbitrage_gap 6.8; Tyrone Tracy Jr. at RB49, gap 2.9; Kaelon Black at RB54, gap 0.5) are all fringe backs with weak arbitrage signals \u2014 none of them represent a real upgrade over what's already rostered, and dropping any of the current RBs to add one would be lateral at best. The QB free agents post the largest raw gaps (Geno Smith 52.3, J.J. McCarthy 46.4), but this is a single-QB league with Lamar Jackson locked as the starter and Jayden Daniels already benched as a protected handcuff \u2014 there is no QB need whatsoever, and the strategy doc explicitly flags this trap. No other position is thin enough to justify spending priority on a marginal add; inertia is the right call here, not action for action's sake.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  },
+  {
     "timestamp": "2026-10-23T00:23:46.525475+00:00",
     "kind": "lineup",
     "headline": "Start Lamar Jackson over Jayden Daniels; Start Saquon Barkley over Travis Kelce; Start Vikings D/ST over Ravens D/ST",
