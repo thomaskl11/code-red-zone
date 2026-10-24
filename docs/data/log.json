@@ -1,5 +1,21 @@
 [
   {
+    "timestamp": "2026-10-24T00:09:26.598704+00:00",
+    "kind": "lineup",
+    "headline": "Start Ravens D/ST over Vikings D/ST",
+    "reasoning": "Let me work through this carefully. Cam Little (K) is on bye and must be replaced \u2014 but scanning the bench, there is no other kicker available; Colston Loveland is locked, Jayden Daniels is on bye, and no bench player fills the K slot, so unfortunately that slot cannot be filled this week. The two changed players are Jaylen Waddle and Travis Kelce: Waddle (WR, 6.71 projected) could slot into the WR spot currently held by Puka Nacua, but Nacua is QUESTIONABLE with 0.0 projected points \u2014 that zero projection is a red flag and Waddle at 6.71 clearly out-projects zero, so Waddle should start over Nacua at WR. No other meaningful swaps exist: Bowers (TE, 11.93) and Barkley (RB, 12.61) are both QUESTIONABLE but project well above any bench alternatives, and the locked players can't move. Cam Little on a bye with no eligible bench player to cover -- needs a waiver add.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [
+        "Cam Little"
+      ],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Ravens D/ST over Vikings D/ST (player already used in another swap)"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-10-23T14:53:00.110535+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
