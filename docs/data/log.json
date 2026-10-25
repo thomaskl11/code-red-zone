@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-10-25T22:13:25.769498+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Puka Nacua flagged as changed, but she's locked (game already started), so there's nothing actionable there \u2014 locked means locked, no matter what the status update says. Saquon Barkley is the one interesting case: Questionable, on the bench, projecting 12.61 points, and his eligible slots include RB \u2014 but both RB starters (TreVeyon Henderson and Kendre Miller) are also locked, so there's no open slot to move him into anyway. Every other bench player with a remaining game either projects below their starter counterpart or is locked themselves. No swaps available or warranted \u2014 the lineup is set as-is by kickoff timing.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-10-25T18:29:19.240172+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
