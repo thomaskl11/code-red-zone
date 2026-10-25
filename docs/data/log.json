@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-10-25T14:54:30.451225+00:00",
+    "kind": "lineup",
+    "headline": "Start Puka Nacua over Jaylen Waddle",
+    "reasoning": "The big flag this check is Lamar Jackson \u2014 he's OUT and projecting 0.0, but he's already on the bench so no swap is needed there, just a note that he's a dead roster spot. The real move is Puka Nacua over Jaylen Waddle: 15.01 projected vs. 6.71 is more than double, and even with the QUESTIONABLE tag the gap is so wide that sitting Nacua would mean leaving roughly 8 points on the table for no reason \u2014 that's Consensus Arbitrage firing loud and clear. Saquon Barkley is QUESTIONABLE but projects 12.61 and the RB/WR and RB slots are either locked (Henderson, Miller) or occupied by Mason at 9.37, so no better option exists there without disrupting a locked player.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-10-24T00:09:26.598704+00:00",
     "kind": "lineup",
     "headline": "Start Ravens D/ST over Vikings D/ST",
