@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-10-26T01:28:04.395978+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change since last check is Jaylen Waddle, who is QUESTIONABLE \u2014 but he's already locked (game started before this check), so there's nothing actionable there regardless of the injury tag. Every other starter is either locked in place or active and unlocked with no bench player who out-projects them at an eligible slot: Saquon Barkley is the most interesting bench piece at 12.61 projected, but he's QUESTIONABLE and the only open RB slot (RB) already has Kendre Miller locked. Jayden Daniels is on bye and correctly benched. The lineup is set \u2014 no moves available or warranted.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-10-25T22:13:25.769498+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
