@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-10-27T01:16:06.634758+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Every player flagged with a status change \u2014 Saquon Barkley \u2014 is locked, so there's nothing actionable there regardless of what's changed. Scanning the full roster, every starter is either locked or already playing the right player for the slot, and there are no bye-week emergencies to resolve. All the interesting bench options (Barkley, Colston Loveland, Jaylen Waddle, Jayden Daniels) are locked as well, so no moves are possible this week. The lineup is set; nothing to do but watch the scores roll in and see how the arbitrage math plays out.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-10-26T01:28:04.395978+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
