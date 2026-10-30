@@ -1,5 +1,23 @@
 [
   {
+    "timestamp": "2026-10-30T01:26:13.347490+00:00",
+    "kind": "lineup",
+    "headline": "Start Jayden Daniels over Tyler Shough; Start Saquon Barkley over Kendre Miller",
+    "reasoning": "Two starters are on bye \u2014 Shough and Miller \u2014 so Daniels and Barkley are required replacements regardless of anything else. Among the status-changed players flagged this check, Henderson's 5.32 projection while QUESTIONABLE is well below Barkley's 11.57 floor, so Barkley wins that RB slot on pure arbitrage. The QB competition between Daniels and Lamar is genuinely close (22.82 vs. 22.15), but Lamar's QUESTIONABLE tag shifts the edge, and the Home Turf Clause fires as a confirming signal for our Commanders guy \u2014 happy to run that math in Jayden's favor.",
+    "meta": {
+      "swap_count": 2,
+      "bye_starters": [
+        "Kendre Miller",
+        "Tyler Shough"
+      ],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Jayden Daniels over Lamar Jackson (must move a bench player into a starting slot)",
+        "Saquon Barkley over TreVeyon Henderson (player already used in another swap)"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-10-27T15:47:58.156407+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
