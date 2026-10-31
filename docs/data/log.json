@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-10-31T01:15:54.064425+00:00",
+    "kind": "lineup",
+    "headline": "Start Lamar Jackson over Jayden Daniels",
+    "reasoning": "Hold on \u2014 working through the changed players: Saquon is ACTIVE and projecting 11.55, no action needed. Lamar Jackson moved to the changed list; at 22.15 vs. Jayden Daniels' 22.80, they're within ~3% of each other \u2014 a genuine tie by the loose 15% threshold \u2014 and the Home Turf Clause fires for Daniels (Washington Commanders, the #1 data-center market), so Daniels stays in at QB and Lamar stays on bench, no swap. Colston Loveland is QUESTIONABLE at 7.06 but is already on the bench, so no action needed there. TreVeyon Henderson is QUESTIONABLE at 6.1 projected in an RB slot \u2014 that's a real concern \u2014 but scanning the bench, the only eligible RB options are Kendre Miller (on bye, zero points), Chris Rodriguez Jr. (5.99, active), and Lamar Jackson (not RB-eligible for that slot); Rodriguez is slightly lower than Henderson's projection and also has question marks of his own at 5.99 vs. 6.1, so there's no clear upgrade to make. No swaps are warranted beyond holding the current lineup.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-10-30T16:39:13.280369+00:00",
     "kind": "waiver",
     "headline": "Added Chris Rodriguez Jr., dropped Tyler Shough",
