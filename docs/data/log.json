@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-01T17:02:39.856246+00:00",
+    "kind": "lineup",
+    "headline": "Start Jayden Daniels over Lamar Jackson",
+    "reasoning": "The two changed players are the real focus: Loveland's status is still ACTIVE so no action needed there, and Henderson is OUT with zero projected points but he's already on the bench so there's nothing to swap. Scanning the rest of the lineup, the one live edge is QB \u2014 Jayden Daniels (22.8 projected, espn_pos_rank 21) out-projects Lamar Jackson (22.15, rank 24), and while that gap is tight enough to almost call a tie, it's still a real edge in Daniels' favor, plus the Home Turf Clause backs him as a Commander. Every other starter looks solid and no bench player meaningfully out-projects any other active starter in an eligible slot.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-10-31T01:15:54.064425+00:00",
     "kind": "lineup",
     "headline": "Start Lamar Jackson over Jayden Daniels",
