@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-01T23:16:17.944273+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Jaylen Waddle is the only status change flagged this check, but he's already locked (game started), so there's nothing actionable there. Scanning the rest: all starters are either locked or project reasonably well for their slots, and the only unlocked bench options are Kendre Miller (on bye, projects 0) and Colston Loveland \u2014 wait, Loveland is already starting the RB/WR/TE flex. Saquon Barkley and Jayden Daniels are the unlocked starters, both ACTIVE with solid projections (11.55 and 22.8 respectively), and no bench player beats them for their slot. No swaps needed this check \u2014 the math is clean and the signals are quiet.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-01T19:49:07.099459+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
