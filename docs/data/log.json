@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-11-03T17:39:34.301122+00:00",
+    "kind": "waiver",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to add Kimani Vidal, but the automation failed: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Continue\")\n    - locator resolved to <button disabled tabindex=\"0\" aria-label=\"Continue\" class=\"Button Button--default Button--disabled Button--custom action-buttons\">\u2026</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    56 \u00d7 waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n. Nothing changed on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_add": "Kimani Vidal",
+      "attempted_drop": null
+    }
+  },
+  {
+    "timestamp": "2026-11-03T17:38:46.813376+00:00",
+    "kind": "waiver",
+    "headline": "Added Kimani Vidal, moved Lamar Jackson to IR",
+    "reasoning": "Lamar Jackson is marked OUT and sitting on the bench \u2014 he's IR-eligible, the IR slot is open, and there are zero open roster spots right now, so moving him to IR frees a spot for free without dropping anyone. That's the mechanical unlock. Now, what to add with the freed spot? QB is already covered by Jayden Daniels (protected, active starter), so the huge arbitrage gaps on available QBs don't translate to roster need \u2014 skip those. RB is the real soft spot: Jordan Mason is RB60 on ESPN, TreVeyon Henderson is QUESTIONABLE at RB51, Kendre Miller and Chris Rodriguez Jr. are low-ownership depth. Kimani Vidal (RB49, gap 12.7) is the top available RB by arbitrage gap and projects 7.0 points as a LAC back \u2014 that's a meaningful gap signal at a position where this roster is genuinely thin. No home turf clause needed; arbitrage gap at a real position of need is doing the work cleanly here.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-11-03T03:21:43.651622+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
