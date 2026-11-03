@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-03T03:21:43.651622+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Every player worth examining is already locked \u2014 Puka Nacua, Brock Bowers, Colston Loveland, Jordan Mason, Jayden Daniels, and all the rest had their kickoffs before this check ran, so no moves are physically possible. Chris Rodriguez Jr. is the one status change flagged, but he's locked too (JAX kicked off at 18:00 UTC Sunday), so that questionable tag can't trigger any action. Lamar Jackson is OUT and locked on the bench \u2014 unfortunate, but nothing to do there either. No unlocked players remain to swap, so the lineup stands as set.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-02T02:39:46.927397+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
