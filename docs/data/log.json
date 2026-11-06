@@ -1,5 +1,21 @@
 [
   {
+    "timestamp": "2026-11-06T01:54:44.145730+00:00",
+    "kind": "lineup",
+    "headline": "Start Kendre Miller over Saquon Barkley",
+    "reasoning": "Let me work through this cleanly. Chris Boswell is on bye (K slot) \u2014 required swap, but scanning the bench reveals zero kickers available; Lamar Jackson and Chris Rodriguez Jr. are locked; TreVeyon Henderson is QUESTIONABLE with 0.0 projected and cannot help; no bench K exists, so the K slot unfortunately cannot be filled this week. Saquon Barkley is QUESTIONABLE (changed since last check) projecting 11.15 \u2014 the best available RB swap is Kendre Miller at 7.92, which is a meaningful gap in Barkley's favor even with injury risk, so Barkley stays unless he's ruled out closer to kickoff. The lineup is otherwise solid: Jayden Daniels leads at QB (19.79, and yes, the Commanders QB gets a little extra love from home turf, but the numbers back him up independently), Puka Nacua and Luther Burden III hold the WR slots, and Brock Bowers anchors TE. Chris Boswell on a bye with no eligible bench player to cover -- needs a waiver add.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [
+        "Chris Boswell"
+      ],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Kendre Miller over Chris Boswell (Kendre Miller is not eligible for the K slot)"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-11-03T17:39:34.301122+00:00",
     "kind": "waiver",
     "headline": "MOVE COULD NOT BE MADE",
