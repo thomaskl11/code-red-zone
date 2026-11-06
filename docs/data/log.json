@@ -1,5 +1,24 @@
 [
   {
+    "timestamp": "2026-11-06T17:22:11.383416+00:00",
+    "kind": "waiver",
+    "headline": "MOVE COULD NOT BE MADE",
+    "reasoning": "Tried to move Lamar Jackson to IR to free a roster spot, but the automation failed: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Lamar Jackson to Injured Reserve\")\n    - locator resolved to <button disabled tabindex=\"0\" title=\"TO IR\" aria-label=\"Lamar Jackson to Injured Reserve\" class=\"Button Button--alt Button--disabled Button--custom move-action-btn roster-action-btn\">\u2026</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    58 \u00d7 waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n. Nothing changed on ESPN -- come make this manually if it matters, or check whether the ESPN session needs refreshing.",
+    "meta": {
+      "execution_failed": true,
+      "attempted_ir_move": "Lamar Jackson"
+    }
+  },
+  {
+    "timestamp": "2026-11-06T17:21:37.956613+00:00",
+    "kind": "waiver",
+    "headline": "Added Kimani Vidal, moved Lamar Jackson to IR",
+    "reasoning": "Lamar Jackson is on INJURY_RESERVE and the IR slot is open, so he moves there first \u2014 that frees a roster spot at no cost and keeps him stashed. With that spot open, the clearest position of need is RB depth: Jordan Mason (RB60) and Kendre Miller (RB51) are both thin starters, and TreVeyon Henderson is QUESTIONABLE on a bad offense. Kimani Vidal posts the best arbitrage gap among RBs available (14.6), and as the LAC lead back in a committee that's thinning out, he fits the standard-scoring preference for rushing volume and red-zone role over target share. Kendre Miller (RB51, 26.9% owned, 7.6% started) is the clearest drop \u2014 lowest ownership and production floor on the bench with no path to a workhorse role in New Orleans.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-11-06T01:54:44.145730+00:00",
     "kind": "lineup",
     "headline": "Start Kendre Miller over Saquon Barkley",
