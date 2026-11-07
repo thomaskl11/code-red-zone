@@ -1,5 +1,21 @@
 [
   {
+    "timestamp": "2026-11-07T01:28:04.061702+00:00",
+    "kind": "lineup",
+    "headline": "Start Saquon Barkley over Kendre Miller",
+    "reasoning": "Two changed players drove this check: Saquon Barkley is back to ACTIVE and projects 11.16 vs. Kendre Miller's 7.22 at RB \u2014 that's a clear arbitrage edge, Barkley starts. TreVeyon Henderson is OUT and already benched, so no action needed there. Chris Boswell is on bye and scores zero, which is a mandatory swap \u2014 but no bench player has K in their eligible_slots, so there's no valid replacement to make (Boswell has to come out conceptually, but the roster has no eligible substitute to plug in). The Barkley-for-Miller move is the real win this week; Home Turf Clause isn't needed here, the numbers speak clearly. Chris Boswell on a bye with no eligible bench player to cover -- needs a waiver add.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [
+        "Chris Boswell"
+      ],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Jaylen Waddle over Chris Boswell (Jaylen Waddle is not eligible for the K slot)"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-11-06T17:22:11.383416+00:00",
     "kind": "waiver",
     "headline": "MOVE COULD NOT BE MADE",
