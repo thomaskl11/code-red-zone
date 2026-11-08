@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-08T16:57:18.889428+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged since last check is Wil Lutz, who flipped to ACTIVE and is projecting 8.79 points at the K slot \u2014 he's already the starter there, so no move needed. No starter is on bye, no one is locked into a starting slot mid-game, and scanning the bench for meaningful upgrades finds nothing compelling: Jaylen Waddle (7.04) trails both WR starters (Puka Nacua 15.71, Luther Burden 8.84), and no bench RB out-projects the current starters enough to pull the trigger. The lineup is set \u2014 just keep an eye on those Sunday kickoffs since per-player locking means the window closes piece by piece, not all at once.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-07T01:28:04.061702+00:00",
     "kind": "lineup",
     "headline": "Start Saquon Barkley over Kendre Miller",
