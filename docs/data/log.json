@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-08T19:49:36.347147+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged since last check is Jaylen Waddle \u2014 he's QUESTIONABLE but already locked (kickoff was 18:00 UTC Sunday, same window as other locked players), so there's nothing actionable there regardless of the injury tag. No starters are on bye, no unlocked starters are showing injury concern, and scanning the bench for upgrades: Jordan Mason (7.31) and Colston Loveland (7.52) are already in starting slots, while the only unlocked bench options are Kendre Miller (on bye, 0.0) and TreVeyon Henderson (OUT, 0.0 in IR). There's no eligible, healthy bench player who out-projects an unlocked starter, so the arbitrage engine finds no gap worth acting on and the lineup stands as-is.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-08T16:57:18.889428+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
