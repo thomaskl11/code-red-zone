@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-08T23:20:54.003058+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged since last check is Puka Nacua moving to QUESTIONABLE \u2014 but he's already locked (kickoff was 18:00 UTC Sunday), so there's nothing to act on there regardless of the injury tag. All other starters are either locked, active and projecting fine, or already in the right slot. Jordan Mason (7.31) holds his RB spot over the only available bench RB options (Kendre Miller on bye, Chris Rodriguez Jr. locked), and Colston Loveland (7.52) holds the flex \u2014 no bench player clears him at that slot. No swaps needed this week.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-08T19:49:36.347147+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
