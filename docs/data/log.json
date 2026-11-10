@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-10T04:01:44.038222+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Every player flagged as changed \u2014 Puka Nacua (DOUBTFUL) and Luther Burden III (QUESTIONABLE) \u2014 is already locked, so no move is physically possible regardless of their injury status. All other starters are also locked, and the only unlocked bench players (Kendre Miller and Chris Boswell) are on bye with 0.0 projected points, making them ineligible replacements. No actionable swaps exist this week; the lineup is set and we're just along for the ride on the injury gambles.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-09T02:52:02.022596+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
