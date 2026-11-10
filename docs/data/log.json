@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-11-10T17:34:27.666775+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "Scanning the roster for genuine need: Puka Nacua is DOUBTFUL but protected, so no drop available there anyway; the WR depth behind her (Luther Burden III, Jaylen Waddle) is shaky but both are on-roster already. The real thin spots are RB and QB \u2014 Lamar is on IR (slot already filled, ir_slot_open is false), Jayden Daniels is the locked QB1, and in a single-QB league a backup QB is a luxury we're not chasing, so the giant arbitrage gaps on Brissett/Geno/Penix are noise, not signal. RB is thin (Jordan Mason at RB59, Kendre Miller cut, Chris Rodriguez Jr. as a flier), but the best available RBs \u2014 Kimani Vidal (gap 9.7, RB49) and Samaje Perine (gap 7.7, RB46) \u2014 are low-upside handcuffs that don't meaningfully upgrade the starting lineup, and open_roster_spots is 0 with no clean IR move available, meaning someone has to get dropped to add anyone. No available free agent is good enough to justify cutting any current roster piece \u2014 not with Kendre Miller, Chris Rodriguez Jr., and TreVeyon Henderson all carrying some future-value optionality as the weakest drop candidates.",
+    "meta": {
+      "rule_applied": "none"
+    }
+  },
+  {
     "timestamp": "2026-11-10T04:01:44.038222+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
