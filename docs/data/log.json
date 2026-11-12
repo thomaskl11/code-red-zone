@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2026-11-12T05:49:21.868657+00:00",
+    "kind": "lineup",
+    "headline": "Start Chris Rodriguez Jr. over Saquon Barkley; Start Mack Hollins over Luther Burden III; Start Chris Boswell over Wil Lutz",
+    "reasoning": "Four starters are on bye (Barkley, Loveland, Burden, Lutz) \u2014 all mandatory zero-point replacements, no debate needed there. Puka Nacua's status changed to OUT this check, adding a fifth required swap; Hollins (7.26 projected) covers the WR slot. The Loveland flex swap works by sliding Bowers \u2014 already starting at TE \u2014 into the RB/WR/TE flex, since Bowers is eligible there and the TE slot stays filled by his existing placement; it's a bit of roster origami but the eligibility checks out. Rodriguez is questionable but he's the only non-bye, non-locked, non-out RB on the bench, so he goes in and we hope for the best \u2014 this is triage, not arbitrage. Colston Loveland on a bye with no eligible bench player to cover -- needs a waiver add.",
+    "meta": {
+      "swap_count": 3,
+      "bye_starters": [
+        "Saquon Barkley",
+        "Colston Loveland",
+        "Luther Burden III",
+        "Wil Lutz"
+      ],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Brock Bowers over Colston Loveland (must move a bench player into a starting slot)",
+        "Mack Hollins over Puka Nacua (player already used in another swap)"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-11-12T05:48:14.022341+00:00",
     "kind": "waiver",
     "headline": "Added Mack Hollins, dropped Kendre Miller",
