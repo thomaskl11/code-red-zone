@@ -47,6 +47,16 @@ def _game_info(player, week):
     return False, kickoff_utc.isoformat(), kickoff_utc <= datetime.now(timezone.utc)
 
 
+def _bye_week(player):
+    """The week this player's team is off, or None (no schedule = no NFL team).
+    player.schedule is keyed by week number as a string; a missing week is the bye."""
+    schedule = getattr(player, "schedule", None) or {}
+    if not schedule:
+        return None
+    missing = [w for w in range(1, 19) if str(w) not in schedule]
+    return missing[0] if missing else None
+
+
 def get_roster_snapshot(team, week=None):
     """Plain-data snapshot of the roster, safe to hand to Claude as JSON.
 
@@ -66,7 +76,11 @@ def get_roster_snapshot(team, week=None):
             "injury_status": getattr(p, "injuryStatus", "ACTIVE"),
             "projected_points": getattr(p, "projected_points", None),
             "week_projected_points": week_stats.get("projected_points"),
+            "season_points": getattr(p, "total_points", None),
+            "avg_points_per_game": getattr(p, "avg_points", None),
             "on_bye": on_bye,
+            "bye_week": _bye_week(p),
+            "no_nfl_team": not getattr(p, "schedule", None),
             "kickoff_utc": kickoff,
             "locked": locked,
             "percent_owned": getattr(p, "percent_owned", None),
@@ -89,6 +103,9 @@ def get_free_agents(league, size=50, position=None):
             "pro_team": p.proTeam,
             "injury_status": getattr(p, "injuryStatus", "ACTIVE"),
             "projected_points": getattr(p, "projected_points", None),
+            "season_points": getattr(p, "total_points", None),
+            "avg_points_per_game": getattr(p, "avg_points", None),
+            "bye_week": _bye_week(p),
             "percent_owned": getattr(p, "percent_owned", None),
             "percent_started": getattr(p, "percent_started", None),
             "espn_pos_rank": getattr(p, "posRank", None),

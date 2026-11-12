@@ -159,7 +159,7 @@ def _has_pending_waiver_claim(league, team):
     return False
 
 
-def _waiver_problem(decision, roster, protected, ir_slot_open):
+def _waiver_problem(decision, roster, protected, ir_slot_open, fa_positions=None):
     """Why a proposed waiver move can't happen, or None if it can. Caught
     here so the model can be re-asked for a workable alternative, instead of
     the move dying at execution (ESPN greys out the button -- the Nov 3 and
@@ -167,9 +167,33 @@ def _waiver_problem(decision, roster, protected, ir_slot_open):
     already started isn't allowed at all)."""
     if decision.get("action") != "add_drop":
         return None
+    if not decision.get("add"):
+        return (
+            "an add_drop needs a player to add -- the system cannot drop someone "
+            "without adding someone, so pair any needed drop with the best "
+            "workable add for a real need, or choose no_move"
+        )
     by_name = {_normalize_name(p["name"]): p for p in roster}
     if _normalize_name(decision.get("add") or "") in by_name:
         return f'{decision["add"]} is already on our roster'
+    # Never carry two kickers or two D/STs. The waiver check runs before the
+    # lineup swap, so a benched K/D-ST covering a bye still shows as "BE" --
+    # the model once tried to add a third kicker while Boswell sat on the
+    # bench covering Lutz's bye. If we already have a usable one (healthy, not
+    # on a bye this week), adding another is never needed.
+    add_pos = (fa_positions or {}).get(_normalize_name(decision.get("add") or ""))
+    if add_pos in ("K", "D/ST"):
+        usable = [
+            p["name"] for p in roster
+            if p["position"] == add_pos and p["lineup_slot"] != "IR"
+            and not p["on_bye"] and not p["no_nfl_team"]
+            and p["injury_status"] not in ("OUT", "INJURY_RESERVE")
+        ]
+        if usable:
+            return (
+                f'we already have a usable {add_pos} ({usable[0]}, healthy and not on a '
+                f"bye this week); only add a {add_pos} when every one we have is on a bye or out"
+            )
     ir = decision.get("ir_move")
     if ir:
         p = by_name.get(_normalize_name(ir))
@@ -271,7 +295,7 @@ def decide_waiver_move(no_ir=False):
         "0, an add doesn't need a drop at all: leave \"drop\" null. Only "
         "propose an actual drop when there's no open spot (via an existing "
         "gap or a fresh ir_move) and no such free option exists, or when "
-        "dropping is clearly correct regardless. A player with locked true "
+        "dropping is clearly correct regardless. Besides the projection, season_points and avg_points_per_game show what a player has actually produced: a player ESPN projects well but who has averaged very little all season is a mirage (a low-average running back is not a real starter just because he holds a slot), and a proven producer is worth more than a flimsy projection suggests. A projection of 0 usually means a bye week, not a bad player. Weigh both. ROSTER CLEANUP: when a drop is needed, choose it with these preferences, in order, unless something clearly outweighs them. (1) A player with no_nfl_team true -- he has no team and cannot score. (2) A surplus kicker or D/ST: never carry two kickers or two D/STs. Keep the better one, but remember bye_week and the current week: if the one you'd keep is on a bye THIS week, the spare is still covering it, so hold it until that week passes; a good D/ST whose bye has already passed (bye_week earlier than the current week) is worth keeping for the rest of the season rather than churning. When you add a K or D/ST, prefer one whose bye isn't this week or soon. (3) A benched player with injury_status INJURY_RESERVE who can't go in the IR slot (it's full) and has little value to us. Only the model can see who is truly a backup versus a starter, so use judgment: never drop a real starter or a protected player for these reasons. The system can only drop a player as part of an add, never on its own, so pair a cleanup drop with the best add for a REAL need -- for example a starter listed in starters_on_bye_with_no_bench_cover, or a genuinely thin position -- not a redundant player. The lineup check runs separately and will start a bench K or D/ST that is not on a bye, so a bench kicker already covers a starting kicker's bye: do not add another kicker or D/ST. This is a single-QB league: do not add a backup QB just for depth while the starter is healthy and his bye has passed. A player with locked true "
         "already had his game start this week and cannot be dropped or moved "
         "to IR until it rolls over. If the user payload includes "
         "previous_proposal_rejected, that proposal is impossible for the "
@@ -292,6 +316,7 @@ def decide_waiver_move(no_ir=False):
     ]
 
     ir_slot_open = not no_ir and not any(p["lineup_slot"] == "IR" for p in roster)
+    fa_positions = {_normalize_name(p["name"]): p["position"] for p, _ in ranked_fas}
 
     # Non-IR roster size for this league is 14 (1 QB/2 RB/2 WR/1 TE/1 FLEX/
     # 1 D-ST/1 K/5 BE); IR is a bonus 15th slot on top of that, not counted
@@ -304,6 +329,11 @@ def decide_waiver_move(no_ir=False):
 
     user_payload = json.dumps({
         "current_roster": roster_with_protection,
+        "starters_on_bye_with_no_bench_cover": [
+            {"name": p["name"], "slot": p["lineup_slot"]}
+            for p in roster
+            if _is_starter(p) and p["on_bye"] and not _bye_candidates(roster, p)
+        ],
         "ir_slot_open": ir_slot_open,
         "open_roster_spots": open_roster_spots,
         "top_free_agents_by_position": [
@@ -317,13 +347,13 @@ def decide_waiver_move(no_ir=False):
     # reason rather than letting it fail at execution or giving up on the
     # week. Checked again; a second miss becomes no_move.
     retry_note = None
-    problem = _waiver_problem(decision, roster, protected, ir_slot_open)
+    problem = _waiver_problem(decision, roster, protected, ir_slot_open, fa_positions)
     if problem:
         retry_note = problem
         payload = json.loads(user_payload)
         payload["previous_proposal_rejected"] = {"proposal": decision, "why_impossible": problem}
         decision = call_for_json(client, system_prompt, json.dumps(payload), max_tokens=2000)
-        problem = _waiver_problem(decision, roster, protected, ir_slot_open)
+        problem = _waiver_problem(decision, roster, protected, ir_slot_open, fa_positions)
         if problem:
             decision = {
                 "action": "no_move", "add": None, "drop": None, "ir_move": None,
@@ -563,7 +593,7 @@ def decide_lineup():
         "locked true already had his game start and cannot be moved at all, "
         "in either direction. Use week_projected_points (ESPN's projection "
         "for this week) to compare players, and eligible_slots to check a "
-        "bench player can fill a slot. Otherwise only recommend a swap when "
+        "bench player can fill a slot. Besides the projection, season_points and avg_points_per_game show what a player has actually produced: a player ESPN projects well but who has averaged very little all season is a mirage (a low-average running back is not a real starter just because he holds a slot), and a proven producer is worth more than a flimsy projection suggests. A projection of 0 usually means a bye week, not a bad player. Weigh both. Otherwise only recommend a swap when "
         "there's a real edge: the current "
         "starter is questionable/doubtful/out, or a bench player at an "
         "eligible position clearly out-projects them. Players whose "
