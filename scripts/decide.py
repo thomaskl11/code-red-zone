@@ -159,6 +159,44 @@ def _has_pending_waiver_claim(league, team):
     return False
 
 
+def _cleanup_drop_candidates(roster, protected):
+    """The drops the cleanup order allows right now, as (reason, [names]); the
+    first tier that has anyone is the ONLY acceptable drop (the user's rule:
+    dead weight goes before anything else, enforced in code because the
+    prompt alone was overridden -- the model dropped Loveland while a spare
+    kicker sat on the bench).
+
+    1. Players with no NFL team -- they can't score.
+    2. A surplus K or D/ST. Never carry two of either. Keep the better one
+       (points per game); if the one we'd keep is on a bye this week the spare
+       is still covering it, so hold both until that week passes.
+    Returns (None, []) when neither applies, leaving the choice to the model.
+    """
+    def droppable(p):
+        return (
+            p["lineup_slot"] != "IR"
+            and not p.get("locked")
+            and _normalize_name(p["name"]) not in protected
+        )
+
+    teamless = [p["name"] for p in roster if p["no_nfl_team"] and droppable(p)]
+    if teamless:
+        return "a player with no NFL team", teamless
+
+    surplus = []
+    for pos in ("K", "D/ST"):
+        group = [p for p in roster if p["position"] == pos and p["lineup_slot"] != "IR"]
+        if len(group) < 2:
+            continue
+        keeper = max(group, key=lambda p: p["avg_points_per_game"] or 0)
+        if keeper["on_bye"]:
+            continue  # the spare is covering the keeper's bye this week
+        surplus += [p["name"] for p in group if p is not keeper and droppable(p)]
+    if surplus:
+        return "a surplus kicker or D/ST (never carry two)", surplus
+    return None, []
+
+
 def _waiver_problem(decision, roster, protected, ir_slot_open, fa_positions=None):
     """Why a proposed waiver move can't happen, or None if it can. Caught
     here so the model can be re-asked for a workable alternative, instead of
@@ -215,6 +253,12 @@ def _waiver_problem(decision, roster, protected, ir_slot_open, fa_positions=None
             return f"{drop} is on the protected list and can never be dropped"
         if p.get("locked"):
             return f"{drop}'s game already started, so he is locked and cannot be dropped"
+        reason, allowed = _cleanup_drop_candidates(roster, protected)
+        if allowed and _normalize_name(drop) not in {_normalize_name(n) for n in allowed}:
+            return (
+                f"the cleanup order requires the drop to be {reason} first: "
+                f'{", ".join(allowed)}. Pair the add with one of those instead of {drop}'
+            )
     return None
 
 
@@ -295,7 +339,7 @@ def decide_waiver_move(no_ir=False):
         "0, an add doesn't need a drop at all: leave \"drop\" null. Only "
         "propose an actual drop when there's no open spot (via an existing "
         "gap or a fresh ir_move) and no such free option exists, or when "
-        "dropping is clearly correct regardless. Besides the projection, season_points and avg_points_per_game show what a player has actually produced: a player ESPN projects well but who has averaged very little all season is a mirage (a low-average running back is not a real starter just because he holds a slot), and a proven producer is worth more than a flimsy projection suggests. A projection of 0 usually means a bye week, not a bad player. Weigh both. ROSTER CLEANUP: when a drop is needed, choose it with these preferences, in order, unless something clearly outweighs them. (1) A player with no_nfl_team true -- he has no team and cannot score. (2) A surplus kicker or D/ST: never carry two kickers or two D/STs. Keep the better one, but remember bye_week and the current week: if the one you'd keep is on a bye THIS week, the spare is still covering it, so hold it until that week passes; a good D/ST whose bye has already passed (bye_week earlier than the current week) is worth keeping for the rest of the season rather than churning. When you add a K or D/ST, prefer one whose bye isn't this week or soon. (3) A benched player with injury_status INJURY_RESERVE who can't go in the IR slot (it's full) and has little value to us. Only the model can see who is truly a backup versus a starter, so use judgment: never drop a real starter or a protected player for these reasons. The system can only drop a player as part of an add, never on its own, so pair a cleanup drop with the best add for a REAL need -- for example a starter listed in starters_on_bye_with_no_bench_cover, or a genuinely thin position -- not a redundant player. The lineup check runs separately and will start a bench K or D/ST that is not on a bye, so a bench kicker already covers a starting kicker's bye: do not add another kicker or D/ST. This is a single-QB league: do not add a backup QB just for depth while the starter is healthy and his bye has passed. A player with locked true "
+        "dropping is clearly correct regardless. Besides the projection, season_points and avg_points_per_game show what a player has actually produced: a player ESPN projects well but who has averaged very little all season is a mirage (a low-average running back is not a real starter just because he holds a slot), and a proven producer is worth more than a flimsy projection suggests. A projection of 0 usually means a bye week, not a bad player. Weigh both. If required_drop_candidates in the payload is not empty, any drop you propose MUST be one of those names -- this order is enforced and a proposal that drops anyone else will be rejected. ROSTER CLEANUP: when a drop is needed, choose it with these preferences, in order, unless something clearly outweighs them. (1) A player with no_nfl_team true -- he has no team and cannot score. (2) A surplus kicker or D/ST: never carry two kickers or two D/STs. Keep the better one, but remember bye_week and the current week: if the one you'd keep is on a bye THIS week, the spare is still covering it, so hold it until that week passes; a good D/ST whose bye has already passed (bye_week earlier than the current week) is worth keeping for the rest of the season rather than churning. When you add a K or D/ST, prefer one whose bye isn't this week or soon. (3) A benched player with injury_status INJURY_RESERVE who can't go in the IR slot (it's full) and has little value to us. Only the model can see who is truly a backup versus a starter, so use judgment: never drop a real starter or a protected player for these reasons. The system can only drop a player as part of an add, never on its own, so pair a cleanup drop with the best add for a REAL need -- for example a starter listed in starters_on_bye_with_no_bench_cover, or a genuinely thin position -- not a redundant player. The lineup check runs separately and will start a bench K or D/ST that is not on a bye, so a bench kicker already covers a starting kicker's bye: do not add another kicker or D/ST. This is a single-QB league: do not add a backup QB just for depth while the starter is healthy and his bye has passed. A player with locked true "
         "already had his game start this week and cannot be dropped or moved "
         "to IR until it rolls over. If the user payload includes "
         "previous_proposal_rejected, that proposal is impossible for the "
@@ -334,6 +378,7 @@ def decide_waiver_move(no_ir=False):
             for p in roster
             if _is_starter(p) and p["on_bye"] and not _bye_candidates(roster, p)
         ],
+        "required_drop_candidates": _cleanup_drop_candidates(roster, protected)[1],
         "ir_slot_open": ir_slot_open,
         "open_roster_spots": open_roster_spots,
         "top_free_agents_by_position": [
