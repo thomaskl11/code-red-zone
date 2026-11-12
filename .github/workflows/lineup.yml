@@ -54,41 +54,13 @@ jobs:
         working-directory: scripts
         env:
           ESPN_STORAGE_STATE: ${{ secrets.ESPN_STORAGE_STATE }}
+          # Only for the post-move bye check, which re-reads the roster.
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
           ESPN_LEAGUE_ID: ${{ secrets.ESPN_LEAGUE_ID }}
           ESPN_TEAM_ID: ${{ secrets.ESPN_TEAM_ID }}
           DRY_RUN: "false"  # verified live 2026-09-09 -- set_lineup() actually works
-        run: |
-          python - << 'PYEOF'
-          import json, sys, browser_actions, log_store
-
-          d = json.load(open("/tmp/decision.json"))
-          had_failure = False
-
-          for swap in d["swaps"]:
-              try:
-                  browser_actions.set_lineup(swap["start"], swap["sit"])
-              except Exception as e:
-                  had_failure = True
-                  log_store.append_entry(
-                      kind="lineup",
-                      headline="MOVE COULD NOT BE MADE",
-                      reasoning=(
-                          f'Tried to start {swap["start"]} over {swap["sit"]}, but the '
-                          f'automation failed: {e} The decision was made but never '
-                          'applied on ESPN. If the reason says the player is locked, '
-                          "it can't be changed anymore; otherwise come make it "
-                          'manually if it matters.'
-                      ),
-                      meta={
-                          "execution_failed": True,
-                          "attempted_start": swap["start"],
-                          "attempted_sit": swap["sit"],
-                      },
-                  )
-
-          if had_failure:
-              sys.exit(1)
-          PYEOF
+        run: python execute_lineup.py
 
       - name: Log setup failure
         if: failure() && steps.install.outcome != 'success'

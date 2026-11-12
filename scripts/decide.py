@@ -159,10 +159,45 @@ def _has_pending_waiver_claim(league, team):
     return False
 
 
-def decide_waiver_move():
+def _waiver_problem(decision, roster, protected, ir_slot_open):
+    """Why a proposed waiver move can't happen, or None if it can. Caught
+    here so the model can be re-asked for a workable alternative, instead of
+    the move dying at execution (ESPN greys out the button -- the Nov 3 and
+    Nov 6 failures: IR slot already full; and a drop of a player whose game
+    already started isn't allowed at all)."""
+    if decision.get("action") != "add_drop":
+        return None
+    by_name = {_normalize_name(p["name"]): p for p in roster}
+    if _normalize_name(decision.get("add") or "") in by_name:
+        return f'{decision["add"]} is already on our roster'
+    ir = decision.get("ir_move")
+    if ir:
+        p = by_name.get(_normalize_name(ir))
+        if p is None:
+            return f"{ir} is not on our roster"
+        if p["lineup_slot"] == "IR":
+            return f"{ir} is already in the IR slot"
+        if not ir_slot_open:
+            return "the IR slot is already occupied, so nobody can be moved to IR"
+        if p["injury_status"] != "INJURY_RESERVE":
+            return f"{ir} is not INJURY_RESERVE status, so is not IR-eligible"
+        return None
+    drop = decision.get("drop")
+    if drop:
+        p = by_name.get(_normalize_name(drop))
+        if p is None:
+            return f"{drop} is not on our roster"
+        if _normalize_name(drop) in protected:
+            return f"{drop} is on the protected list and can never be dropped"
+        if p.get("locked"):
+            return f"{drop}'s game already started, so he is locked and cannot be dropped"
+    return None
+
+
+def decide_waiver_move(no_ir=False):
     league = get_league()
     team = get_my_team(league)
-    roster = get_roster_snapshot(team)
+    roster = get_roster_snapshot(team, league.current_week)
 
     if _has_pending_waiver_claim(league, team):
         entry = append_entry(
@@ -236,7 +271,13 @@ def decide_waiver_move():
         "0, an add doesn't need a drop at all: leave \"drop\" null. Only "
         "propose an actual drop when there's no open spot (via an existing "
         "gap or a fresh ir_move) and no such free option exists, or when "
-        "dropping is clearly correct regardless. Respond with ONLY valid "
+        "dropping is clearly correct regardless. A player with locked true "
+        "already had his game start this week and cannot be dropped or moved "
+        "to IR until it rolls over. If the user payload includes "
+        "previous_proposal_rejected, that proposal is impossible for the "
+        "stated reason: propose a different workable move (for example a "
+        "different drop, or an add with a drop instead of an IR move), or "
+        "no_move if nothing workable remains. Respond with ONLY valid "
         "JSON, no other text: "
         '{"action": "add_drop" or "no_move", '
         '"add": "player name or null", "drop": "player name or null", '
@@ -250,7 +291,7 @@ def decide_waiver_move():
         {**p, "protected": _normalize_name(p["name"]) in protected} for p in roster
     ]
 
-    ir_slot_open = not any(p["lineup_slot"] == "IR" for p in roster)
+    ir_slot_open = not no_ir and not any(p["lineup_slot"] == "IR" for p in roster)
 
     # Non-IR roster size for this league is 14 (1 QB/2 RB/2 WR/1 TE/1 FLEX/
     # 1 D-ST/1 K/5 BE); IR is a bonus 15th slot on top of that, not counted
@@ -271,6 +312,27 @@ def decide_waiver_move():
     })
 
     decision = call_for_json(client, system_prompt, user_payload, max_tokens=2000)
+
+    # If the proposal can't actually be carried out, ask once more with the
+    # reason rather than letting it fail at execution or giving up on the
+    # week. Checked again; a second miss becomes no_move.
+    retry_note = None
+    problem = _waiver_problem(decision, roster, protected, ir_slot_open)
+    if problem:
+        retry_note = problem
+        payload = json.loads(user_payload)
+        payload["previous_proposal_rejected"] = {"proposal": decision, "why_impossible": problem}
+        decision = call_for_json(client, system_prompt, json.dumps(payload), max_tokens=2000)
+        problem = _waiver_problem(decision, roster, protected, ir_slot_open)
+        if problem:
+            decision = {
+                "action": "no_move", "add": None, "drop": None, "ir_move": None,
+                "reasoning": (
+                    f"Vetoed: the first proposal wasn't possible ({retry_note}) and "
+                    f"the retry still wasn't ({problem}). No move made this week."
+                ),
+                "rule_applied": "infeasible_move_veto",
+            }
 
     # Hard enforcement, independent of whatever the model decided -- a
     # protected player is never dropped, no matter what the prompt said or
@@ -321,6 +383,8 @@ def decide_waiver_move():
         headline = f'Added {decision["add"]}, dropped {decision["drop"]}'
     elif overridden and decision.get("rule_applied") == "already_rostered_veto":
         headline = "Waiver move blocked -- tried to add an already-rostered player"
+    elif decision.get("rule_applied") == "infeasible_move_veto":
+        headline = "Waiver move blocked -- no workable option"
     elif overridden:
         headline = "Waiver move blocked -- protected player"
     else:
@@ -330,7 +394,10 @@ def decide_waiver_move():
         kind="waiver",
         headline=headline,
         reasoning=decision["reasoning"],
-        meta={"rule_applied": decision.get("rule_applied", "none")},
+        meta={
+            "rule_applied": decision.get("rule_applied", "none"),
+            **({"retried_because": retry_note} if retry_note else {}),
+        },
     )
 
     return decision, entry
@@ -353,37 +420,55 @@ def _is_starter(p):
     return p["lineup_slot"] not in ("BE", "IR")
 
 
+def _bye_candidates(roster, sit, used=()):
+    """Bench players who could replace a bye starter, best projection first.
+    Out/IR players, locked players and players on a bye themselves can't."""
+    candidates = [
+        b for b in roster
+        if b["lineup_slot"] == "BE"
+        and b["name"] not in used
+        and not b["on_bye"]
+        and not b["locked"]
+        and b["injury_status"] not in ("OUT", "INJURY_RESERVE")
+        and sit["lineup_slot"] in b["eligible_slots"]
+    ]
+    return sorted(candidates, key=lambda b: b["week_projected_points"] or 0, reverse=True)
+
+
+def _bye_alternatives(roster, sit, chosen):
+    """Backup swaps for a bye starter, tried in order if ESPN won't make the
+    first one (the executor skips any whose player was already used)."""
+    return [
+        {"start": c["name"], "sit": sit["name"]}
+        for c in _bye_candidates(roster, sit)
+        if c["name"] != chosen
+    ]
+
+
 def _bye_fixes(roster, skip_sit=(), skip_start=()):
     """Deterministic swaps that take starters on a bye out of the lineup.
 
     A bye player scores zero, so this never needs a judgment call about
     value -- only which bench player is eligible and best. The model's own
     picks are validated against the same facts and this is the backstop when
-    it misses one. Players who are out/on IR, locked, or on a bye themselves
-    can't fill in. Starters with no eligible replacement are simply left
-    alone (the caller reports them).
+    it misses one. Each fix carries ranked `alternatives` for the executor to
+    fall back on. Starters with no eligible replacement are simply left alone
+    (the caller reports them).
     """
     fixes, used = [], set(skip_start)
     for sit in roster:
         if not (_is_starter(sit) and sit["on_bye"]) or sit["name"] in skip_sit:
             continue
-        candidates = [
-            b for b in roster
-            if b["lineup_slot"] == "BE"
-            and b["name"] not in used
-            and not b["on_bye"]
-            and not b["locked"]
-            and b["injury_status"] not in ("OUT", "INJURY_RESERVE")
-            and sit["lineup_slot"] in b["eligible_slots"]
-        ]
+        candidates = _bye_candidates(roster, sit, used)
         if not candidates:
             continue
-        best = max(candidates, key=lambda b: b["week_projected_points"] or 0)
+        best = candidates[0]
         used.add(best["name"])
         fixes.append({
             "start": best["name"],
             "sit": sit["name"],
             "reason": f'{sit["name"]} is on a bye this week and scores nothing.',
+            "alternatives": _bye_alternatives(roster, sit, best["name"]),
         })
     return fixes
 
@@ -503,6 +588,11 @@ def decide_lineup():
     _save_lineup_state(roster)
 
     decision["swaps"], rejected = _validate_swaps(roster, decision.get("swaps") or [])
+    by_name = {p["name"]: p for p in roster}
+    for swap in decision["swaps"]:
+        sit = by_name[swap["sit"]]
+        if _is_starter(sit) and sit["on_bye"]:
+            swap["alternatives"] = _bye_alternatives(roster, sit, swap["start"])
     # Backstop: if the model missed a bye starter that can be replaced, do it.
     backstop = _bye_fixes(
         roster,
@@ -659,12 +749,21 @@ def save_draft_queue(enriched_queue, reasoning):
 if __name__ == "__main__":
     import sys
 
+    if "--verify-byes" in sys.argv:
+        # Post-execution check for the lineup workflow: re-read the roster
+        # from ESPN and report any bye starter that's still in the lineup
+        # (e.g. a swap that failed) and can still be replaced. No model call,
+        # no log entry.
+        league = get_league()
+        roster = get_roster_snapshot(get_my_team(league), league.current_week)
+        print(json.dumps({"swaps": _bye_fixes(roster)}))
+        sys.exit(0)
     if "--draft-queue" in sys.argv:
         decision, entry = build_draft_queue()
     else:
         kind = "lineup" if "--lineup" in sys.argv else "waiver"
         try:
-            decision, entry = decide_lineup() if kind == "lineup" else decide_waiver_move()
+            decision, entry = decide_lineup() if kind == "lineup" else decide_waiver_move(no_ir="--no-ir" in sys.argv)
         except Exception as e:
             # The execution-step alerting never covered this: a crash while
             # *deciding* (Sept 29's waiver run) left nothing on the dashboard
