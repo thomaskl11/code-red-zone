@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-11-12T05:51:44.473223+00:00",
+    "kind": "waiver",
+    "headline": "Added Darren Waller, dropped Colston Loveland",
+    "reasoning": "Colston Loveland is the only starter on bye with no bench cover (filling the RB/WR/TE flex slot), is averaging just 5.14 points per game, and is essentially a low-upside placeholder at this point \u2014 dropping him is the cleanup move. Darren Waller is the best available TE option to slot into that flex, averaging 6.74 points per game on a solid season-long body of work (53.9 season points), and carries a positive arbitrage gap (2.3) while most of the TE pool is negative \u2014 meaning he's underpriced relative to consensus. The QB free agents have eye-popping gaps but this is a single-QB league with Jayden Daniels healthy and his bye already passed, so that number is noise here, not signal; real need points to the flex/TE depth hole Loveland was nominally filling.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-11-12T05:49:21.868657+00:00",
     "kind": "lineup",
     "headline": "Start Chris Rodriguez Jr. over Saquon Barkley; Start Mack Hollins over Luther Burden III; Start Chris Boswell over Wil Lutz",
