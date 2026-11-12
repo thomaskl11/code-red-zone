@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-11-12T05:48:14.022341+00:00",
+    "kind": "waiver",
+    "headline": "Added Mack Hollins, dropped Kendre Miller",
+    "reasoning": "Luther Burden III is a WR starter on bye with no bench cover flagged, and I need a WR body to fill that slot this week. Kendre Miller has no NFL team (no_nfl_team: true) and literally cannot score, so he's the textbook first drop candidate \u2014 no hesitation there. Mack Hollins is the best available WR on the waiver wire: arbitrage_gap of 9.3 leads all non-QB positions, he's active and playing this week for NE, and while he's not a world-beater (6.1 avg), he's a real player who can fill Burden's WR slot in a pinch, which is exactly what the roster needs right now.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-11-10T17:34:27.666775+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
