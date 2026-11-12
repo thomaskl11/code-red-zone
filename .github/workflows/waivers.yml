@@ -35,6 +35,15 @@ jobs:
           pip install -r requirements.txt
           playwright install --with-deps chromium
 
+      # ESPN's Undroppables list changes all season; protected_players.json is
+      # refreshed from the live page before every decision. If the refresh
+      # fails the previous copy stays in place, so it never blocks the check.
+      - name: Refresh undroppables list
+        working-directory: scripts
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python refresh_protected.py
+
       - name: Decide waiver move
         working-directory: scripts
         env:
@@ -84,6 +93,6 @@ jobs:
         run: |
           git config user.name "code-red-zone-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add docs/data/log.json
+          git add docs/data/log.json scripts/protected_players.json
           git commit -m "Weekly waiver decision" || echo "Nothing to commit"
           git push
