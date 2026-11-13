@@ -1,5 +1,15 @@
 [
   {
+    "timestamp": "2026-11-13T17:37:58.557183+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The only permitted drop is Wil Lutz, but the previous proposal to add a kicker for Lutz was correctly rejected \u2014 Boswell is healthy, starting, and not on bye, so we don't need another K. No other position is in genuine distress: QB is locked with Daniels, the top FA arbitrage gaps are all QBs (irrelevant in a single-QB league), and the available RBs/WRs on the wire are low-average speculative adds that don't clearly upgrade over what we have. The right move here is to sit tight and not force a transaction just to use the drop.",
+    "meta": {
+      "rule_applied": "none",
+      "retried_because": "we already have a usable K (Chris Boswell, healthy and not on a bye this week); only add a K when every one we have is on a bye or out"
+    }
+  },
+  {
     "timestamp": "2026-11-13T02:16:15.949000+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",

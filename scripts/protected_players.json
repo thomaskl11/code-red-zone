@@ -1,6 +1,6 @@
 {
   "source": "https://fantasy.espn.com/football/players/undroppables",
-  "fetched_at": "2026-11-12",
+  "fetched_at": "2026-11-13",
   "note": "ESPN's own anti-collusion/anti-tanking list. Refreshed automatically from the live page before each waiver check (scripts/refresh_protected.py); if that refresh fails the previous copy stays in place. Add any personal must-protects to extra_names below -- those are never dropped regardless of ESPN's list.",
   "espn_undroppables": [
     "Josh Allen",
