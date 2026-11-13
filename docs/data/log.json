@@ -1,5 +1,19 @@
 [
   {
+    "timestamp": "2026-11-13T02:16:15.949000+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Two players flagged as changed: Puka Nacua and Darren Waller. Nacua moving to IR is a required swap \u2014 he scores zero and can't play, so the WR slot needs filling. The bench WR options are grim: Jaylen Waddle and Luther Burden III are both on bye, leaving Mack Hollins (6.39 projected, ACTIVE) as the only eligible, available WR. No gap to arbitrage here, just a necessary move. Darren Waller's status changed too, but he's ACTIVE, projecting 5.54 in the flex slot, and the bench offers nothing better at that position that isn't on bye or IR \u2014 he stays put, no edge to act on.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Mack Hollins over Puka Nacua (must move a bench player into a starting slot)"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-11-12T05:51:44.473223+00:00",
     "kind": "waiver",
     "headline": "Added Darren Waller, dropped Colston Loveland",

@@ -1,9 +1,8 @@
 {
-  "Puka Nacua": "OUT",
+  "Puka Nacua": "INJURY_RESERVE",
   "Saquon Barkley": "ACTIVE",
   "Brock Bowers": "ACTIVE",
   "Lamar Jackson": "INJURY_RESERVE",
-  "Colston Loveland": "ACTIVE",
   "Jaylen Waddle": "QUESTIONABLE",
   "Luther Burden III": "QUESTIONABLE",
   "TreVeyon Henderson": "OUT",
@@ -13,5 +12,6 @@
   "Chris Boswell": "ACTIVE",
   "Chris Rodriguez Jr.": "QUESTIONABLE",
   "Wil Lutz": "ACTIVE",
-  "Mack Hollins": "ACTIVE"
+  "Mack Hollins": "ACTIVE",
+  "Darren Waller": "ACTIVE"
 }
