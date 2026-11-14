@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-14T01:55:19.166006+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "No changed player triggers a swap \u2014 Chris Rodriguez Jr. moved to ACTIVE, which actually makes him *more* startable than before, and he's already in his RB slot, so no action needed there. Puka Nacua is on IR and projects 0, but she has no eligible bench replacement that isn't either on bye (Saquon Barkley, Jaylen Waddle, Luther Burden III all on_bye), on IR themselves, or out \u2014 the only non-bye bench players are Lamar Jackson (IR, 0 projection) and Wil Lutz (K, on bye), neither of whom can fill a WR slot. Darren Waller sits in the flex at 5.54 projected with a 6.74 avg, and Mack Hollins starts at 6.38 projected with a 6.10 avg \u2014 no compelling swap there given comparable production and the flex isn't a WR-only slot anyway. The roster is thin and largely stuck; no actionable, eligible, non-bye bench upgrade exists for any starting slot this week.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-13T17:37:58.557183+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
