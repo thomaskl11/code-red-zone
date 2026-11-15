@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-15T20:27:33.676585+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "A.J. Brown is the only status change flagged, but he's already locked (his game kicked off at 14:30 UTC), so no move is possible there regardless. Scanning the rest of the lineup: all starters with unlocked games look fine \u2014 Jayden Daniels is locked and producing, Brock Bowers is a proven TE1, Deebo Samuel is active with a reasonable projection, and Chris Boswell is solid at K. The bench is a graveyard of bye-week players (Barkley, Waddle, Burden all on bye) and IR slots (Puka Nacua, Lamar Jackson), so there's nothing eligible and clearly superior to swap in. No real edge exists on any unlocked, non-locked starter this week \u2014 holding the line.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-15T17:37:37.479745+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
