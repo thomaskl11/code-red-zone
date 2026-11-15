@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-15T23:40:41.382620+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged since last check is Brock Bowers, who is now OUT \u2014 but his game has already kicked off and he's locked, so there's nothing to move even though the news is bad. Every other starter is either locked (Jordan Mason, Vikings D/ST, Mack Hollins, Deebo Samuel, Darren Waller, Jayden Daniels, Chris Rodriguez Jr.) or already processed. No bench player is both unlocked and eligible to fill an active starting slot this week \u2014 Saquon Barkley, Jaylen Waddle, and Luther Burden III are all on bye, Lamar Jackson is on IR with a 0.0 projection, and A.J. Brown is locked too. The math says sit tight and absorb the Bowers zero \u2014 there's no legal move left on the board.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-15T20:27:33.676585+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
