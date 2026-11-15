@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-15T17:37:37.479745+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Two players flagged since last check: A.J. Brown is OUT and already locked (his game started, nothing to do there), and Deebo Samuel Sr. is ACTIVE with an 8.34 projection and a solid 8.88 avg \u2014 he's holding his WR slot and no bench player can clearly beat that. Scanning the bench for any real upgrade opportunity: everyone available is either on a bye (Saquon, Waddle, Luther Burden), on IR with zero projection (Lamar Jackson \u2014 0.0 projected despite solid avg, and on IR so he can't start anyway), or already locked/IR-slotted. Jordan Mason (7.65 proj, 6.22 avg) and Chris Rodriguez Jr. (6.42 proj, 6.30 avg) are both modest starters but no bench player is eligible and healthy to beat them. No swaps are warranted \u2014 Consensus Arbitrage finds no exploitable gap when the viable bench is entirely on bye or unavailable.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-14T01:55:19.166006+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
