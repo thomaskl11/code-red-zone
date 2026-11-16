@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-16T02:55:52.019872+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "The only status change flagged since last check is Brock Bowers moving to QUESTIONABLE, but he's already locked (kickoff was 2026-11-15T21:05 UTC), so there's nothing actionable there \u2014 can't move him regardless. Scanning the rest of the lineup: no starters are on bye, every other starter is locked or active, and the bench options either are on bye themselves (Barkley, Waddle, Burden), on IR (Lamar Jackson), or already locked (A.J. Brown, projected 8.84 but locked and averaging just 3.2 on the season anyway). No gap in projections or injury status creates a real edge where a move is even possible this week \u2014 the window has closed on the players who mattered.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-15T23:40:41.382620+00:00",
     "kind": "lineup",
     "headline": "No lineup changes needed",
