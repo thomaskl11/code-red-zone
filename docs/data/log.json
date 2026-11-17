@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-11-17T19:00:35.931164+00:00",
+    "kind": "waiver",
+    "headline": "Added Jacoby Brissett, dropped Lamar Jackson",
+    "reasoning": "Lamar Jackson is on IR but the IR slot is already full (Puka Nacua occupies it), so he's just eating a bench spot while contributing zero points \u2014 and with no open roster spots, something has to give. The real QB need is a functional starter to back up Jayden Daniels (who's protected and healthy, but depth matters). Brissett is the smart pickup here: he's averaging 13.55 points per game with 121.96 season points, ranking him QB20 by ESPN, yet he's sitting at 16% owned \u2014 that's a meaningful arbitrage gap of 29.9, the highest among non-QB-needy targets once we filter out the vanity of raw QB gap numbers. He's a proven producer this season, not a projection mirage. Dropping Lamar for Brissett swaps a zero-producing IR blocker for a live, scoring asset at the one position where the roster has a gap.",
+    "meta": {
+      "rule_applied": "arbitrage_gap"
+    }
+  },
+  {
     "timestamp": "2026-11-17T04:21:32.481068+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
