@@ -1,5 +1,19 @@
 [
   {
+    "timestamp": "2026-11-20T02:45:14.910625+00:00",
+    "kind": "lineup",
+    "headline": "Start Luther Burden III over Mack Hollins; Start Saquon Barkley over Chris Rodriguez Jr.",
+    "reasoning": "Two changes fire this week: Hollins is on bye so his WR slot needs a body, and Luther Burden III \u2014 the highest-projecting eligible bench WR at 9.73 with a matching 9.7 season average \u2014 is the obvious fill (Home Turf Clause also smiles here, Bears player). The Rodriguez situation is the other flag from the changed-status list: he's QUESTIONABLE with a low projection *and* a low average, while Barkley sitting on the bench with a 9.98 projection and clear RB slot eligibility is a genuine upgrade. Bowers stays in at TE despite the QUESTIONABLE tag \u2014 he's the TE1 overall, averages 12.48, and there's no better option; that's not a swap, that's a hold. Darren Waller is also QUESTIONABLE but his 5.59 proj and 6.26 avg in the flex are thin \u2014 however, there's no bench player who clearly beats him at that slot without also creating a hole elsewhere, so no change there.",
+    "meta": {
+      "swap_count": 2,
+      "bye_starters": [
+        "Mack Hollins"
+      ],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-17T19:00:35.931164+00:00",
     "kind": "waiver",
     "headline": "Added Jacoby Brissett, dropped Lamar Jackson",
