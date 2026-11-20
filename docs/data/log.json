@@ -1,5 +1,14 @@
 [
   {
+    "timestamp": "2026-11-20T18:28:41.183632+00:00",
+    "kind": "waiver",
+    "headline": "Skipped -- a previous claim is still pending",
+    "reasoning": "At least one of our WAIVER transactions isn't showing as EXECUTED yet. Holding off on a new claim rather than risk stacking two at once, which would mean deciding a priority order between our own pending claims -- not something we want this making up on its own.",
+    "meta": {
+      "rule_applied": "pending_claim_hold"
+    }
+  },
+  {
     "timestamp": "2026-11-20T02:45:14.910625+00:00",
     "kind": "lineup",
     "headline": "Start Luther Burden III over Mack Hollins; Start Saquon Barkley over Chris Rodriguez Jr.",
