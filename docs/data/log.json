@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-21T02:55:59.755093+00:00",
+    "kind": "lineup",
+    "headline": "Start Jaylen Waddle over Darren Waller",
+    "reasoning": "Waddle's status change is the flag here: he's active, projects 8.19 points, and can slot into the RB/WR/TE flex currently held by Darren Waller, who is questionable with a mediocre 6.26 season average \u2014 that's a meaningful gap on both sides of the ledger. A.J. Brown is on bye and doubtful so he stays parked on bench with no action needed. No other bench player clears the bar: Rodriguez Jr. projects 5.41 and averages less than Saquon or Mason, so neither RB slot needs touching. Home Turf Clause nods approvingly at Luther Burden III already in the lineup for the Bears \u2014 no intervention required there.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-20T18:28:41.183632+00:00",
     "kind": "waiver",
     "headline": "Skipped -- a previous claim is still pending",
