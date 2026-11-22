@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-22T18:20:39.720204+00:00",
+    "kind": "lineup",
+    "headline": "Start Brock Bowers over T.J. Hockenson",
+    "reasoning": "Two players had status changes flagged \u2014 Darren Waller and T.J. Hockenson. Waller is locked, so no move is possible there. Hockenson's change opens the TE slot for review: Brock Bowers is the consensus TE1 by season average (12.48 ppg vs. Hockenson's 6.35), and even with a QUESTIONABLE tag and a 0.0 ESPN projection (likely a data lag rather than a true expectation of zero \u2014 he's not on bye and not ruled out), his proven production dwarfs Hockenson's floor. That's a real arbitrage gap in season-long value, not a marginal call, so Bowers starts. Bowers fits the TE slot cleanly, and the Home Turf Clause doesn't need to fire here \u2014 the edge is obvious.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-21T02:55:59.755093+00:00",
     "kind": "lineup",
     "headline": "Start Jaylen Waddle over Darren Waller",
