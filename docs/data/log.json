@@ -1,5 +1,19 @@
 [
   {
+    "timestamp": "2026-11-22T21:07:52.023716+00:00",
+    "kind": "lineup",
+    "headline": "Start T.J. Hockenson over Brock Bowers",
+    "reasoning": "The only status change flagged is Brock Bowers moving to OUT, which means his TE slot scores zero and must be replaced \u2014 that's a required move, not a judgment call. Darren Waller is already locked on the bench and can't be moved, leaving T.J. Hockenson (6.30 projected, 6.35 avg, eligible for TE) as the only viable option to slide in. No other starters are on bye or flagged, and no bench player meaningfully out-projects an unlocked starter enough to trigger a swap \u2014 Consensus Arbitrage finds no real edge elsewhere this week.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": [
+        "Darren Waller over Brock Bowers (a player involved is locked (game already started))"
+      ]
+    }
+  },
+  {
     "timestamp": "2026-11-22T18:20:39.720204+00:00",
     "kind": "lineup",
     "headline": "Start Brock Bowers over T.J. Hockenson",
