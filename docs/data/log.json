@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-23T00:34:01.012304+00:00",
+    "kind": "lineup",
+    "headline": "No lineup changes needed",
+    "reasoning": "Saquon Barkley is the changed player to focus on \u2014 he's QUESTIONABLE but already locked, so there's nothing to act on there regardless of the injury tag. Scanning the rest of the lineup: Jordan Mason (RB, 7.24 proj, 6.16 avg) holds his slot over bench RB Chris Rodriguez Jr. (5.41 proj, 5.37 avg) with no edge to swap, and Deebo Samuel (WR, 7.20 proj, 11.22 avg) is a proven producer whose season average well outpaces any available bench alternative \u2014 the projection dip doesn't change the call when the track record is that strong. No bench player is unlocked, eligible, and clearly superior to their corresponding starter, so the lineup stands as-is.",
+    "meta": {
+      "swap_count": 0,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-22T21:07:52.023716+00:00",
     "kind": "lineup",
     "headline": "Start T.J. Hockenson over Brock Bowers",
