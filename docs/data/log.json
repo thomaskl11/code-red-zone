@@ -1,5 +1,15 @@
 [
   {
+    "timestamp": "2026-11-24T20:33:04.333721+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The previous proposal tried to do IR cleanup as a standalone move, but the system requires any drop (or IR shift) to be paired with an actual add \u2014 and there's no add worth making here. QB is fully covered by Jayden Daniels (18.88 avg, healthy, bye passed), so the top arbitrage-gap QBs are noise. The best available RBs (Dylan Sampson at RB67, avg 4.62; Samaje Perine avg 5.65) and WRs (Antonio Williams avg 5.68) don't clear the bar to displace Chris Rodriguez Jr. or Mack Hollins from the bench, and the TE spot is covered by Hockenson with Bowers in reserve. No starter is on bye without cover, and no position is thin enough to justify burning a move on a marginal wire add just to free the IR slot \u2014 that's not an edge, that's churn. Sitting tight this week.",
+    "meta": {
+      "rule_applied": "none",
+      "retried_because": "an add_drop needs a player to add -- the system cannot drop someone without adding someone, so pair any needed drop with the best workable add for a real need, or choose no_move"
+    }
+  },
+  {
     "timestamp": "2026-11-24T05:46:29.712793+00:00",
     "kind": "lineup",
     "headline": "No lineup changes -- nothing new since last check",
