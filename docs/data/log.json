@@ -1,5 +1,17 @@
 [
   {
+    "timestamp": "2026-11-27T03:52:44.600575+00:00",
+    "kind": "lineup",
+    "headline": "Start Brock Bowers over T.J. Hockenson",
+    "reasoning": "Brock Bowers just changed status (the flag that triggers a fresh look), and even with the QUESTIONABLE tag he's TE2 on the season at 12.48 avg vs. Hockenson's 6.26 \u2014 that's nearly double the proven output, and his 9.65 projection beats Hockenson's 6.35 this week too. The gap is real on both the numbers that matter: projection AND season average. Darren Waller also changed status but stays on the bench \u2014 QUESTIONABLE with a 4.50 projection and 6.05 avg doesn't threaten any starter. No other bench player clears the bar to unseat a starter, so the only move is the Bowers-for-Hockenson swap at TE.",
+    "meta": {
+      "swap_count": 1,
+      "bye_starters": [],
+      "bye_backstop_swaps": 0,
+      "rejected_swaps": []
+    }
+  },
+  {
     "timestamp": "2026-11-24T20:33:04.333721+00:00",
     "kind": "waiver",
     "headline": "No waiver move this week",
