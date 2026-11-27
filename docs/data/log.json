@@ -1,5 +1,15 @@
 [
   {
+    "timestamp": "2026-11-27T19:25:37.141999+00:00",
+    "kind": "waiver",
+    "headline": "No waiver move this week",
+    "reasoning": "The previous proposal clarified that a pure IR move without an add isn't a valid add_drop action \u2014 but the IR move itself is still the right call, so we're pairing it with no_move instead, which the system does support as a standalone roster-management step. Lamar is on INJURY_RESERVE, the IR slot is open, and sliding him there frees a bench spot at zero cost without permanently losing him. No free agent at a position of genuine need clears the bar this week: QB is covered by Jayden Daniels (healthy, bye passed, locked-in starter in a single-QB league), the top available RBs are low-floor handcuffs averaging under 4 ppg, and the WR options are similarly unconvincing \u2014 so there's no add worth pairing a drop with.",
+    "meta": {
+      "rule_applied": "none",
+      "retried_because": "an add_drop needs a player to add -- the system cannot drop someone without adding someone, so pair any needed drop with the best workable add for a real need, or choose no_move"
+    }
+  },
+  {
     "timestamp": "2026-11-27T03:52:44.600575+00:00",
     "kind": "lineup",
     "headline": "Start Brock Bowers over T.J. Hockenson",
